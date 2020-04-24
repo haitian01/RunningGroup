@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:background="@color/white">
+    <ImageView
+        android:id="@+id/icon"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:background="@drawable/runningapp_icon"
+        android:layout_centerHorizontal="true"
+        android:layout_alignTop="@+id/password"
+        android:layout_marginTop="-300dp"/>
     <EditText
         android:id="@+id/username"
         android:layout_width="match_parent"
@@ -20,22 +29,29 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="账号"
+        android:text="账号:"
         android:textSize="25dp"
+        android:fontFamily="sans-serif-black"
         android:layout_alignLeft="@id/username"
-        android:layout_alignTop="@id/username"/>
+        android:layout_alignTop="@id/username"
+        android:layout_marginTop="-30dp"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="密码"
+        android:text="密码:"
         android:textSize="25dp"
+        android:fontFamily="sans-serif-black"
         android:layout_alignLeft="@id/password"
-        android:layout_alignTop="@id/password"/>
+        android:layout_alignTop="@id/password"
+        android:layout_marginTop="-30dp"
+        />
     <Button
         android:id="@+id/register"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@drawable/btn_style1"
         android:text="注册"
+        android:textColor="@color/white"
         android:layout_alignBottom="@id/password"
         android:layout_alignLeft="@id/password"
         android:layout_marginBottom="-80dp"/>
@@ -43,8 +59,29 @@
         android:id="@+id/login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@drawable/btn_style1"
         android:text="登录"
+        android:textColor="@color/white"
         android:layout_alignBottom="@id/password"
         android:layout_alignRight="@id/password"
         android:layout_marginBottom="-80dp"/>
+    <Button
+        android:id="@+id/forgetPassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/btn_style2"
+        android:text="忘记密码"
+        android:textColor="@color/white"
+        android:layout_alignBottom="@id/password"
+        android:layout_alignLeft="@id/password"
+        android:layout_marginBottom="-180dp"/>
+    <TextView
+        android:id="@+id/point"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="提示：该功能暂未实现！"
+        android:layout_alignBottom="@id/password"
+        android:layout_alignLeft="@id/password"
+        android:layout_marginLeft="-5dp"
+        android:layout_marginBottom="-200dp"/>
 </RelativeLayout>
