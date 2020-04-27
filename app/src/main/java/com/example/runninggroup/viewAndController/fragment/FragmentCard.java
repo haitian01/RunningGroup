@@ -8,19 +8,24 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.runninggroup.R;
+
+import java.util.Random;
 
 import static androidx.core.os.LocaleListCompat.create;
 
 public class FragmentCard extends Fragment implements View.OnClickListener {
     Button mButton;
     View view;
+    ImageView imageView;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,6 +38,7 @@ public class FragmentCard extends Fragment implements View.OnClickListener {
 
         initView();
         initEvent();
+        initImageview();
         return view;
     }
 
@@ -41,7 +47,35 @@ public class FragmentCard extends Fragment implements View.OnClickListener {
     }
     private void initEvent(){
         mButton.setOnClickListener(this);
-
+    }
+    private  void initImageview(){
+        imageView = view.findViewById(R.id.famousQuotes);
+        Random random = new Random();
+        int randomnum = random.nextInt(8);
+        if (randomnum == 1){
+            imageView.setBackground(getResources().getDrawable(R.drawable.quote01));
+        }
+        else if (randomnum == 2){
+            imageView.setBackground(getResources().getDrawable(R.drawable.quote02));
+        }
+        else if (randomnum == 3){
+            imageView.setBackground(getResources().getDrawable(R.drawable.quote03));
+        }
+        else if (randomnum == 4){
+            imageView.setBackground(getResources().getDrawable(R.drawable.quote04));
+        }
+        else if (randomnum == 5){
+            imageView.setBackground(getResources().getDrawable(R.drawable.quote05));
+        }
+        else if (randomnum == 6){
+            imageView.setBackground(getResources().getDrawable(R.drawable.quote06));
+        }
+        else if (randomnum == 7){
+            imageView.setBackground(getResources().getDrawable(R.drawable.quote07));
+        }
+        else {
+            imageView.setBackground(getResources().getDrawable(R.drawable.quote08));
+        }
     }
 
 
@@ -50,9 +84,9 @@ public class FragmentCard extends Fragment implements View.OnClickListener {
         switch (v.getId()){
             case R.id.btn:
 
-                final String[] items3 = new String[]{"苍老湿", "小泽老湿", "波多野结衣老湿", "吉泽明步老湿"};//创建item
+                final String[] items3 = new String[]{"手环", "手动输入与截图"};//创建item
                 AlertDialog alertDialog3 = new AlertDialog.Builder(getActivity())
-                        .setTitle("选择您喜欢的老湿")
+                        .setTitle("选择您的打卡方式")
                         .setIcon(R.mipmap.ic_launcher)
                         .setItems(items3, new DialogInterface.OnClickListener() {//添加列表
                             @Override
