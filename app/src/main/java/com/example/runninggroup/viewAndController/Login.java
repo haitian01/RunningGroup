@@ -2,15 +2,18 @@ package com.example.runninggroup.viewAndController;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Looper;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.runninggroup.R;
-import com.example.runninggroup.model.MyHttpRequest;
+import com.example.runninggroup.model.DaoUser;
 
 public class Login extends AppCompatActivity implements View.OnClickListener {
     private EditText mEditText1,mEditText2;
@@ -46,17 +49,26 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                 startActivity(intent);
                 break;
             case R.id.login:
-                intent = new Intent(this,MainInterface.class);
-                startActivity(intent);
-                break;
-            case R.id.forgetPassword:
+//                intent = new Intent(this,MainInterface.class);
                 new Thread(new Runnable() {
+
                     @Override
                     public void run() {
-                        MyHttpRequest.getwebinfo();
+                        if("SUCCESS".equals(DaoUser.isLoad(mEditText1.getText().toString(),mEditText2.getText().toString()))){
+                            Intent intent = new Intent(Login.this,MainInterface.class);
+                            startActivity(intent);
+                        }else {
+                            Looper.prepare();
+                            Toast.makeText(Login.this,"登陆失败",Toast.LENGTH_SHORT).show();
+                            Looper.loop();
+                        }
+
+
                     }
                 }).start();
+
                 break;
+
 
         }
 

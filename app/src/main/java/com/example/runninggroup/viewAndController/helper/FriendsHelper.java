@@ -4,13 +4,15 @@ public class FriendsHelper {
     private int pic;
     private String name;
     private String group;
-    private String data;
+    private long length;
+    private int score;
 
-    public FriendsHelper(int pic, String name, String group, String data) {
+    public FriendsHelper(int pic, String name, String group, long length, int score) {
         this.pic = pic;
         this.name = name;
         this.group = group;
-        this.data = data;
+        this.length = length;
+        this.score = score;
     }
 
     public int getPic() {
@@ -37,11 +39,19 @@ public class FriendsHelper {
         this.group = group;
     }
 
-    public String getData() {
-        return data;
+    public long getLength() {
+        return length;
     }
 
-    public void setData(String data) {
-        this.data = data;
+    public void setLength(long length) {
+        this.length = length;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
     }
 }

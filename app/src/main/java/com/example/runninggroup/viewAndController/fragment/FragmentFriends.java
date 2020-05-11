@@ -37,11 +37,11 @@ public class FragmentFriends extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         list=new ArrayList<>();
 
-        list.add(new FriendsHelper(R.mipmap.friendshelper,"张三","北邮跑团","The first step is one of awareness. It will be hard to make a change to positive thinking without being acutely intimate with the thoughts that run through your mind."));
-        list.add(new FriendsHelper(R.mipmap.friendshelper,"李四","天大跑团","The first step is one of awareness. It will be hard to make a change to positive thinking without being acutely intimate with the thoughts that run through your mind."));
-        list.add(new FriendsHelper(R.mipmap.friendshelper,"王五","南开跑团","The first step is one of awareness. It will be hard to make a change to positive thinking without being acutely intimate with the thoughts that run through your mind."));
-        list.add(new FriendsHelper(R.mipmap.friendshelper,"赵六","复旦跑团","The first step is one of awareness. It will be hard to make a change to positive thinking without being acutely intimate with the thoughts that run through your mind."));
-        list.add(new FriendsHelper(R.mipmap.friendshelper,"周七","上交跑团","The first step is one of awareness. It will be hard to make a change to positive thinking without being acutely intimate with the thoughts that run through your mind."));
+        list.add(new FriendsHelper(R.mipmap.friendshelper,"张三","北邮跑团",150,20));
+        list.add(new FriendsHelper(R.mipmap.friendshelper,"李四","天大跑团",180,30));
+        list.add(new FriendsHelper(R.mipmap.friendshelper,"王五","南开跑团",200,160));
+        list.add(new FriendsHelper(R.mipmap.friendshelper,"赵六","复旦跑团",300,500));
+        list.add(new FriendsHelper(R.mipmap.friendshelper,"周七","上交跑团",1500,600));
         View view =inflater.inflate(R.layout.fragment_friends,container,false);
         //find
         mListView=view.findViewById(R.id.listView);
