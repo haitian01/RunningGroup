@@ -16,6 +16,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.runninggroup.R;
+import com.example.runninggroup.model.DaoUser;
 import com.example.runninggroup.viewAndController.FriendMessage;
 import com.example.runninggroup.viewAndController.adapter.FriendsAdapter;
 import com.example.runninggroup.viewAndController.helper.FriendsHelper;
@@ -35,13 +36,20 @@ public class FragmentFriends extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        list=new ArrayList<>();
+        list=new ArrayList<FriendsHelper>();
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                list = DaoUser.GetFriends("tom");
+            }
+        });
+        t.start();
+        try {
+            t.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
-        list.add(new FriendsHelper(R.mipmap.friendshelper,"张三","北邮跑团",150,20));
-        list.add(new FriendsHelper(R.mipmap.friendshelper,"李四","天大跑团",180,30));
-        list.add(new FriendsHelper(R.mipmap.friendshelper,"王五","南开跑团",200,160));
-        list.add(new FriendsHelper(R.mipmap.friendshelper,"赵六","复旦跑团",300,500));
-        list.add(new FriendsHelper(R.mipmap.friendshelper,"周七","上交跑团",1500,600));
         View view =inflater.inflate(R.layout.fragment_friends,container,false);
         //find
         mListView=view.findViewById(R.id.listView);
@@ -60,8 +68,8 @@ public class FragmentFriends extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Bundle bundle = new Bundle();
-                bundle.putString("name",list.get(position).getName());
-                bundle.putString("group",list.get(position).getGroup());
+                bundle.putString("name",list.get(position).getUsername());
+                bundle.putString("group",list.get(position).getGroupName());
                 Intent intent = new Intent(getActivity(), FriendMessage.class);
                 intent.putExtras(bundle);
                 startActivity(intent);

@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.runninggroup.R;
 import com.example.runninggroup.model.DaoUser;
+import com.example.runninggroup.request.PostRequest;
 
 public class Login extends AppCompatActivity implements View.OnClickListener {
     private EditText mEditText1,mEditText2;
@@ -67,6 +68,14 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                     }
                 }).start();
 
+                break;
+            case R.id.forgetPassword:
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        DaoUser.GetFriends("tom");
+                    }
+                }).start();
                 break;
 
 

@@ -63,8 +63,8 @@ public class FriendsAdapter extends BaseAdapter {
 
         //赋值
         viewHolder.img.setImageResource(mList.get(position).getPic());
-        viewHolder.name.setText(mList.get(position).getName());
-        viewHolder.group.setText(mList.get(position).getGroup());
+        viewHolder.name.setText(mList.get(position).getUsername());
+        viewHolder.group.setText(mList.get(position).getGroupName());
         viewHolder.length.setText(mList.get(position).getLength()+"");
         viewHolder.score.setText(mList.get(position).getScore()+"");
 
