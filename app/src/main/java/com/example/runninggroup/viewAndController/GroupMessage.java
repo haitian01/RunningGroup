@@ -32,6 +32,28 @@ public class GroupMessage extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_groupmessage);
         initView();
         initEvent();
+
+
+
+
+    }
+
+
+    private void initView() {
+        nameText = findViewById(R.id.leaderName);
+        groupText = findViewById(R.id.group);
+        numText = findViewById(R.id.num);
+        mButton = findViewById(R.id.join);
+        mIntent = getIntent();
+
+        group = mIntent.getStringExtra("group");
+        num = mIntent.getStringExtra("num");
+        leader = mIntent.getStringExtra("leader");
+        username = mIntent.getStringExtra("username");
+        setView();
+    }
+    private void initEvent() {
+        //加入、退出按钮点击事件
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -42,11 +64,13 @@ public class GroupMessage extends AppCompatActivity implements View.OnClickListe
                             String result = DaoUser.getMyGroup(username);
 
                             if("".equals(result)){
-                                if(DaoUser.setMyGroup(username,group).equals("SUCCESS")){
+                                if(DaoUser.setMyGroup(username,group,1,"JOIN").equals("SUCCESS")){
                                     runOnUiThread(new Runnable() {
                                         @Override
                                         public void run() {
                                             mButton.setText("退出");
+                                            int number = Integer.parseInt(numText.getText().toString())+1;
+                                            numText.setText(number+"");
                                         }
                                     });
                                     Looper.prepare();
@@ -70,11 +94,13 @@ public class GroupMessage extends AppCompatActivity implements View.OnClickListe
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
-                            if(DaoUser.setMyGroup(username,null).equals("SUCCESS")){
+                            if(DaoUser.setMyGroup(username,group,-1,"OUT").equals("SUCCESS")){
                                 runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
                                         mButton.setText("加入");
+                                        int number = Integer.parseInt(numText.getText().toString())-1;
+                                        numText.setText(number+"");
                                     }
                                 });
                                 Looper.prepare();
@@ -91,26 +117,6 @@ public class GroupMessage extends AppCompatActivity implements View.OnClickListe
             }
         });
 
-
-
-    }
-
-
-    private void initView() {
-        nameText = findViewById(R.id.leaderName);
-        groupText = findViewById(R.id.group);
-        numText = findViewById(R.id.num);
-        mButton = findViewById(R.id.join);
-        mIntent = getIntent();
-
-        group = mIntent.getStringExtra("group");
-        num = mIntent.getStringExtra("num");
-        leader = mIntent.getStringExtra("leader");
-        username = mIntent.getStringExtra("username");
-        setView();
-    }
-    private void initEvent() {
-
     }
     private void setView(){
 
@@ -121,7 +127,13 @@ public class GroupMessage extends AppCompatActivity implements View.OnClickListe
             @Override
             public void run() {
                 if(group.equals(DaoUser.getMyGroup(username))){
-                    mButton.setText("退出");
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            mButton.setText("退出");
+                        }
+                    });
+
                 }
             }
         }).start();

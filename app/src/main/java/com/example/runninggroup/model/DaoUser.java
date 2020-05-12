@@ -39,8 +39,8 @@ public class DaoUser {
         String group =  PostRequest.userRequest("http://10.0.2.2:8080/user/getMyGroup","username="+username);
         return group;
     }
-    public static String setMyGroup(String username,String groupName){
-        String group =  PostRequest.userRequest("http://10.0.2.2:8080/user/setMyGroup","username="+username+"&groupName="+groupName);
+    public static String setMyGroup(String username,String groupName,int change,String type){
+        String group =  PostRequest.userRequest("http://10.0.2.2:8080/user/setMyGroup","username="+username+"&groupName="+groupName+"&change="+change+"&type="+type);
         return group;
     }
 
