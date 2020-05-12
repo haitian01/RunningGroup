@@ -12,6 +12,7 @@
             android:text="张三"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="20dp"
+            android:layout_marginLeft="10dp"
             android:layout_toRightOf="@id/leader"
             />
         <TextView
@@ -44,15 +45,32 @@
             android:layout_toRightOf="@+id/img"
             android:text="北邮跑团"/>
         <TextView
-            android:id="@+id/num"
+            android:id="@+id/member"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="55dp"
             android:layout_marginLeft="20dp"
-
             android:layout_toRightOf="@+id/img"
-            android:text="50人"/>
+            android:text="成员数:"/>
+        <TextView
+            android:id="@+id/num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="55dp"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/member"
+            android:text="50"/>
+        <Button
+            android:id="@+id/join"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="15dp"
+            android:layout_marginRight="10dp"
+            android:text="加入"/>
 
     </RelativeLayout>
     <TextView

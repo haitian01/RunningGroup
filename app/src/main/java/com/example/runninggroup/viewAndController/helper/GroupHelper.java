@@ -1,37 +1,49 @@
 package com.example.runninggroup.viewAndController.helper;
 
 public class GroupHelper {
-    private int img;
-    private String name;
-    private String num;
+    private int logo;
+    private String groupName;
+    private int numbers;
+    private String leaderName;
+    private String slogan;
 
-    public GroupHelper(int img, String name, String num) {
-        this.img = img;
-        this.name = name;
-        this.num = num;
+    public int getLogo() {
+        return logo;
     }
 
-    public int getImg() {
-        return img;
+    public void setLogo(int logo) {
+        this.logo = logo;
     }
 
-    public void setImg(int img) {
-        this.img = img;
+    public String getGroupName() {
+        return groupName;
     }
 
-    public String getName() {
-        return name;
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public int getNumbers() {
+        return numbers;
     }
 
-    public String getNum() {
-        return num;
+    public void setNumbers(int numbers) {
+        this.numbers = numbers;
     }
 
-    public void setNum(String num) {
-        this.num = num;
+    public String getLeaderName() {
+        return leaderName;
+    }
+
+    public void setLeaderName(String leaderName) {
+        this.leaderName = leaderName;
+    }
+
+    public String getSlogan() {
+        return slogan;
+    }
+
+    public void setSlogan(String slogan) {
+        this.slogan = slogan;
     }
 }

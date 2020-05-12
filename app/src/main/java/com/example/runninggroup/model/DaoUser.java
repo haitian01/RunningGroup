@@ -24,17 +24,24 @@ public class DaoUser {
     public static String isLoad(String username,String password){
       return PostRequest.userRequest("http://10.0.2.2:8080/user/load","username="+username+"&password="+password);
     }
-    public static String Register(String username,String password){
+    public static String register(String username,String password){
         return PostRequest.userRequest("http://10.0.2.2:8080/user/register","username="+username+"&password="+password);
     }
-    public static List<FriendsHelper> GetFriends(String username){
+    public static List<FriendsHelper> getFriends(String username){
         String json =  PostRequest.userRequest("http://10.0.2.2:8080/user/getFriends","username="+username);
         List<FriendsHelper> list = JSONObject.parseArray(json,FriendsHelper.class);
         System.out.println(list);
         return list;
 //        System.out.println(PostRequest.userRequest("http://10.0.2.2:8080/user/getFriends", "username=" + username));
 //        return PostRequest.userRequest("http://10.0.2.2:8080/user/getFriends","username="+username);
-
+    }
+    public static String getMyGroup(String username){
+        String group =  PostRequest.userRequest("http://10.0.2.2:8080/user/getMyGroup","username="+username);
+        return group;
+    }
+    public static String setMyGroup(String username,String groupName){
+        String group =  PostRequest.userRequest("http://10.0.2.2:8080/user/setMyGroup","username="+username+"&groupName="+groupName);
+        return group;
     }
 
 }

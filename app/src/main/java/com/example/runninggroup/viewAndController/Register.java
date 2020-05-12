@@ -49,7 +49,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
                         new Thread(new Runnable() {
                             @Override
                             public void run() {
-                                if("SUCCESS".equals(DaoUser.Register(mEditText1.getText().toString(),mEditText2.getText().toString()))){
+                                if("SUCCESS".equals(DaoUser.register(mEditText1.getText().toString(),mEditText2.getText().toString()))){
                                     Intent intent = new Intent(Register.this,Login.class);
                                     startActivity(intent);
                                     Looper.prepare();

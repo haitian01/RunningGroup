@@ -33,6 +33,8 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         mButton1=findViewById(R.id.register);
         mButton2=findViewById(R.id.login);
         mButton3=findViewById(R.id.forgetPassword);
+        mEditText1.setText("tom");
+        mEditText2.setText("123");
 
     }
 
@@ -56,7 +58,9 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                     @Override
                     public void run() {
                         if("SUCCESS".equals(DaoUser.isLoad(mEditText1.getText().toString(),mEditText2.getText().toString()))){
+
                             Intent intent = new Intent(Login.this,MainInterface.class);
+                            intent.putExtra("username",mEditText1.getText().toString());
                             startActivity(intent);
                         }else {
                             Looper.prepare();
@@ -73,7 +77,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        DaoUser.GetFriends("tom");
+                        DaoUser.getMyGroup(mEditText1.getText().toString());
                     }
                 }).start();
                 break;

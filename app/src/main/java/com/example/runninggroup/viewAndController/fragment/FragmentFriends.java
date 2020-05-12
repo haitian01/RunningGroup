@@ -2,6 +2,7 @@ package com.example.runninggroup.viewAndController.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,6 +20,7 @@ import androidx.fragment.app.Fragment;
 import com.example.runninggroup.R;
 import com.example.runninggroup.model.DaoUser;
 import com.example.runninggroup.viewAndController.FriendMessage;
+import com.example.runninggroup.viewAndController.Login;
 import com.example.runninggroup.viewAndController.adapter.FriendsAdapter;
 import com.example.runninggroup.viewAndController.helper.FriendsHelper;
 
@@ -40,7 +43,19 @@ public class FragmentFriends extends Fragment {
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
-                list = DaoUser.GetFriends("tom");
+                list = DaoUser.getFriends(getActivity().getIntent().getStringExtra("username"));
+                if (list == null){
+//                    Looper.prepare();
+//                    Toast.makeText(getActivity(),"网络异常",Toast.LENGTH_SHORT).show();
+//                    Looper.loop();
+                    list = new ArrayList<FriendsHelper>();
+                    Log.v("tag","网络异常");
+                }else {
+                    for(FriendsHelper friendsHelper:list){
+                        friendsHelper.setPic(R.mipmap.defaultpic);
+                    }
+                }
+
             }
         });
         t.start();
