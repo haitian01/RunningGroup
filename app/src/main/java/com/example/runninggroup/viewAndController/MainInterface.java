@@ -37,10 +37,7 @@ public class MainInterface extends AppCompatActivity implements View.OnClickList
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode==1){
-            mViewPager.setCurrentItem(3);
-            Toast.makeText(this,"hahahahhaha",Toast.LENGTH_SHORT).show();
-        }
+
     }
 
     private void initView() {

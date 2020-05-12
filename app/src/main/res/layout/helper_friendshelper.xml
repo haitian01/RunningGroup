@@ -15,23 +15,55 @@
         android:textSize="20dp"
         android:textColor="#000"
         android:layout_marginLeft="135dp"
-        android:layout_marginTop="20dp"/>
+        android:layout_marginTop="30dp"/>
     <TextView
         android:id="@+id/group"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="200dp"
         android:text="跑团"
-        android:layout_above="@id/data"
+        android:layout_above="@id/length"
 
         />
     <TextView
-        android:id="@+id/data"
-        android:layout_width="300dp"
+        android:id="@+id/length"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_toRightOf="@id/img"
         android:layout_below="@id/name"
-        android:text="The first step is one of awareness. It will be hard to make a change to positive thinking without being acutely intimate with the thoughts that run through your mind."
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="20dp"
+        android:textSize="20dp"
+        android:text="20"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/length"
+        android:layout_marginTop="20dp"
+        android:layout_below="@id/name"
+        android:textSize="20dp"
+        android:text="米"
+        />
+    <TextView
+        android:id="@+id/score"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/length"
+        android:layout_below="@id/name"
+        android:layout_marginLeft="50dp"
+        android:layout_marginTop="20dp"
+        android:textSize="20dp"
+        android:text="580"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/score"
+        android:layout_marginTop="20dp"
+        android:layout_below="@id/name"
+        android:textSize="20dp"
+        android:text="分"
         />
 
 </RelativeLayout>

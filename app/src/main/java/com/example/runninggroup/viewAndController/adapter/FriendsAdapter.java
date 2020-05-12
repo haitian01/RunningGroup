@@ -43,7 +43,8 @@ public class FriendsAdapter extends BaseAdapter {
             public ImageView img;
             public TextView name;
             public TextView group;
-            public TextView data;
+            public TextView length;
+            public TextView score;
         }
         //判断converView是否为空
         ViewHolder viewHolder;
@@ -53,7 +54,8 @@ public class FriendsAdapter extends BaseAdapter {
             viewHolder.img=convertView.findViewById(R.id.img);
             viewHolder.name=convertView.findViewById(R.id.name);
             viewHolder.group=convertView.findViewById(R.id.group);
-            viewHolder.data=convertView.findViewById(R.id.data);
+            viewHolder.length=convertView.findViewById(R.id.length);
+            viewHolder.score=convertView.findViewById(R.id.score);
             convertView.setTag(viewHolder);
         }else {
             viewHolder= (ViewHolder) convertView.getTag();
@@ -61,9 +63,10 @@ public class FriendsAdapter extends BaseAdapter {
 
         //赋值
         viewHolder.img.setImageResource(mList.get(position).getPic());
-        viewHolder.name.setText(mList.get(position).getName());
-        viewHolder.group.setText(mList.get(position).getGroup());
-        viewHolder.data.setText(mList.get(position).getData());
+        viewHolder.name.setText(mList.get(position).getUsername());
+        viewHolder.group.setText(mList.get(position).getGroupName());
+        viewHolder.length.setText(mList.get(position).getLength()+"");
+        viewHolder.score.setText(mList.get(position).getScore()+"");
 
 
 

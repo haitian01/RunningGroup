@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,8 @@ import androidx.constraintlayout.widget.Group;
 import androidx.fragment.app.Fragment;
 
 import com.example.runninggroup.R;
+import com.example.runninggroup.model.DaoGroup;
+import com.example.runninggroup.model.DaoUser;
 import com.example.runninggroup.viewAndController.FriendMessage;
 import com.example.runninggroup.viewAndController.GroupBuild;
 import com.example.runninggroup.viewAndController.GroupMessage;
@@ -43,13 +46,28 @@ public class FragmentGroup extends Fragment implements View.OnClickListener {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        list=new ArrayList<>();
+        list=new ArrayList<GroupHelper>();
 
-        list.add(new GroupHelper(R.mipmap.friendshelper,"北邮跑团","20人"));
-        list.add(new GroupHelper(R.mipmap.friendshelper,"北航跑团","10人"));
-        list.add(new GroupHelper(R.mipmap.friendshelper,"北师跑团","30人"));
-        list.add(new GroupHelper(R.mipmap.friendshelper,"清华跑团","50人"));
-        list.add(new GroupHelper(R.mipmap.friendshelper,"北大跑团","27人"));
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                list = DaoGroup.getGroups();
+                if (list == null){
+                    list = new ArrayList<GroupHelper>();
+                }else {
+                    for(GroupHelper groupHelper:list){
+                        groupHelper.setLogo(R.mipmap.defaultpic);
+                    }
+                }
+
+            }
+        });
+        t.start();
+        try {
+            t.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         view =inflater.inflate(R.layout.fragment_group,container,false);
         //find
         mListView=view.findViewById(R.id.listView);
@@ -72,8 +90,10 @@ public class FragmentGroup extends Fragment implements View.OnClickListener {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Bundle bundle = new Bundle();
-                bundle.putString("group",list.get(position).getName());
-                bundle.putString("num",list.get(position).getNum());
+                bundle.putString("group",list.get(position).getGroupName());
+                bundle.putString("num",list.get(position).getNumbers()+"");
+                bundle.putString("leader",list.get(position).getLeaderName());
+                bundle.putString("username",getActivity().getIntent().getStringExtra("username"));
                 Intent intent = new Intent(getActivity(), GroupMessage.class);
                 intent.putExtras(bundle);
                 startActivity(intent);
