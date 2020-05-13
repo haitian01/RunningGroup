@@ -60,9 +60,9 @@ public class GroupAdapter extends BaseAdapter {
         }
 
         //赋值
-        viewHolder.img.setImageResource(mList.get(position).getImg());
-        viewHolder.name.setText(mList.get(position).getName());
-        viewHolder.num.setText(mList.get(position).getNum());
+        viewHolder.img.setImageResource(mList.get(position).getLogo());
+        viewHolder.name.setText(mList.get(position).getGroupName());
+        viewHolder.num.setText(mList.get(position).getNumbers()+"");
 
 
 

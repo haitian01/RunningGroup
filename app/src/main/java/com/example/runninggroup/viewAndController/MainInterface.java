@@ -5,6 +5,8 @@ import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -25,7 +27,6 @@ import java.util.ArrayList;
 public class MainInterface extends AppCompatActivity implements View.OnClickListener {
     private ViewPager mViewPager;
     private TabLayout mTabLayout;
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,10 +38,7 @@ public class MainInterface extends AppCompatActivity implements View.OnClickList
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode==1){
-            mViewPager.setCurrentItem(3);
-            Toast.makeText(this,"hahahahhaha",Toast.LENGTH_SHORT).show();
-        }
+
     }
 
     private void initView() {
@@ -73,4 +71,5 @@ public class MainInterface extends AppCompatActivity implements View.OnClickList
 
         }
     }
+
 }
