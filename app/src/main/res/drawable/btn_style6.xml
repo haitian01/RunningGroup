@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <corners
+        android:bottomLeftRadius="360dp"
+        android:bottomRightRadius="360dp"
+        android:topLeftRadius="360dp"
+        android:topRightRadius="360dp" />
+
+    <!-- 设置填充颜色 -->
+    <solid android:color="@color/greyWhite" />
+    <!-- 设置边框颜色 -->
+    <stroke android:width="3dp" android:color="@color/black"/>
+
+    <padding
+        android:left="10dp"
+        android:right="10dp"
+        android:top="10dp"
+        android:bottom="10dp"
+        />
+    <gradient
+        android:startColor="@color/startColor"
+        android:endColor="@color/endColor"
+        android:angle="90"
+        />
+</shape>
