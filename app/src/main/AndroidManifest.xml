@@ -8,8 +8,10 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
-        >
+        android:theme="@style/AppTheme">
+        <activity android:name=".viewAndController.TestActivity">
+
+        </activity>
         <activity android:name=".viewAndController.Login">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -17,12 +19,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".viewAndController.Register"></activity>
-        <activity android:name=".viewAndController.MainInterface"></activity>
-        <activity android:name=".viewAndController.FriendMessage"></activity>
-        <activity android:name=".viewAndController.GroupMessage"></activity>
-        <activity android:name=".viewAndController.GroupBuild"></activity>
+        <activity android:name=".viewAndController.Register" />
+        <activity android:name=".viewAndController.MainInterface" />
+        <activity android:name=".viewAndController.FriendMessage" />
+        <activity android:name=".viewAndController.GroupMessage" />
+        <activity android:name=".viewAndController.GroupBuild" />
     </application>
-    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
+
+    <uses-permission android:name="android.permission.INTERNET" />
 
 </manifest>

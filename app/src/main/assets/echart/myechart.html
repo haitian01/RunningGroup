@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="utf-8">
+    <style>
+    html,body { height:100%; width:100%; margin:0; padding:0; align:left; valign:left;}
+    </style>
+</head>
+<body>
+    <div id="container" style="height:190px;width:100%;border:0px;text-align:left;align:left;valign:left;"></div>
+    <!-- ECharts单文件引入 -->
+    <script type="text/javascript" src="./js/echarts.min.js"></script>
+    <script type="text/javascript">
+            var dom =document.getElementById("container");
+            var myChart =echarts.init(dom);
+            var app ={};
+            function loadEcharts(echartJson){
+                var option = JSON.parse(echartJson);
+                if (option &&typeof option ==="object") {
+                    myChart.setOption(option,true);
+                }
+            }
+</script>
+
+</body>
+</html>
