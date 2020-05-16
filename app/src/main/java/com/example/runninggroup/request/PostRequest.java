@@ -28,7 +28,7 @@ public class PostRequest {
             // 请求方式
             connection.setRequestMethod("POST");
             // 超时时间
-            connection.setConnectTimeout(500);
+            connection.setConnectTimeout(100);
             // 设置是否输出
             connection.setDoOutput(true);
             // 设置是否读入

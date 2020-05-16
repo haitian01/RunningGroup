@@ -1,6 +1,7 @@
 package com.example.runninggroup.model;
 
 import android.util.JsonWriter;
+import android.util.Log;
 
 import com.example.runninggroup.request.PostRequest;
 import com.example.runninggroup.viewAndController.helper.FriendsHelper;
@@ -24,8 +25,10 @@ public class DaoUser {
     public static String isLoad(String username,String password){
       return PostRequest.userRequest("http://10.0.2.2:8080/user/load","username="+username+"&password="+password);
     }
-    public static String register(String username,String password){
-        return PostRequest.userRequest("http://10.0.2.2:8080/user/register","username="+username+"&password="+password);
+    public static String register(String username,String password,String sex){
+        String a =  PostRequest.userRequest("http://10.0.2.2:8080/user/register","username="+username+"&password="+password+"&sex="+sex);
+        Log.v("TAG",a);
+        return a;
     }
     public static List<FriendsHelper> getFriends(String username){
         String json =  PostRequest.userRequest("http://10.0.2.2:8080/user/getFriends","username="+username);

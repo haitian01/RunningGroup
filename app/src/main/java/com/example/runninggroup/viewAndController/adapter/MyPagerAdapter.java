@@ -13,50 +13,40 @@ import androidx.viewpager.widget.PagerAdapter;
 
 import java.util.ArrayList;
 
-public class MyPagerAdapter extends PagerAdapter {
+public class MyPagerAdapter extends FragmentPagerAdapter {
     private ArrayList<Fragment> mFragments;
     private ArrayList<String> mStringArrayList;
-
-    @Override
-    public int getCount() {
-        return 0;
-    }
-
-    @Override
-    public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
-        return false;
-    }
 
 
 //    ==============================================================
 
-//    public MyPagerAdapter(@NonNull FragmentManager fm,ArrayList<Fragment> fragments ,ArrayList<String> strings) {
-//        super(fm);
-//        this.mFragments = fragments;
-//        this.mStringArrayList = strings;
-//    }
+    public MyPagerAdapter(@NonNull FragmentManager fm,ArrayList<Fragment> fragments ,ArrayList<String> strings) {
+        super(fm);
+        this.mFragments = fragments;
+        this.mStringArrayList = strings;
+    }
 
 
-//    public MyPagerAdapter(@NonNull FragmentManager fm, int behavior ,ArrayList<Fragment> fragments ,ArrayList<String> strings) {
-//        super(fm, behavior);
-//        this.mFragments = fragments;
-//        this.mStringArrayList = strings;
-//    }
+    public MyPagerAdapter(@NonNull FragmentManager fm, int behavior ,ArrayList<Fragment> fragments ,ArrayList<String> strings) {
+        super(fm, behavior);
+        this.mFragments = fragments;
+        this.mStringArrayList = strings;
+    }
 
-//    @NonNull
-//    @Override
-//    public Fragment getItem(int position) {
-//        return mFragments.get(position);
-//    }
-//
-//    @Override
-//    public int getCount() {
-//        return mFragments.size();
-//    }
-//
-//    @Nullable
-//    @Override
-//    public CharSequence getPageTitle(int position) {
-//        return mStringArrayList.get(position);
-//    }
+    @NonNull
+    @Override
+    public Fragment getItem(int position) {
+        return mFragments.get(position);
+    }
+
+    @Override
+    public int getCount() {
+        return mFragments.size();
+    }
+
+    @Nullable
+    @Override
+    public CharSequence getPageTitle(int position) {
+        return mStringArrayList.get(position);
+    }
 }

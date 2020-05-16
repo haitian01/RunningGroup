@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -18,6 +19,8 @@ import com.example.runninggroup.model.DaoUser;
 public class Register extends AppCompatActivity implements View.OnClickListener {
     private EditText mEditText1,mEditText2,mEditText3;
     private Button mButton1,mButton2;
+    private RadioGroup mRadioGroup;
+    private String sex = "女";
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,10 +33,25 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
         mEditText2=findViewById(R.id.password);
         mEditText3 = findViewById(R.id.repeatPassword);
         mButton1=findViewById(R.id.register);
+        mRadioGroup = findViewById(R.id.rg);
 
     }
     private void initEvent() {
         mButton1.setOnClickListener(this);
+        mRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                if(checkedId == R.id.male){
+                    Toast.makeText(Register.this,"男",Toast.LENGTH_SHORT).show();
+                    sex = "男";
+
+                }else {
+                    Toast.makeText(Register.this,"女",Toast.LENGTH_SHORT).show();
+                    sex = "女";
+                }
+
+            }
+        });
     }
 
     @Override
@@ -49,7 +67,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
                         new Thread(new Runnable() {
                             @Override
                             public void run() {
-                                if("SUCCESS".equals(DaoUser.register(mEditText1.getText().toString(),mEditText2.getText().toString()))){
+                                if("SUCCESS".equals(DaoUser.register(mEditText1.getText().toString(),mEditText2.getText().toString(),sex))){
                                     Intent intent = new Intent(Register.this,Login.class);
                                     startActivity(intent);
                                     Looper.prepare();
