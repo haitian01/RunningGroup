@@ -52,27 +52,32 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                 startActivity(intent);
                 break;
             case R.id.login:
-//                new Thread(new Runnable() {
-//
-//                    @Override
-//                    public void run() {
-//                        if("SUCCESS".equals(DaoUser.isLoad(mEditText1.getText().toString(),mEditText2.getText().toString()))){
-//
-//                            Intent intent = new Intent(Login.this,MainInterface.class);
-//                            intent.putExtra("username",mEditText1.getText().toString());
-//                            startActivity(intent);
-//                        }else {
-//                            Looper.prepare();
-//                            Toast.makeText(Login.this,"登陆失败",Toast.LENGTH_SHORT).show();
-//                            Looper.loop();
-//                        }
-//
-//
-//                    }
-//                }).start();
-                intent = new Intent(Login.this,MainInterface.class);
-                intent.putExtra("username",mEditText1.getText().toString());
-                startActivity(intent);
+                new Thread(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        if("SUCCESS".equals(DaoUser.isLoad(mEditText1.getText().toString(),mEditText2.getText().toString()))){
+
+                            Intent intent = new Intent(Login.this,MainInterface.class);
+                            intent.putExtra("username",mEditText1.getText().toString());
+                            startActivity(intent);
+                        }else {
+
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(Login.this,"登陆失败",Toast.LENGTH_SHORT).show();
+                                }
+                            });
+
+                        }
+
+
+                    }
+                }).start();
+//                intent = new Intent(Login.this,MainInterface.class);
+//                intent.putExtra("username",mEditText1.getText().toString());
+//                startActivity(intent);
 
 
                 break;

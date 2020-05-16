@@ -75,6 +75,62 @@
         android:layout_alignLeft="@id/repeatPassword"
         android:layout_alignTop="@id/repeatPassword"
         android:fontFamily="sans-serif-black"/>
+    <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/tab"
+        android:layout_below="@+id/repeatPassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        >
+        <TableRow
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content">
+            <RadioGroup
+                android:id="@+id/rg"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="center_horizontal"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/repeatPassword">
+                <RadioButton
+                    android:id="@+id/male"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:text="男" />
+                <RadioButton
+                    android:id="@+id/femle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:text="女"/>
+            </RadioGroup>
+
+        </TableRow>
+    </TableLayout>
+    <!--<RadioGroup-->
+        <!--android:id="@+id/rg"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:orientation="horizontal"-->
+        <!--android:layout_gravity="center_horizontal"-->
+        <!--android:layout_centerHorizontal="true"-->
+        <!--android:layout_below="@id/repeatPassword">-->
+        <!--<RadioButton-->
+            <!--android:id="@+id/male"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:checked="true"-->
+            <!--android:text="男" />-->
+        <!--<RadioButton-->
+            <!--android:id="@+id/femle"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:checked="true"-->
+            <!--android:text="女"/>-->
+    <!--</RadioGroup>-->
+
 
     <Button
         android:id="@+id/register"
