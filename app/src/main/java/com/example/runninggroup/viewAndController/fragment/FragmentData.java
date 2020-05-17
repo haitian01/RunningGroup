@@ -14,12 +14,13 @@ import androidx.fragment.app.Fragment;
 import com.example.runninggroup.R;
 import com.example.runninggroup.viewAndController.EchartOptionUtil;
 import com.example.runninggroup.viewAndController.EchartView;
+import com.example.runninggroup.viewAndController.EchartView2;
 import com.github.abel533.echarts.Chart;
 
 public class FragmentData extends Fragment {
     View view;
     private EchartView barChart;
-    private EchartView lineChart;
+    private EchartView2 lineChart;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,17 +61,17 @@ public class FragmentData extends Fragment {
                 "Mon", "Tue", "Wed", "Thu", "Fri", "Sta", "Sun"
         };
         Object[] y = new Object[]{
-                820, 932, 901, 934, 1290, 600, 300
+                30, 60, 120, 15, 45, 80, 10
         };
         barChart.refreshEchartsWithOption(EchartOptionUtil.getBarChartOptions(x, y));
     }
     private void refreshLinkChart(){
         Object[] x = new Object[]{
-                "Mon", "Tue", "Wed", "Thu", "Fri"
+                "Jan", "Feb", "Mar", "Apr", "May",
         };
         Object[] y = new Object[]{
-                820, 932, 901, 934, 1290
+                3, 0, 2, 1, 7
         };
-        barChart.refreshEchartsWithOption(EchartOptionUtil.getLineChartOptions(x, y));
+        lineChart.refreshEchartsWithOption(EchartOptionUtil.getLineChartOptions(x, y));
     }
 }
