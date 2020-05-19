@@ -1,4 +1,4 @@
-package com.example.runninggroup.viewAndController;
+package com.example.runninggroup.viewAndController.Echart;
 
 import android.content.Context;
 import android.util.AttributeSet;

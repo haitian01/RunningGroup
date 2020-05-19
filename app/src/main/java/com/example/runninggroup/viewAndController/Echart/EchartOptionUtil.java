@@ -1,4 +1,4 @@
-package com.example.runninggroup.viewAndController;
+package com.example.runninggroup.viewAndController.Echart;
 
 import com.github.abel533.echarts.axis.CategoryAxis;
 import com.github.abel533.echarts.axis.ValueAxis;

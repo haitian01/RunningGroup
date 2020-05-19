@@ -7,6 +7,8 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.example.runninggroup.R;
+import com.example.runninggroup.viewAndController.Echart.EchartOptionUtil;
+import com.example.runninggroup.viewAndController.Echart.EchartView;
 
 public class TestActivity extends AppCompatActivity {
     private EchartView barChart;

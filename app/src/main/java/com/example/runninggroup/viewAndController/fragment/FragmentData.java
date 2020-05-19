@@ -12,10 +12,10 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.runninggroup.R;
-import com.example.runninggroup.viewAndController.EchartOptionUtil;
-import com.example.runninggroup.viewAndController.EchartView;
-import com.example.runninggroup.viewAndController.EchartView2;
-import com.github.abel533.echarts.Chart;
+import com.example.runninggroup.viewAndController.Echart.EchartOptionUtil;
+import com.example.runninggroup.viewAndController.Echart.EchartView;
+import com.example.runninggroup.viewAndController.Echart.EchartView2;
+import com.example.runninggroup.viewAndController.Time.GetTime;
 
 public class FragmentData extends Fragment {
     View view;
@@ -36,7 +36,8 @@ public class FragmentData extends Fragment {
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
                 //最好在h5页面加载完毕后再加载数据，防止html的标签还未加载完成，不能正常显示
-                refreshBarChart();
+                Object[] runData = {100,200,150,120,80,50,90};//需要一个方法获取
+                refreshBarChart(runData);
             }
         });
 
@@ -45,7 +46,9 @@ public class FragmentData extends Fragment {
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
                 //最好在h5页面加载完毕后再加载数据，防止html的标签还未加载完成，不能正常显示
-                refreshLinkChart();
+                Object[] Month = GetTime.getGroudMonth();
+                Object[] groudData = {4,5,4,4,5};////需要一个方法获取
+                refreshLinkChart(Month, groudData);
             }
         });
         return view;
@@ -56,22 +59,19 @@ public class FragmentData extends Fragment {
         lineChart = view.findViewById(R.id.chart02);
     }
 
-    private void refreshBarChart(){
+
+
+    //先写在这
+    private void refreshBarChart(Object[] runData){
         Object[] x = new Object[]{
                 "Mon", "Tue", "Wed", "Thu", "Fri", "Sta", "Sun"
         };
-        Object[] y = new Object[]{
-                30, 60, 120, 15, 45, 80, 10
-        };
+        Object[] y =  runData;
         barChart.refreshEchartsWithOption(EchartOptionUtil.getBarChartOptions(x, y));
     }
-    private void refreshLinkChart(){
-        Object[] x = new Object[]{
-                "Jan", "Feb", "Mar", "Apr", "May",
-        };
-        Object[] y = new Object[]{
-                3, 0, 2, 1, 7
-        };
+    private void refreshLinkChart(Object[] Month, Object[] groudData){
+        Object[] x = Month;
+        Object[] y =  groudData;
         lineChart.refreshEchartsWithOption(EchartOptionUtil.getLineChartOptions(x, y));
     }
 }

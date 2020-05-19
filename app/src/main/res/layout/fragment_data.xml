@@ -20,13 +20,13 @@
 
     </TextView>
 
-    <com.example.runninggroup.viewAndController.EchartView
+    <com.example.runninggroup.viewAndController.Echart.EchartView
         android:id="@+id/chart01"
         android:layout_marginTop="5dp"
         android:layout_gravity="center"
         android:layout_width="300dp"
         android:layout_height="180dp">
-    </com.example.runninggroup.viewAndController.EchartView>
+    </com.example.runninggroup.viewAndController.Echart.EchartView>
 
     <TextView
         android:id="@+id/data_time"
@@ -40,14 +40,14 @@
 
     </TextView>
 
-    <com.example.runninggroup.viewAndController.EchartView2
+    <com.example.runninggroup.viewAndController.Echart.EchartView2
         android:id="@+id/chart02"
         android:layout_gravity="center"
         android:layout_width="300dp"
         android:layout_marginTop="5dp"
         android:layout_height="180dp">
 
-    </com.example.runninggroup.viewAndController.EchartView2>
+    </com.example.runninggroup.viewAndController.Echart.EchartView2>
 
 
 </LinearLayout>
