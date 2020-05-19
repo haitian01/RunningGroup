@@ -4,6 +4,7 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -61,9 +62,8 @@ public class MainInterface extends AppCompatActivity implements View.OnClickList
         mViewPager.setCurrentItem(jump);
 
     }
-    private void initEvent() {
 
-    }
+    public void initEvent(){}
 
     @Override
     public void onClick(View v) {

@@ -3,6 +3,7 @@ package com.example.runninggroup.viewAndController;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Looper;
+import android.os.StrictMode;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -23,6 +24,21 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+//        StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().detectDiskReads()
+//        .detectDiskWrites()
+//        .detectAll()// or .detectAll() for all detectable problems                   
+//        .penaltyLog()
+//        .build());
+//        StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
+//        .detectLeakedSqlLiteObjects()
+//        .detectLeakedClosableObjects()
+//        .penaltyLog()
+//        .penaltyDeath()
+//        .build());
+
+
+
         initView();
         initEvent();
     }

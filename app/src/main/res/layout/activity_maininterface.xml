@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
     <RelativeLayout
+        android:id="@+id/maininterface_rela"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="#eee">
@@ -20,7 +21,8 @@
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
-        android:layout_height="570dp"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/maininterface_rela"
         android:layout_above="@+id/tabLayout"></androidx.viewpager.widget.ViewPager>
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayout"
@@ -28,7 +30,8 @@
         android:layout_height="wrap_content"
         app:tabTextColor="@android:color/darker_gray"
         app:tabSelectedTextColor="@android:color/background_dark"
+        android:layout_alignParentBottom="true"
         ></com.google.android.material.tabs.TabLayout>
 
     
-</LinearLayout>
+</RelativeLayout>

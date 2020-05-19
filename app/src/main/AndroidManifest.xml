@@ -8,7 +8,8 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        android:networkSecurityConfig="@xml/network_security_config">
         <activity android:name=".viewAndController.TestActivity">
 
         </activity>
@@ -24,6 +25,8 @@
         <activity android:name=".viewAndController.FriendMessage" />
         <activity android:name=".viewAndController.GroupMessage" />
         <activity android:name=".viewAndController.GroupBuild" />
+        <activity android:name=".viewAndController.GroupIntroduct"></activity>
+        <activity android:name=".viewAndController.Manage"></activity>
     </application>
 
     <uses-permission android:name="android.permission.INTERNET" />
