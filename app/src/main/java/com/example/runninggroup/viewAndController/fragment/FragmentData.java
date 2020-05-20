@@ -21,6 +21,7 @@ public class FragmentData extends Fragment {
     View view;
     private EchartView barChart;
     private EchartView2 lineChart;
+    Object[] runData;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,7 +37,21 @@ public class FragmentData extends Fragment {
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
                 //最好在h5页面加载完毕后再加载数据，防止html的标签还未加载完成，不能正常显示
-                Object[] runData = {100,200,150,120,80,50,90};//需要一个方法获取
+
+                Thread t = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        GetData getData = new GetData();
+                        getData.username = getActivity().getIntent().getStringExtra("username");
+                        runData =getData.getRunData();//需要一个方法获取
+                    }
+                });
+                t.start();
+                try {
+                    t.join();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 refreshBarChart(runData);
             }
         });
