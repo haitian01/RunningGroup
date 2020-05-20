@@ -5,6 +5,7 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.webkit.WebView;
@@ -74,6 +75,7 @@ public class MainInterface extends AppCompatActivity implements View.OnClickList
         mViewPager.setCurrentItem(jump);
 
     }
+
     @SuppressLint("ClickableViewAccessibility")
     private void initEvent() {
         mBtn_sideSetting.setOnClickListener(this);
@@ -87,6 +89,7 @@ public class MainInterface extends AppCompatActivity implements View.OnClickList
             }
         });
     }
+
 
     @Override
     public void onClick(View v) {
