@@ -34,4 +34,6 @@ dependencies {
     implementation files('libs\\SlidingMenu-master.zip')
     implementation 'com.alibaba:fastjson:1.2.49'
     implementation 'com.alibaba:fastjson:1.1.70.android'
+    implementation 'androidx.navigation:navigation-fragment:2.2.2'
+    implementation 'androidx.navigation:navigation-ui:2.2.2'
 }

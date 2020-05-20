@@ -3,12 +3,17 @@ package com.example.runninggroup.viewAndController;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.example.runninggroup.R;
+import com.example.runninggroup.viewAndController.Echart.EchartOptionUtil;
+import com.example.runninggroup.viewAndController.Echart.EchartView;
+import com.example.runninggroup.viewAndController.TimeAndData.GetTime;
 
 public class TestActivity extends AppCompatActivity {
+    public static final String TAG = "MyActivityTest";
     private EchartView barChart;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
