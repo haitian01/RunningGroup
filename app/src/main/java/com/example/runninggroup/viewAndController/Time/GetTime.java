@@ -8,62 +8,6 @@ import java.util.Date;
 //获取本地时间、系统时间为基准
 public class GetTime {
 
-    //Echart图标需要从现在往前的五个月份
-    public static Object[] getGroudMonth(){
-        Object[] Month = new Object[5];
-        int month = getMonthByTimeStamp(System.currentTimeMillis());
-        if (month == 1){
-            Month = new Object[]{
-                    "Sep","Oct","Nov","Dec","Mon"
-            };
-        }else if (month == 2){
-            Month = new Object[]{
-                    "Oct","Nov","Dec","Mon","Jan"
-            };
-        }
-        else if (month == 3){
-            Month = new Object[]{
-                    "Nov","Dec","Mon","Jan","Mar"
-            };
-        }else if (month == 4){
-            Month = new Object[]{
-                    "Dec","Mon","Jan","Mar","Apr"
-            };
-        }else if (month == 5){
-            Month = new Object[]{
-                    "Mon","Jan","Mar","Apr","May"
-            };
-        }else if (month == 6){
-            Month = new Object[]{
-                    "Jan","Mar","Apr","May","Jun"
-            };
-        }else if (month == 7){
-            Month = new Object[]{
-                    "Mar","Apr","May","Jun","Jul"
-            };
-        }else if (month == 8){
-            Month = new Object[]{
-                    "Apr","May","Jun","Jul","Aug"
-            };
-        }else if (month == 9){
-            Month = new Object[]{
-                    "May","Jun","Jul","Aug","Sep"
-            };
-        }else if (month == 10){
-            Month = new Object[]{
-                    "Jun","Jul","Aug","Sep","Oct"
-            };
-        }else if (month == 11){
-            Month = new Object[]{
-                    "Jul","Aug","Sep","Oct","Nov"
-            };
-        }else if (month == 12){
-            Month = new Object[]{
-                    "Aug","Sep","Oct","Nov","Dec"
-            };
-        }
-        return Month;
-    }
     //将给定时间戳转为字符串形式（2020年04月01日 12时00分00秒）
     public static String timeStampToDate(long timeStamp){
         Date date = new Date(timeStamp);

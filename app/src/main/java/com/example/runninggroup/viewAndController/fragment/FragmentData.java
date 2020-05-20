@@ -15,6 +15,7 @@ import com.example.runninggroup.R;
 import com.example.runninggroup.viewAndController.Echart.EchartOptionUtil;
 import com.example.runninggroup.viewAndController.Echart.EchartView;
 import com.example.runninggroup.viewAndController.Echart.EchartView2;
+import com.example.runninggroup.viewAndController.Time.GetData;
 import com.example.runninggroup.viewAndController.Time.GetTime;
 
 public class FragmentData extends Fragment {
@@ -46,7 +47,7 @@ public class FragmentData extends Fragment {
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
                 //最好在h5页面加载完毕后再加载数据，防止html的标签还未加载完成，不能正常显示
-                Object[] Month = GetTime.getGroudMonth();
+                Object[] Month = GetData.getGroudMonth();
                 Object[] groudData = {4,5,4,4,5};////需要一个方法获取
                 refreshLinkChart(Month, groudData);
             }
@@ -57,6 +58,7 @@ public class FragmentData extends Fragment {
     public void initView(){
         barChart = view.findViewById(R.id.chart01);
         lineChart = view.findViewById(R.id.chart02);
+
     }
 
 

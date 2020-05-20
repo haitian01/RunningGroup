@@ -44,7 +44,7 @@ public class EchartOptionUtil {
         option.xAxis(categorxAxis);
 
         Bar bar = new Bar();
-        bar.name("每日跑步总时长").data(yAxis).itemStyle().normal().barBorderColor("rgba(84, 255, 129, 0)");
+        bar.name("跑步时长").data(yAxis).itemStyle().normal().barBorderColor("rgba(84, 255, 129, 0)");
         //Pie.smooth(false).name("销量").data(yAxis).itemStyle().normal().lineStyle().shadowColor("rgba(0,0,0,0.4)");
         option.series(bar);
         return option;

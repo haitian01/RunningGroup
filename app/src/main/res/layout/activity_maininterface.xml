@@ -8,6 +8,13 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="#eee">
+        <androidx.appcompat.widget.AppCompatButton
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:background="#eee"
+            android:gravity="center_horizontal">
+
+        </androidx.appcompat.widget.AppCompatButton>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -21,14 +28,17 @@
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
         android:layout_height="570dp"
-        android:layout_above="@+id/tabLayout"></androidx.viewpager.widget.ViewPager>
+        android:layout_above="@+id/tabLayout">
+
+    </androidx.viewpager.widget.ViewPager>
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:tabTextColor="@android:color/darker_gray"
         app:tabSelectedTextColor="@android:color/background_dark"
-        ></com.google.android.material.tabs.TabLayout>
+        >
+    </com.google.android.material.tabs.TabLayout>
 
     
 </LinearLayout>
