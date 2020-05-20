@@ -15,8 +15,7 @@ import com.example.runninggroup.R;
 import com.example.runninggroup.viewAndController.Echart.EchartOptionUtil;
 import com.example.runninggroup.viewAndController.Echart.EchartView;
 import com.example.runninggroup.viewAndController.Echart.EchartView2;
-import com.example.runninggroup.viewAndController.Time.GetData;
-import com.example.runninggroup.viewAndController.Time.GetTime;
+import com.example.runninggroup.viewAndController.TimeAndData.GetData;
 
 public class FragmentData extends Fragment {
     View view;

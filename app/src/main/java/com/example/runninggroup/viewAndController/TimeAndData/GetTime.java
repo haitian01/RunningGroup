@@ -1,12 +1,103 @@
-package com.example.runninggroup.viewAndController.Time;
+package com.example.runninggroup.viewAndController.TimeAndData;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 //获取本地时间、系统时间为基准
 public class GetTime {
+
+    //获取当天的开始时间
+    public static Long getDayBegin() {
+        Calendar cal = new GregorianCalendar();
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+        return cal.getTime().getTime();
+    }
+    //获取当天的结束时间
+    public static Long getDayEnd() {
+        Calendar cal = new GregorianCalendar();
+        cal.set(Calendar.HOUR_OF_DAY, 23);
+        cal.set(Calendar.MINUTE, 59);
+        cal.set(Calendar.SECOND, 59);
+        cal.set(Calendar.MILLISECOND, 999);
+        return cal.getTime().getTime();
+    }
+    //获取当月开始的时间戳
+    public static Long monthTimeInMillis() {
+        Calendar calendar = Calendar.getInstance();// 获取当前日期
+        calendar.add(Calendar.YEAR, 0);
+        calendar.add(Calendar.MONTH, 0);
+        calendar.set(Calendar.DAY_OF_MONTH, 1);// 设置为1号,当前日期既为本月第一天
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        Long time = calendar.getTimeInMillis();
+        return time;
+    }
+
+    public static Long monthTimeInMillis_end() {
+        Calendar calendar = Calendar.getInstance();// 获取当前日期
+        calendar.add(Calendar.YEAR, 0);
+        calendar.add(Calendar.MONTH, 1);
+        calendar.set(Calendar.DAY_OF_MONTH, 1);// 设置为1号,当前日期既为本月第一天
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        Long time = calendar.getTimeInMillis();
+        return time;
+    }
+
+    //获取近五个月的起始时间戳
+    public static Long monthTimeInMillis_1() {
+        Calendar calendar = Calendar.getInstance();// 获取当前日期
+        calendar.add(Calendar.YEAR, 0);
+        calendar.add(Calendar.MONTH, -1);
+        calendar.set(Calendar.DAY_OF_MONTH, 1);// 设置为1号,当前日期既为本月第一天
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        Long time = calendar.getTimeInMillis();
+        return time;
+    }
+    public static Long monthTimeInMillis_2() {
+        Calendar calendar = Calendar.getInstance();// 获取当前日期
+        calendar.add(Calendar.YEAR, 0);
+        calendar.add(Calendar.MONTH, -1);
+        calendar.set(Calendar.DAY_OF_MONTH, 1);// 设置为1号,当前日期既为本月第一天
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        Long time = calendar.getTimeInMillis();
+        return time;
+    }
+    public static Long monthTimeInMillis_3() {
+        Calendar calendar = Calendar.getInstance();// 获取当前日期
+        calendar.add(Calendar.YEAR, 0);
+        calendar.add(Calendar.MONTH, -1);
+        calendar.set(Calendar.DAY_OF_MONTH, 1);// 设置为1号,当前日期既为本月第一天
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        Long time = calendar.getTimeInMillis();
+        return time;
+    }
+    public static Long monthTimeInMillis_4() {
+        Calendar calendar = Calendar.getInstance();// 获取当前日期
+        calendar.add(Calendar.YEAR, 0);
+        calendar.add(Calendar.MONTH, -1);
+        calendar.set(Calendar.DAY_OF_MONTH, 1);// 设置为1号,当前日期既为本月第一天
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        Long time = calendar.getTimeInMillis();
+        return time;
+    }
+
 
     //将给定时间戳转为字符串形式（2020年04月01日 12时00分00秒）
     public static String timeStampToDate(long timeStamp){

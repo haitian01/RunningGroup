@@ -15,8 +15,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.runninggroup.R;
 import com.example.runninggroup.model.DaoUser;
 import com.example.runninggroup.request.PostRequest;
+import com.example.runninggroup.viewAndController.TimeAndData.GetTime;
 
 public class Login extends AppCompatActivity implements View.OnClickListener {
+    public static final String TAG = "MyActivityTest";
     private EditText mEditText1,mEditText2;
     private Button mButton1,mButton2,mButton3;
     @Override
@@ -74,6 +76,16 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                 intent.putExtra("username",mEditText1.getText().toString());
                 startActivity(intent);
 
+                Log.d(TAG, "当前时间 本日开始时间: " + GetTime.getBeginTime("本日"));
+                Log.d(TAG, "当前时间 本日开始时间: " + GetTime.timeStampToDate(GetTime.getDayBegin()));
+                Log.d(TAG, "当前时间 本日开始时间: " + GetTime.timeStampToDate(GetTime.getDayBegin() - 1000*60*60*24));
+                Log.d(TAG, "当前时间 本日开始时间: " + GetTime.timeStampToDate(GetTime.getDayEnd()));
+                Log.d(TAG, "当前时间 本日开始时间戳: " + GetTime.getDayBegin());
+                Log.d(TAG, "当前时间 本日结束时间戳: " + GetTime.getDayEnd());
+                Log.d(TAG, "当前时间 本月开始时间戳: " + GetTime.monthTimeInMillis());
+                Log.d(TAG, "当前时间 本日开始时间戳: " + GetTime.timeStampToDate(GetTime.monthTimeInMillis()-1000));
+                Log.d(TAG, "当前时间 本月开始时间戳: " + GetTime.monthTimeInMillis_1());
+                Log.d(TAG, "当前时间 本日开始时间戳: " + GetTime.timeStampToDate(GetTime.monthTimeInMillis_1()));
 
                 break;
             case R.id.forgetPassword:

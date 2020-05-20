@@ -1,12 +1,31 @@
-package com.example.runninggroup.viewAndController.Time;
-
-import com.example.runninggroup.viewAndController.Time.GetTime;
+package com.example.runninggroup.viewAndController.TimeAndData;
 
 public class GetData {
     //根据时间戳获取跑步数据
     public Object[] getRunData(){
         Object[] runData = new Object[7];
         String today = GetTime.getWeekByTimeStamp(System.currentTimeMillis());
+        Long todayBegin = GetTime.getDayBegin();
+        Long todayEnd = GetTime.getDayEnd();
+
+        long data_1_1 = todayBegin - 1000*60*60*24;
+        long data_1_2 = todayEnd - 1000*60*60*24;
+
+        long data_2_1 = todayBegin - 1000*60*60*24 * 2;
+        long data_2_2 = todayEnd - 1000*60*60*24 * 2;
+
+        long data_3_1 = todayBegin - 1000*60*60*24 * 3;
+        long data_3_2 = todayEnd - 1000*60*60*24 * 3;
+
+        long data_4_1 = todayBegin - 1000*60*60*24 * 4;
+        long data_4_2 = todayEnd - 1000*60*60*24 * 4;
+
+        long data_5_1 = todayBegin - 1000*60*60*24 * 5;
+        long data_5_2 = todayEnd - 1000*60*60*24 * 5;
+
+        long data_6_1 = todayBegin - 1000*60*60*24 * 6;
+        long data_6_2 = todayEnd - 1000*60*60*24 * 6;
+
         if (today == "星期一"){
             runData = new Object[]{
                     0,0,0,0,0,0,0
@@ -38,10 +57,26 @@ public class GetData {
         }
         return runData;
     }
+
     //根据时间戳获取跑团数据
     public Object[] getGroud(){
         Object[] groudData = new Object[5];
         int month = GetTime.getMonthByTimeStamp(System.currentTimeMillis());
+        long monthBegin = GetTime.monthTimeInMillis();
+        long monthEnd = GetTime.monthTimeInMillis_end() - 1000;
+
+        long monthBegin_1 = GetTime.monthTimeInMillis_1();
+        long monthEnd_1 = GetTime.monthTimeInMillis() - 1000;
+
+        long monthBegin_2 = GetTime.monthTimeInMillis_2();
+        long monthEnd_2 = GetTime.monthTimeInMillis_1() - 1000;
+
+        long monthBegin_3 = GetTime.monthTimeInMillis_3();
+        long monthEnd_3 = GetTime.monthTimeInMillis_2() - 1000;
+
+        long monthBegin_4 = GetTime.monthTimeInMillis_4();
+        long monthEnd_4 = GetTime.monthTimeInMillis_3() - 1000;
+
         if (month == 1){
             //今年1月往回到去年9月的数据
             groudData = new Object[]{
@@ -78,7 +113,7 @@ public class GetData {
             };
         }else if (month == 9){
             groudData = new Object[]{
-                    "May","Jun","Jul","Aug","Sep"
+                    0,0,0,0,0
             };
         }else if (month == 10){
             groudData = new Object[]{
@@ -100,6 +135,7 @@ public class GetData {
     public static Object[] getGroudMonth(){
         Object[] Month = new Object[5];
         int month = GetTime.getMonthByTimeStamp(System.currentTimeMillis());
+
         if (month == 1){
             Month = new Object[]{
                     "Sep","Oct","Nov","Dec","Jan"
