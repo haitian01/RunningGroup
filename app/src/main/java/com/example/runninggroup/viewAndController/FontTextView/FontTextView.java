@@ -1,4 +1,4 @@
-package com.example.runninggroup.viewAndController;
+package com.example.runninggroup.viewAndController.FontTextView;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
