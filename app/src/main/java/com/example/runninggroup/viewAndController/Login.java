@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Looper;
 import android.os.StrictMode;
+import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -27,17 +28,17 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-//        StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().detectDiskReads()
-//        .detectDiskWrites()
-//        .detectAll()// or .detectAll() for all detectable problems                   
-//        .penaltyLog()
-//        .build());
-//        StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
-//        .detectLeakedSqlLiteObjects()
-//        .detectLeakedClosableObjects()
-//        .penaltyLog()
-//        .penaltyDeath()
-//        .build());
+        StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().detectDiskReads()
+        .detectDiskWrites()
+        .detectAll()// or .detectAll() for all detectable problems                   
+        .penaltyLog()
+        .build());
+        StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
+        .detectLeakedSqlLiteObjects()
+        .detectLeakedClosableObjects()
+        .penaltyLog()
+        .penaltyDeath()
+        .build());
 
 
 
@@ -54,6 +55,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         mEditText1.setText("tom");
         mEditText2.setText("123");
 
+        mEditText2.setTransformationMethod(PasswordTransformationMethod.getInstance());
     }
 
     private void initEvent() {
@@ -70,43 +72,43 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                 startActivity(intent);
                 break;
             case R.id.login:
-                new Thread(new Runnable() {
+//                new Thread(new Runnable() {
+//
+//                    @Override
+//                    public void run() {
+//                        if("SUCCESS".equals(DaoUser.isLoad(mEditText1.getText().toString(),mEditText2.getText().toString()))){
+//                            Intent intent = new Intent(Login.this,MainInterface.class);
+//                            intent.putExtra("username",mEditText1.getText().toString());
+//                            startActivity(intent);
+//                        }else {
+//
+//                            runOnUiThread(new Runnable() {
+//                                @Override
+//                                public void run() {
+//                                    Toast.makeText(Login.this,"登陆失败",Toast.LENGTH_SHORT).show();
+//                                }
+//                            });
+//
+//                        }
+//
+//
+//                    }
+//                }).start();
 
-                    @Override
-                    public void run() {
-                        if("SUCCESS".equals(DaoUser.isLoad(mEditText1.getText().toString(),mEditText2.getText().toString()))){
+                intent = new Intent(Login.this,MainInterface.class);
+                intent.putExtra("username",mEditText1.getText().toString());
+                startActivity(intent);
 
-                            Intent intent = new Intent(Login.this,MainInterface.class);
-                            intent.putExtra("username",mEditText1.getText().toString());
-                            startActivity(intent);
-                        }else {
-
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    Toast.makeText(Login.this,"登陆失败",Toast.LENGTH_SHORT).show();
-                                }
-                            });
-
-                        }
-
-
-                    }
-                }).start();
-//                intent = new Intent(Login.this,MainInterface.class);
-//                intent.putExtra("username",mEditText1.getText().toString());
-//                startActivity(intent);
-
-                Log.d(TAG, "当前时间 本日开始时间: " + GetTime.getBeginTime("本日"));
-                Log.d(TAG, "当前时间 本日开始时间: " + GetTime.timeStampToDate(GetTime.getDayBegin()));
-                Log.d(TAG, "当前时间 本日开始时间: " + GetTime.timeStampToDate(GetTime.getDayBegin() - 1000*60*60*24));
-                Log.d(TAG, "当前时间 本日开始时间: " + GetTime.timeStampToDate(GetTime.getDayEnd()));
-                Log.d(TAG, "当前时间 本日开始时间戳: " + GetTime.getDayBegin());
-                Log.d(TAG, "当前时间 本日结束时间戳: " + GetTime.getDayEnd());
-                Log.d(TAG, "当前时间 本月开始时间戳: " + GetTime.monthTimeInMillis());
-                Log.d(TAG, "当前时间 本日开始时间戳: " + GetTime.timeStampToDate(GetTime.monthTimeInMillis()-1000));
-                Log.d(TAG, "当前时间 本月开始时间戳: " + GetTime.monthTimeInMillis_1());
-                Log.d(TAG, "当前时间 本日开始时间戳: " + GetTime.timeStampToDate(GetTime.monthTimeInMillis_1()));
+//                Log.d(TAG, "当前时间 本日开始时间: " + GetTime.getBeginTime("本日"));
+//                Log.d(TAG, "当前时间 本日开始时间: " + GetTime.timeStampToDate(GetTime.getDayBegin()));
+//                Log.d(TAG, "当前时间 本日开始时间: " + GetTime.timeStampToDate(GetTime.getDayBegin() - 1000*60*60*24));
+//                Log.d(TAG, "当前时间 本日开始时间: " + GetTime.timeStampToDate(GetTime.getDayEnd()));
+//                Log.d(TAG, "当前时间 本日开始时间戳: " + GetTime.getDayBegin());
+//                Log.d(TAG, "当前时间 本日结束时间戳: " + GetTime.getDayEnd());
+//                Log.d(TAG, "当前时间 本月开始时间戳: " + GetTime.monthTimeInMillis());
+//                Log.d(TAG, "当前时间 本日开始时间戳: " + GetTime.timeStampToDate(GetTime.monthTimeInMillis()-1000));
+//                Log.d(TAG, "当前时间 本月开始时间戳: " + GetTime.monthTimeInMillis_1());
+//                Log.d(TAG, "当前时间 本日开始时间戳: " + GetTime.timeStampToDate(GetTime.monthTimeInMillis_1()));
 
                 break;
             case R.id.forgetPassword:

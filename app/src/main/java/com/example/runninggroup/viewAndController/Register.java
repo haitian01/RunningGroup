@@ -3,6 +3,7 @@ package com.example.runninggroup.viewAndController;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Looper;
+import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -35,6 +36,8 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
         mButton1=findViewById(R.id.register);
         mRadioGroup = findViewById(R.id.rg);
 
+        mEditText2.setTransformationMethod(PasswordTransformationMethod.getInstance());
+        mEditText3.setTransformationMethod(PasswordTransformationMethod.getInstance());
     }
     private void initEvent() {
         mButton1.setOnClickListener(this);
