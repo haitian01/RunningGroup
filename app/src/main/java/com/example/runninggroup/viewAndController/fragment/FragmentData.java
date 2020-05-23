@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.runninggroup.R;
 import com.example.runninggroup.viewAndController.Echart.EchartOptionUtil;
+import com.example.runninggroup.viewAndController.Echart.EchartRefesh;
 import com.example.runninggroup.viewAndController.Echart.EchartView;
 import com.example.runninggroup.viewAndController.Echart.EchartView2;
 import com.example.runninggroup.viewAndController.TimeAndData.GetData;
@@ -37,7 +38,7 @@ public class FragmentData extends Fragment {
                 super.onPageFinished(view, url);
                 //最好在h5页面加载完毕后再加载数据，防止html的标签还未加载完成，不能正常显示
                 Object[] runData = {100,200,150,120,80,50,90};//需要一个方法获取
-                refreshBarChart(runData);
+                EchartRefesh.refreshBarChart(runData, barChart);
             }
         });
 
@@ -48,7 +49,7 @@ public class FragmentData extends Fragment {
                 //最好在h5页面加载完毕后再加载数据，防止html的标签还未加载完成，不能正常显示
                 Object[] Month = GetData.getGroudMonth();
                 Object[] groudData = {4,5,4,4,5};////需要一个方法获取
-                refreshLinkChart(Month, groudData);
+                EchartRefesh.refreshLinkChart(Month, groudData, lineChart);
             }
         });
         return view;
@@ -58,21 +59,5 @@ public class FragmentData extends Fragment {
         barChart = view.findViewById(R.id.chart01);
         lineChart = view.findViewById(R.id.chart02);
 
-    }
-
-
-
-    //先写在这
-    private void refreshBarChart(Object[] runData){
-        Object[] x = new Object[]{
-                "Mon", "Tue", "Wed", "Thu", "Fri", "Sta", "Sun"
-        };
-        Object[] y =  runData;
-        barChart.refreshEchartsWithOption(EchartOptionUtil.getBarChartOptions(x, y));
-    }
-    private void refreshLinkChart(Object[] Month, Object[] groudData){
-        Object[] x = Month;
-        Object[] y =  groudData;
-        lineChart.refreshEchartsWithOption(EchartOptionUtil.getLineChartOptions(x, y));
     }
 }
