@@ -3,6 +3,7 @@ package com.example.runninggroup.viewAndController;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Looper;
+import android.os.StrictMode;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -25,6 +26,21 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+//        StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().detectDiskReads()
+//        .detectDiskWrites()
+//        .detectAll()// or .detectAll() for all detectable problems                   
+//        .penaltyLog()
+//        .build());
+//        StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
+//        .detectLeakedSqlLiteObjects()
+//        .detectLeakedClosableObjects()
+//        .penaltyLog()
+//        .penaltyDeath()
+//        .build());
+
+
+
         initView();
         initEvent();
     }
@@ -54,27 +70,32 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                 startActivity(intent);
                 break;
             case R.id.login:
-//                new Thread(new Runnable() {
-//
-//                    @Override
-//                    public void run() {
-//                        if("SUCCESS".equals(DaoUser.isLoad(mEditText1.getText().toString(),mEditText2.getText().toString()))){
-//
-//                            Intent intent = new Intent(Login.this,MainInterface.class);
-//                            intent.putExtra("username",mEditText1.getText().toString());
-//                            startActivity(intent);
-//                        }else {
-//                            Looper.prepare();
-//                            Toast.makeText(Login.this,"登陆失败",Toast.LENGTH_SHORT).show();
-//                            Looper.loop();
-//                        }
-//
-//
-//                    }
-//                }).start();
-                intent = new Intent(Login.this,MainInterface.class);
-                intent.putExtra("username",mEditText1.getText().toString());
-                startActivity(intent);
+                new Thread(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        if("SUCCESS".equals(DaoUser.isLoad(mEditText1.getText().toString(),mEditText2.getText().toString()))){
+
+                            Intent intent = new Intent(Login.this,MainInterface.class);
+                            intent.putExtra("username",mEditText1.getText().toString());
+                            startActivity(intent);
+                        }else {
+
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(Login.this,"登陆失败",Toast.LENGTH_SHORT).show();
+                                }
+                            });
+
+                        }
+
+
+                    }
+                }).start();
+//                intent = new Intent(Login.this,MainInterface.class);
+//                intent.putExtra("username",mEditText1.getText().toString());
+//                startActivity(intent);
 
                 Log.d(TAG, "当前时间 本日开始时间: " + GetTime.getBeginTime("本日"));
                 Log.d(TAG, "当前时间 本日开始时间: " + GetTime.timeStampToDate(GetTime.getDayBegin()));

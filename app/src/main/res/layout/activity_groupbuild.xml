@@ -22,6 +22,7 @@
             android:text="跑团名称："
             android:textSize="20dp"/>
         <EditText
+            android:id="@+id/groupname"
             android:layout_width="200dp"
             android:layout_height="wrap_content" />
     </LinearLayout>
@@ -49,9 +50,10 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="跑团规模："
+            android:text="跑团口号："
             android:textSize="20dp"/>
         <EditText
+            android:id="@+id/slogan"
             android:layout_width="200dp"
             android:layout_height="wrap_content" />
     </LinearLayout>

@@ -9,7 +9,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 public class GetRequest {
-    public static String groupRequest(String urls) {
+    public static String getRequest(String urls) {
         try {
             // 1. 获取访问地址URL
             URL url = new URL(urls);
@@ -20,7 +20,7 @@ public class GetRequest {
             // 请求方式
             connection.setRequestMethod("GET");
             // 超时时间
-            connection.setConnectTimeout(500);
+            connection.setConnectTimeout(100);
             // 设置是否输出
             connection.setDoOutput(false);
             // 设置是否读入

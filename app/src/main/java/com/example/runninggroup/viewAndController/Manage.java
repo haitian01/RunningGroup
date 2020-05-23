@@ -12,61 +12,63 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.runninggroup.R;
 import com.example.runninggroup.model.DaoGroup;
-import com.example.runninggroup.viewAndController.fragment.FragmentGroup;
 
-public class GroupBuild extends AppCompatActivity implements View.OnClickListener {
-    EditText groupNameEdt,sloganEdt;
-
-    Button build;
+public class Manage extends AppCompatActivity implements View.OnClickListener {
+    Button releaseBtn;
+    EditText msg;
+    Intent mIntent;
     String username;
+    String group;
+    String num;
+    String leader;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_groupbuild);
+        setContentView(R.layout.activity_manage);
         initView();
         initEvent();
     }
 
     private void initView() {
-        build = findViewById(R.id.build);
-        groupNameEdt = findViewById(R.id.groupname);
-        sloganEdt = findViewById(R.id.slogan);
+        releaseBtn = findViewById(R.id.release);
+        msg = findViewById(R.id.release_msg);
+        mIntent = getIntent();
+        username = mIntent.getStringExtra("username");
+        group = mIntent.getStringExtra("group");
+        num = mIntent.getStringExtra("num");
     }
     private void initEvent() {
-        build.setOnClickListener(this);
+       releaseBtn.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            case R.id.build:
+            case R.id.release:
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        username = getIntent().getStringExtra("username");
-                        if("SUCCESS".equals(DaoGroup.addGroup(groupNameEdt.getText().toString(),username,null,sloganEdt.getText().toString()))){
+                        if("SUCCESS".equals(DaoGroup.addTask(group,username,msg.getText().toString()))){
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    Toast.makeText(GroupBuild.this,"创建成功！",Toast.LENGTH_SHORT).show();
-                                    Intent intent = new Intent(GroupBuild.this, MainInterface.class);
-                                    intent.putExtra("jump",3);
-                                    intent.putExtra("username",username);
-                                    startActivity(intent);
+                                    Toast.makeText(Manage.this,"发布成功！",Toast.LENGTH_SHORT).show();
                                 }
                             });
                         }else {
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
-                                    Toast.makeText(GroupBuild.this,"创建失败",Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(Manage.this,"发布失败",Toast.LENGTH_SHORT).show();
                                 }
                             });
                         }
-
                     }
                 }).start();
+                break;
 
         }
+
     }
+
 }

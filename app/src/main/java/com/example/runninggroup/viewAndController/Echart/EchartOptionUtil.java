@@ -30,7 +30,7 @@ public class EchartOptionUtil {
     }
     public static GsonOption getBarChartOptions(Object[] xAxis, Object[] yAxis) {
         GsonOption option = new GsonOption();
-        option.title("跑步时间：分钟");
+        option.title("跑步里程：米");
 //        option.legend("每日跑步总时长");
         option.tooltip().trigger(Trigger.axis);
 

@@ -62,17 +62,6 @@
             android:layout_marginLeft="10dp"
             android:layout_toRightOf="@+id/member"
             android:text="50"/>
-        <TextView
-            android:id="@+id/manage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="管理>"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="20dp"
-            android:layout_marginTop="30dp"
-            android:clickable="true"
-            android:onClick="onClick"
-            />
         <Button
             android:id="@+id/join"
             android:layout_width="wrap_content"
@@ -81,7 +70,7 @@
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="15dp"
             android:layout_marginRight="10dp"
-            android:text="退出"/>
+            android:text="加入"/>
 
     </RelativeLayout>
     <com.google.android.material.tabs.TabLayout
