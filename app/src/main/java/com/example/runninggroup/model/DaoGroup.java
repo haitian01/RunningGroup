@@ -5,11 +5,14 @@ import android.util.Log;
 import com.alibaba.fastjson.JSONObject;
 import com.example.runninggroup.request.GetRequest;
 import com.example.runninggroup.request.PostRequest;
+import com.example.runninggroup.viewAndController.MemberManage;
 import com.example.runninggroup.viewAndController.helper.FriendsHelper;
 import com.example.runninggroup.viewAndController.helper.GroupHelper;
 import com.example.runninggroup.viewAndController.helper.GroupTaskHelper;
+import com.example.runninggroup.viewAndController.helper.MemberManageHelper;
 
 import java.text.DateFormatSymbols;
+import java.util.ArrayList;
 import java.util.List;
 
 public class DaoGroup {
@@ -51,6 +54,39 @@ public class DaoGroup {
     public static String addGroup(String groupName,String leaderName,byte[] logo,String slogan){
         String code =  PostRequest.postRequest("http://192.168.0.104:8080/group/addGroup","groupName="+groupName+"&leaderName="+leaderName+"&slogan="+slogan);
         return code;
+    }
+
+
+    //拿到某个跑团所有招募信息
+    public static List<GroupTaskHelper> getGroupCall(String groupName){
+        String json =  PostRequest.postRequest("http://192.168.0.104:8080/group/findGroupCall","groupName="+groupName);
+        List<GroupTaskHelper> list = JSONObject.parseArray(json,GroupTaskHelper.class);
+        if(list != null){
+            return list;
+        }
+        return new ArrayList<GroupTaskHelper>();
+    }
+    //发布招募信息
+    public static boolean addGroupCall(String groupName,String releaseName,String call){
+        long time = System.currentTimeMillis();
+        String result =  PostRequest.postRequest("http://192.168.0.104:8080/group/addGroupCall","groupName="+groupName+"&releaseName="+releaseName+"&call="+call+"&time="+time);
+        if(result == "SUCCESS") return true;
+        return false;
+    }
+    //解散某个跑团
+    public static boolean dismissGroup(String groupName){
+        String result =  PostRequest.postRequest("http://192.168.0.104:8080/group/dismissGroup","groupName="+groupName);
+        if(result == "SUCCESS") return true;
+        return false;
+    }
+    //拿到成员权限列表
+    public static List<MemberManageHelper> getMemberTitle(String groupName){
+        String json =  PostRequest.postRequest("http://192.168.0.104:8080/group/getMemberTitle","groupName="+groupName);
+        List<MemberManageHelper> list = JSONObject.parseArray(json,MemberManageHelper.class);
+        if(list != null){
+            return list;
+        }
+        return new ArrayList<MemberManageHelper>();
     }
 
 }

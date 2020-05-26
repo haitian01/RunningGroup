@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Looper;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -12,16 +13,23 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.runninggroup.R;
+import com.example.runninggroup.model.DaoGroup;
 import com.example.runninggroup.model.DaoUser;
+import com.example.runninggroup.viewAndController.adapter.GroupTaskAdapter;
+import com.example.runninggroup.viewAndController.helper.GroupTaskHelper;
+
+import java.util.List;
 
 public class GroupIntroduct extends AppCompatActivity {
     TextView groupText,numText,leaderText;
+    ListView introductListView;
     Button mButton;
     Intent mIntent;
     String group;
     String num;
     String leaderName;
     String username;
+    List<GroupTaskHelper> list;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,6 +44,20 @@ public class GroupIntroduct extends AppCompatActivity {
         numText = findViewById(R.id.num);
         leaderText = findViewById(R.id.leaderName);
         mButton = findViewById(R.id.join);
+        introductListView = findViewById(R.id.groupintroduct_list);
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                list = DaoGroup.getGroupCall(group);
+            }
+        });
+        t.start();
+        try {
+            t.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        introductListView.setAdapter(new GroupTaskAdapter(getLayoutInflater(),list));
     }
     private void initEvent() {
         mButton.setOnClickListener(new View.OnClickListener() {

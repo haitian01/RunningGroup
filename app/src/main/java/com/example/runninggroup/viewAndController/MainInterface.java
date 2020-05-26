@@ -18,6 +18,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -192,9 +193,15 @@ public class MainInterface extends AppCompatActivity implements View.OnClickList
                         alertDialog3.show();
 
                         break;
+                    case 1:
+                        Intent intent = new Intent(MainInterface.this,Write.class);
+                        intent.putExtra("username",username);
+                        startActivity(intent);
                 }
             }
         });
+
+
 
 
     }

@@ -27,6 +27,7 @@
         <activity android:name=".viewAndController.GroupBuild" />
         <activity android:name=".viewAndController.GroupIntroduct" />
         <activity android:name=".viewAndController.Manage" />
+        <activity android:name=".viewAndController.Write"></activity>
     </application>
 
     <uses-permission android:name="android.permission.INTERNET" />

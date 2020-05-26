@@ -2,5 +2,6 @@
 <resources>
     <string-array name="addicon">
         <item>添加好友 \u3000 \u3000 \u3000 \u3000 \u3000 ></item>
+        <item>发表动态 \u3000 \u3000 \u3000 \u3000 \u3000 ></item>
     </string-array>
 </resources>
