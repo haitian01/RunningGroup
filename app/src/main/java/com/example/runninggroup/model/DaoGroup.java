@@ -23,14 +23,14 @@ public class DaoGroup {
 //    }
     //拿到所有的跑团
     public static List<GroupHelper> getGroups(){
-        String json =  GetRequest.getRequest("http://192.168.0.103:8080/group/findAll");
+        String json =  GetRequest.getRequest("http://192.168.0.104:8080/group/findAll");
         List<GroupHelper> list = JSONObject.parseArray(json,GroupHelper.class);
         return list;
 
     }
     //拿到某个跑团的所有任务信息
     public static List<GroupTaskHelper> getGroupTask(String groupName){
-        String json =  PostRequest.postRequest("http://192.168.0.103:8080/group/findAllTask","groupName="+groupName);
+        String json =  PostRequest.postRequest("http://192.168.0.104:8080/group/findAllTask","groupName="+groupName);
         Log.v("json",json);
         List<GroupTaskHelper> list = JSONObject.parseArray(json,GroupTaskHelper.class);
         Log.v("list",list.toString()+"");
@@ -38,18 +38,18 @@ public class DaoGroup {
     }
     //拿到某个跑团的所有任务信息
     public static String getLeader(String groupName){
-        String leader =  PostRequest.postRequest("http://192.168.0.103:8080/group/getLeader","groupName="+groupName);
+        String leader =  PostRequest.postRequest("http://192.168.0.104:8080/group/getLeader","groupName="+groupName);
         return leader;
     }
     //发布跑团任务
     public static String addTask(String groupName,String releaseName,String task){
         long time = System.currentTimeMillis();
-        String code =  PostRequest.postRequest("http://192.168.0.103:8080/group/addTask","groupName="+groupName+"&releaseName="+releaseName+"&task="+task+"&time="+time);
+        String code =  PostRequest.postRequest("http://192.168.0.104:8080/group/addTask","groupName="+groupName+"&releaseName="+releaseName+"&task="+task+"&time="+time);
         return code;
     }
     //创建跑团
     public static String addGroup(String groupName,String leaderName,byte[] logo,String slogan){
-        String code =  PostRequest.postRequest("http://192.168.0.103:8080/group/addGroup","groupName="+groupName+"&leaderName="+leaderName+"&slogan="+slogan);
+        String code =  PostRequest.postRequest("http://192.168.0.104:8080/group/addGroup","groupName="+groupName+"&leaderName="+leaderName+"&slogan="+slogan);
         return code;
     }
 

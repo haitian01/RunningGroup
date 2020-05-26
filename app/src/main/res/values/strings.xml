@@ -16,5 +16,6 @@
     <string name="menu_send">Send</string>
     <string name="Open">Open</string>
     <string name="RUN">RUN</string>
+    <string name="add">+</string>
     <string name="BACK">←</string>
 </resources>

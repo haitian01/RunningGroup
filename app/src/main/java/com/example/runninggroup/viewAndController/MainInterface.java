@@ -15,6 +15,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -27,6 +28,7 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.runninggroup.R;
+import com.example.runninggroup.model.DaoFriend;
 import com.example.runninggroup.viewAndController.adapter.MyPagerAdapter;
 import com.example.runninggroup.viewAndController.fragment.FragmentCard;
 import com.example.runninggroup.viewAndController.fragment.FragmentData;
@@ -39,11 +41,13 @@ import java.util.ArrayList;
 public class MainInterface extends AppCompatActivity implements View.OnClickListener {
     private ViewPager mViewPager;
     private TabLayout mTabLayout;
-    private Button mBtn_sideSetting;
+    private Button mBtn_sideSetting,mBtn_rightSideSetting;
     private Button mBtn_exit;
-    private ConstraintLayout mPesonalSetting;
+    private ConstraintLayout mPesonalSetting,mRightSetting;
     private LinearLayout mLineraLayout;
-    private ListView mListView;
+    private ListView mListView,mRightList;
+    Intent mIntent;
+    String username;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -64,9 +68,14 @@ public class MainInterface extends AppCompatActivity implements View.OnClickList
         mTabLayout = findViewById(R.id.tabLayout);
         mBtn_sideSetting = findViewById(R.id.sideSetting);
         mBtn_exit = findViewById(R.id.button_quit);
+        mBtn_rightSideSetting = findViewById(R.id.rightSightSetting);
         mPesonalSetting = findViewById(R.id.personalSetting);
+        mRightSetting = findViewById(R.id.rightSetting);
         mLineraLayout = findViewById(R.id.ll_container);
         mListView = findViewById(R.id.personalListView);
+        mRightList = findViewById(R.id.rightList);
+        mIntent = getIntent();
+        username = mIntent.getStringExtra("username");
         ArrayList<Fragment> fragmentList = new ArrayList<>();
         ArrayList<String> list_Title = new ArrayList<>();
         fragmentList.add(new FragmentData());
@@ -89,10 +98,12 @@ public class MainInterface extends AppCompatActivity implements View.OnClickList
     private void initEvent() {
         mBtn_sideSetting.setOnClickListener(this);
         mBtn_exit.setOnClickListener(this);
+        mBtn_rightSideSetting.setOnClickListener(this);
         mLineraLayout.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 mPesonalSetting.setVisibility(View.INVISIBLE);
+                mRightSetting.setVisibility(View.INVISIBLE);
                 mLineraLayout.setVisibility(View.GONE);
                 return false;
             }
@@ -122,6 +133,69 @@ public class MainInterface extends AppCompatActivity implements View.OnClickList
                 }
             }
         });
+        mRightList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                switch(position){
+                    case 0:
+                        android.app.AlertDialog.Builder alertDialog3 = new android.app.AlertDialog.Builder(MainInterface.this);
+                        final View view1=getLayoutInflater().inflate(R.layout.helper_addfriend,null);
+                        alertDialog3.setView(view1)
+                        .setTitle("添加好友")
+                        .setIcon(R.mipmap.ic_launcher).setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                final EditText friend_name = view1.findViewById(R.id.friend_name);
+                                final EditText content = view1.findViewById(R.id.content);
+                                new Thread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        if(DaoFriend.queryFriend(username,friend_name.getText().toString())){
+                                            runOnUiThread(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    Toast.makeText(MainInterface.this,"你们已经是好友啦！",Toast.LENGTH_SHORT).show();
+                                                }
+                                            });
+                                        }else {
+
+                                            String result = DaoFriend.insertMoment(username,friend_name.getText().toString(),content.getText().toString());
+                                            if("SUCCESS".equals(result)){
+                                                runOnUiThread(new Runnable() {
+                                                    @Override
+                                                    public void run() {
+                                                        Toast.makeText(MainInterface.this,"请求发送成功",Toast.LENGTH_SHORT).show();
+                                                    }
+                                                });
+                                            }else {
+                                                runOnUiThread(new Runnable() {
+                                                    @Override
+                                                    public void run() {
+                                                        Toast.makeText(MainInterface.this,"请求发送失败",Toast.LENGTH_SHORT).show();
+                                                    }
+                                                });
+                                            }
+                                        }
+
+                                    }
+                                }).start();
+
+                            }
+                        }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Toast.makeText(MainInterface.this,"点击1",Toast.LENGTH_SHORT).show();
+                            }
+                        }).create();
+
+
+                        alertDialog3.show();
+
+                        break;
+                }
+            }
+        });
+
 
     }
 
@@ -152,6 +226,10 @@ public class MainInterface extends AppCompatActivity implements View.OnClickList
                     }
                 });
                 builder.show();
+                break;
+            case R.id.rightSightSetting:
+                mRightSetting.setVisibility(View.VISIBLE);
+                mLineraLayout.setVisibility(View.VISIBLE);
                 break;
         }
     }

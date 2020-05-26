@@ -7,16 +7,20 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.example.runninggroup.viewAndController.helper.FriendsHelper;
-import com.example.runninggroup.R;
 
+import com.example.runninggroup.R;
+import com.example.runninggroup.viewAndController.helper.DynamicHelper;
+import com.example.runninggroup.viewAndController.helper.MomentHelper;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
-public class FriendsAdapter extends BaseAdapter {
+public class MomentAdapter extends BaseAdapter {
     public LayoutInflater mInflater;
-    public List<FriendsHelper> mList;
+    public List<MomentHelper> mList;
 
-    public FriendsAdapter(LayoutInflater inflater, List<FriendsHelper> list) {
+    public MomentAdapter(LayoutInflater inflater, List<MomentHelper> list) {
         mInflater = inflater;
         mList = list;
     }
@@ -41,21 +45,20 @@ public class FriendsAdapter extends BaseAdapter {
         //ViewHolder内部类
         class ViewHolder{
             public ImageView img;
+            public TextView msg;
+            public TextView time;
             public TextView name;
-            public TextView group;
-            public TextView length;
-            public TextView score;
+
         }
         //判断converView是否为空
         ViewHolder viewHolder;
         if (convertView==null){
-            convertView=mInflater.inflate(R.layout.helper_friendshelper,null);
+            convertView=mInflater.inflate(R.layout.helper_moment,null);
             viewHolder=new ViewHolder();
-            viewHolder.img=convertView.findViewById(R.id.img);
-            viewHolder.name=convertView.findViewById(R.id.name);
-            viewHolder.group=convertView.findViewById(R.id.group);
-            viewHolder.length=convertView.findViewById(R.id.length);
-            viewHolder.score=convertView.findViewById(R.id.score);
+            viewHolder.img=convertView.findViewById(R.id.application_img);
+            viewHolder.msg=convertView.findViewById(R.id.application_content);
+            viewHolder.time=convertView.findViewById(R.id.application_time);
+            viewHolder.name=convertView.findViewById(R.id.application_name);
             convertView.setTag(viewHolder);
         }else {
             viewHolder= (ViewHolder) convertView.getTag();
@@ -63,10 +66,11 @@ public class FriendsAdapter extends BaseAdapter {
 
         //赋值
         viewHolder.img.setImageResource(R.mipmap.defaultpic);
-        viewHolder.name.setText(mList.get(position).getUsername());
-        viewHolder.group.setText(mList.get(position).getGroupName());
-        viewHolder.length.setText(mList.get(position).getLength()+"");
-        viewHolder.score.setText(mList.get(position).getScore()+"");
+        viewHolder.msg.setText(mList.get(position).getContent());
+        Log.v("name------>",mList.get(position).getFrom_name());
+        viewHolder.name.setText(mList.get(position).getFrom_name());
+        viewHolder.time.setText(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(mList.get(position).getMoment_time())));
+
 
 
 
