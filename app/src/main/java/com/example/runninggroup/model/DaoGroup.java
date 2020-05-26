@@ -88,5 +88,17 @@ public class DaoGroup {
         }
         return new ArrayList<MemberManageHelper>();
     }
+    //踢出跑团成员
+    public static boolean removeSb(String groupName,String member){
+        String result =  PostRequest.postRequest("http://192.168.0.104:8080/group/removeSb","groupName="+groupName+"&member="+member);
+        if(result == "SUCCESS") return true;
+        return false;
+    }
+    //设置管理员权限
+    public static boolean setAdmin(String groupName,String member,int admin){
+        String result =  PostRequest.postRequest("http://192.168.0.104:8080/group/setAdmin","groupName="+groupName+"&member="+member+"&admin="+admin);
+        if(result == "SUCCESS") return true;
+        return false;
+    }
 
 }

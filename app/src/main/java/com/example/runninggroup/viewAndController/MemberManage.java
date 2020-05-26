@@ -53,49 +53,127 @@ public class MemberManage extends AppCompatActivity {
         memberManageList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String Membername = mList.get(position).getUsername();
-                String title = (mList.get(position).getAdmin()==1) ? "管理员" : "成员";
-//                switch (title){
-//                    case "管理员":
-//                        androidx.appcompat.app.AlertDialog.Builder builder = new AlertDialog.Builder(MemberManage.this);
-//                        builder.setTitle("解除管理员")
-//                                .setMessage("你确定接触"+Membername+"的管理员权限？")
-//                                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-//                                    @Override
-//                                    public void onClick(DialogInterface dialog, int which) {
-//                                        //解除管理员
-//
-//                                    }
-//                                })
-//                                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
-//                                    @Override
-//                                    public void onClick(DialogInterface dialog, int which) {
-//                                        //
-//                                    }
-//                                }).create();
-//                        builder.show();
-//
-//                        break;
-//                    case "成员":
-//                        androidx.appcompat.app.AlertDialog.Builder builder1 = new AlertDialog.Builder(MemberManage.this);
-//                        builder1.setTitle("授予管理员")
-//                                .setMessage("你确定授予"+Membername+"管理员权限？")
-//                                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-//                                    @Override
-//                                    public void onClick(DialogInterface dialog, int which) {
-//                                        //授予管理员
-//
-//                                    }
-//                                })
-//                                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
-//                                    @Override
-//                                    public void onClick(DialogInterface dialog, int which) {
-//                                        //
-//                                    }
-//                                }).create();
-//                        builder1.show();
-//                        break;
-//                }
+                final String memberName = mList.get(position).getUsername();
+                final String admin = (mList.get(position).getAdmin()==1) ? "管理员" : "成员";
+                androidx.appcompat.app.AlertDialog.Builder builder = new AlertDialog.Builder(MemberManage.this);
+                builder.setTitle("成员管理")
+                       .setItems(new String[]{"踢出跑团","管理员权限"}, new DialogInterface.OnClickListener() {
+                           @Override
+                           public void onClick(DialogInterface dialog, int which) {
+                               switch (which){
+                                   case 0:
+                                       //踢出跑团
+                                       new Thread(new Runnable() {
+                                           @Override
+                                           public void run() {
+                                               if(DaoGroup.removeSb(group,memberName)){
+                                                   runOnUiThread(new Runnable() {
+                                                       @Override
+                                                       public void run() {
+                                                           Toast.makeText(MemberManage.this, "踢出成功", Toast.LENGTH_SHORT).show();
+                                                       }
+                                                   });
+                                               }else {
+                                                   runOnUiThread(new Runnable() {
+                                                       @Override
+                                                       public void run() {
+                                                           Toast.makeText(MemberManage.this, "踢出失败", Toast.LENGTH_SHORT).show();
+                                                       }
+                                                   });
+                                               }
+                                           }
+                                       }).start();
+
+                                       break;
+                                   case 1:
+                                       switch (admin){
+                                           case "管理员":
+                                               AlertDialog.Builder builder = new AlertDialog.Builder(MemberManage.this);
+                                               builder.setTitle("解除管理员")
+                                                       .setMessage("你确定接触"+memberName+"的管理员权限？")
+                                                       .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                                           @Override
+                                                           public void onClick(DialogInterface dialog, int which) {
+                                                               //解除管理员
+                                                               new Thread(new Runnable() {
+                                                                   @Override
+                                                                   public void run() {
+                                                                       if(DaoGroup.setAdmin(group,memberName,0)){
+                                                                           runOnUiThread(new Runnable() {
+                                                                               @Override
+                                                                               public void run() {
+                                                                                   Toast.makeText(MemberManage.this, "解除成功", Toast.LENGTH_SHORT).show();
+                                                                               }
+                                                                           });
+                                                                       }else {
+                                                                           runOnUiThread(new Runnable() {
+                                                                               @Override
+                                                                               public void run() {
+                                                                                   Toast.makeText(MemberManage.this, "解除失败", Toast.LENGTH_SHORT).show();
+                                                                               }
+                                                                           });
+                                                                       }
+                                                                   }
+                                                               }).start();
+
+                                                           }
+                                                       })
+                                                       .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                                                           @Override
+                                                           public void onClick(DialogInterface dialog, int which) {
+                                                               //
+                                                           }
+                                                       }).create();
+                                               builder.show();
+
+                                               break;
+                                           case "成员":
+                                               AlertDialog.Builder builder1 = new AlertDialog.Builder(MemberManage.this);
+                                               builder1.setTitle("授予管理员")
+                                                       .setMessage("你确定授予"+memberName+"管理员权限？")
+                                                       .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                                           @Override
+                                                           public void onClick(DialogInterface dialog, int which) {
+                                                               //授予管理员
+                                                               new Thread(new Runnable() {
+                                                                   @Override
+                                                                   public void run() {
+                                                                       if(DaoGroup.setAdmin(group,memberName,1)){
+                                                                           runOnUiThread(new Runnable() {
+                                                                               @Override
+                                                                               public void run() {
+                                                                                   Toast.makeText(MemberManage.this, "授予成功", Toast.LENGTH_SHORT).show();
+                                                                               }
+                                                                           });
+                                                                       }else {
+                                                                           runOnUiThread(new Runnable() {
+                                                                               @Override
+                                                                               public void run() {
+                                                                                   Toast.makeText(MemberManage.this, "授予失败", Toast.LENGTH_SHORT).show();
+                                                                               }
+                                                                           });
+                                                                       }
+                                                                   }
+                                                               }).start();
+
+                                                           }
+                                                       })
+                                                       .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                                                           @Override
+                                                           public void onClick(DialogInterface dialog, int which) {
+                                                               //
+                                                           }
+                                                       }).create();
+                                               builder1.show();
+                                               break;
+                                       }
+                                       break;
+                               }
+                           }
+                       }).create();
+                builder.show();
+
+
             }
         });
     }
