@@ -17,7 +17,7 @@ import java.net.URL;
 import java.nio.Buffer;
 
 public class PostRequest {
-    public static String userRequest(String urls,String params) {
+    public static String postRequest(String urls,String params) {
         try {
             // 1. 获取访问地址URL
             URL url = new URL(urls);

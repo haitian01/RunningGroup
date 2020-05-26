@@ -1,6 +1,5 @@
-package com.example.runninggroup.viewAndController;
+package com.example.runninggroup.viewAndController.Echart;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.webkit.WebSettings;
