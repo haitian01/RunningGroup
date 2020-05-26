@@ -39,10 +39,13 @@ public class DaoGroup {
         Log.v("list",list.toString()+"");
         return list;
     }
-    //拿到某个跑团的所有任务信息
+    //拿到某个跑团的leader
     public static String getLeader(String groupName){
         String leader =  PostRequest.postRequest("http://192.168.0.104:8080/group/getLeader","groupName="+groupName);
-        return leader;
+        if (leader != null){
+            return leader;
+        }
+        return "";
     }
     //发布跑团任务
     public static String addTask(String groupName,String releaseName,String task){
