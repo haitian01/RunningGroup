@@ -35,16 +35,13 @@ public class Manage extends AppCompatActivity implements View.OnClickListener {
     }
 
     private void initView() {
-        releaseBtn = findViewById(R.id.release);
-        groupmanageList = findViewById(R.id.groupintroduct_list);
-        msg = findViewById(R.id.release_msg);
+        groupmanageList = findViewById(R.id.groupmanage_list);
         mIntent = getIntent();
         username = mIntent.getStringExtra("username");
         group = mIntent.getStringExtra("group");
         num = mIntent.getStringExtra("num");
     }
     private void initEvent() {
-       releaseBtn.setOnClickListener(this);
        groupmanageList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
            @Override
            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

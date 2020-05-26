@@ -54,8 +54,21 @@ public class FriendManage extends AppCompatActivity {
                             @Override
                             public void run() {
                                 if(DaoFriend.deleteFriend(username,name)){
-                                    Toast.makeText(FriendManage.this, "删除成功", Toast.LENGTH_SHORT).show();
-                                }else {Toast.makeText(FriendManage.this, "删除失败", Toast.LENGTH_SHORT).show();}
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Toast.makeText(FriendManage.this, "删除成功", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+
+                                }else {
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Toast.makeText(FriendManage.this, "删除失败", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                                }
                             }
                         }).start();
                         break;

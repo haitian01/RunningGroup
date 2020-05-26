@@ -26,7 +26,7 @@ public class WriteTask extends AppCompatActivity implements View.OnClickListener
     }
 
     private void initView() {
-        releaseBtn = findViewById(R.id.write_release);
+        releaseBtn = findViewById(R.id.writetask_release);
         msg = findViewById(R.id.writetask_msg);
         username = getIntent().getStringExtra("username");
         group = getIntent().getStringExtra("group");

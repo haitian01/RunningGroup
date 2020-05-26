@@ -33,6 +33,8 @@ public class MemberManage extends AppCompatActivity {
     }
 
     private void initView() {
+        username = getIntent().getStringExtra("username");
+        group = getIntent().getStringExtra("group");
 
         memberManageList = findViewById(R.id.membermanage_list);
         Thread t = new Thread(new Runnable() {

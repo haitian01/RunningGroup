@@ -49,11 +49,12 @@ public class FragmentFriends extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        username = getActivity().getIntent().getStringExtra("username");
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
-                list = DaoUser.getFriends(getActivity().getIntent().getStringExtra("username"));
-                list1 = DaoFriend.queryMomentList(getActivity().getIntent().getStringExtra("username"));
+                list = DaoUser.getFriends(username);
+                list1 = DaoFriend.queryMomentList(username);
             }
         });
         t.start();
@@ -78,6 +79,7 @@ public class FragmentFriends extends Fragment {
                 bundle.putString("name",list.get(position).getUsername());
                 bundle.putString("group",list.get(position).getGroupName());
                 bundle.putString("length",list.get(position).getLength()+"");
+                bundle.putString("username",username);
                 Intent intent = new Intent(getActivity(), FriendMessage.class);
                 intent.putExtras(bundle);
                 startActivity(intent);

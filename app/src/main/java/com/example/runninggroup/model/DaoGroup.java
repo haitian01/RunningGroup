@@ -62,7 +62,7 @@ public class DaoGroup {
 
     //拿到某个跑团所有招募信息
     public static List<GroupTaskHelper> getGroupCall(String groupName){
-        String json =  PostRequest.postRequest("http://192.168.0.104:8080/group/findGroupCall","groupName="+groupName);
+        String json =  PostRequest.postRequest("http://192.168.0.104:8080/group/getGroupCall","groupName="+groupName);
         List<GroupTaskHelper> list = JSONObject.parseArray(json,GroupTaskHelper.class);
         if(list != null){
             return list;

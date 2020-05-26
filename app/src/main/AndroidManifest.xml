@@ -28,6 +28,9 @@
         <activity android:name=".viewAndController.GroupIntroduct" />
         <activity android:name=".viewAndController.Manage" />
         <activity android:name=".viewAndController.Write"></activity>
+        <activity android:name=".viewAndController.FriendManage"></activity>
+        <activity android:name=".viewAndController.MemberManage"></activity>
+        <activity android:name=".viewAndController.WriteTask"></activity>
     </application>
 
     <uses-permission android:name="android.permission.INTERNET" />
