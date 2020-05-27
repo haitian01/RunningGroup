@@ -15,7 +15,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.runninggroup.R;
 import com.example.runninggroup.model.DaoGroup;
 import com.example.runninggroup.model.DaoUser;
+import com.example.runninggroup.viewAndController.adapter.GroupCallAdapter;
 import com.example.runninggroup.viewAndController.adapter.GroupTaskAdapter;
+import com.example.runninggroup.viewAndController.helper.GroupCallHelper;
 import com.example.runninggroup.viewAndController.helper.GroupTaskHelper;
 
 import java.util.List;
@@ -29,7 +31,7 @@ public class GroupIntroduct extends AppCompatActivity {
     String num;
     String leaderName;
     String username;
-    List<GroupTaskHelper> list;
+    List<GroupCallHelper> list;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,6 +42,11 @@ public class GroupIntroduct extends AppCompatActivity {
     }
 
     private void initView() {
+        mIntent = getIntent();
+        group = mIntent.getStringExtra("group");
+        num = mIntent.getStringExtra("num");
+        leaderName = mIntent.getStringExtra("leader");
+        username = mIntent.getStringExtra("username");
         groupText = findViewById(R.id.group);
         numText = findViewById(R.id.num);
         leaderText = findViewById(R.id.leaderName);
@@ -57,7 +64,7 @@ public class GroupIntroduct extends AppCompatActivity {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        introductListView.setAdapter(new GroupTaskAdapter(getLayoutInflater(),list));
+        introductListView.setAdapter(new GroupCallAdapter(getLayoutInflater(),list));
     }
     private void initEvent() {
         mButton.setOnClickListener(new View.OnClickListener() {
@@ -129,11 +136,6 @@ public class GroupIntroduct extends AppCompatActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                mIntent = getIntent();
-                group = mIntent.getStringExtra("group");
-                num = mIntent.getStringExtra("num");
-                leaderName = mIntent.getStringExtra("leader");
-                username = mIntent.getStringExtra("username");
                 groupText.setText(group);
                 numText.setText(num);
                 leaderText.setText(leaderName);

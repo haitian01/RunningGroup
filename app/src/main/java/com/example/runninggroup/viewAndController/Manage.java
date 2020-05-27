@@ -40,6 +40,7 @@ public class Manage extends AppCompatActivity implements View.OnClickListener {
         username = mIntent.getStringExtra("username");
         group = mIntent.getStringExtra("group");
         num = mIntent.getStringExtra("num");
+        leader = mIntent.getStringExtra("leader");
     }
     private void initEvent() {
        groupmanageList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -51,43 +52,59 @@ public class Manage extends AppCompatActivity implements View.OnClickListener {
                        intent.putExtra("username",username);
                        intent.putExtra("group",group);
                        intent.putExtra("num",num);
+                       intent.putExtra("type","task");
                        startActivity(intent);
                        break;
                    case 1:
-                        Intent intent1 = new Intent(Manage.this,MemberManage.class);
-                        intent1.putExtra("username",username);
-                        intent1.putExtra("group",group);
-                        intent1.putExtra("num",num);
-                        startActivity(intent1);
+                       Intent intent1 = new Intent(Manage.this,WriteTask.class);
+                       intent1.putExtra("username",username);
+                       intent1.putExtra("group",group);
+                       intent1.putExtra("num",num);
+                       intent1.putExtra("type","call");
+                       startActivity(intent1);
                        break;
                    case 2:
-                       AlertDialog.Builder builder = new AlertDialog.Builder(Manage.this);
-                       builder.setTitle("解散跑团")
-                               .setMessage("你确定解散跑团？")
-                               .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                                   @Override
-                                   public void onClick(DialogInterface dialog, int which) {
-                                       //解散跑团
-                                       new Thread(new Runnable() {
-                                           @Override
-                                           public void run() {
-                                               if(DaoGroup.dismissGroup(group)){
-                                                   Toast.makeText(Manage.this,"解散成功",Toast.LENGTH_SHORT).show();
-                                                    Intent intent = new Intent(Manage.this,MainInterface.class);
-                                                    intent.putExtra("username",username);
-                                                    startActivity(intent);
-                                               }else {Toast.makeText(Manage.this,"解散成功",Toast.LENGTH_SHORT).show();}
-                                           }
-                                       }).start();
-                                   }
-                               })
-                               .setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                                   @Override
-                                   public void onClick(DialogInterface dialog, int which) {
-                                        //
-                                   }
-                               }).create();
-                       builder.show();
+                        Intent intent2 = new Intent(Manage.this,MemberManage.class);
+                        intent2.putExtra("username",username);
+                        intent2.putExtra("group",group);
+                        intent2.putExtra("num",num);
+                        startActivity(intent2);
+                       break;
+                   case 3:
+                       if(username.equals(leader)){
+                           AlertDialog.Builder builder = new AlertDialog.Builder(Manage.this);
+                           builder.setTitle("解散跑团")
+                                   .setMessage("你确定解散跑团？")
+                                   .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                       @Override
+                                       public void onClick(DialogInterface dialog, int which) {
+                                           //解散跑团
+                                           new Thread(new Runnable() {
+                                               @Override
+                                               public void run() {
+                                                   if(DaoGroup.dismissGroup(group)){
+                                                       Toast.makeText(Manage.this,"解散成功",Toast.LENGTH_SHORT).show();
+                                                       Intent intent = new Intent(Manage.this,MainInterface.class);
+                                                       intent.putExtra("username",username);
+                                                       startActivity(intent);
+                                                   }else {Toast.makeText(Manage.this,"解散失败",Toast.LENGTH_SHORT).show();}
+                                               }
+                                           }).start();
+                                       }
+                                   })
+                                   .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                                       @Override
+                                       public void onClick(DialogInterface dialog, int which) {
+                                           //
+                                       }
+                                   }).create();
+                           builder.show();
+                       }else {
+                           androidx.appcompat.app.AlertDialog.Builder builder = new AlertDialog.Builder(Manage.this);
+                           builder.setMessage("没有管理权限！").create();
+                           builder.show();
+                       }
+
                        break;
                }
            }

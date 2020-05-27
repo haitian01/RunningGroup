@@ -2,7 +2,8 @@
 <resources>
     <string-array name="groupmanage">
         <item>任务发布 \u3000 \u3000 \u3000 \u3000 \u3000 ></item>
-        <item>管理员权限 \u3000 \u3000 \u3000 \u3000 \u3000 ></item>
+        <item>招募发布 \u3000 \u3000 \u3000 \u3000 \u3000 ></item>
+        <item>权限管理 \u3000 \u3000 \u3000 \u3000 \u3000 ></item>
         <item>解散跑团 \u3000 \u3000 \u3000 \u3000 \u3000 ></item>
     </string-array>
 </resources>

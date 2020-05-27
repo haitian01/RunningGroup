@@ -16,7 +16,7 @@ import com.example.runninggroup.model.DaoGroup;
 public class WriteTask extends AppCompatActivity implements View.OnClickListener {
     EditText msg;
     Button releaseBtn;
-    String username,group,num;
+    String username,group,num,type;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,6 +31,8 @@ public class WriteTask extends AppCompatActivity implements View.OnClickListener
         username = getIntent().getStringExtra("username");
         group = getIntent().getStringExtra("group");
         num = getIntent().getStringExtra("name");
+        type = getIntent().getStringExtra("type");
+        if(type.equals("call")){msg.setHint("发布一条招募...");}
     }
     private void initEvent() {
         releaseBtn.setOnClickListener(this);
@@ -40,26 +42,49 @@ public class WriteTask extends AppCompatActivity implements View.OnClickListener
     public void onClick(View v) {
         switch (R.id.writetask_release){
             case R.id.writetask_release:
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if("SUCCESS".equals(DaoGroup.addTask(group,username,msg.getText().toString()))){
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    Toast.makeText(WriteTask.this,"发布成功！",Toast.LENGTH_SHORT).show();
-                                }
-                            });
-                        }else {
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    Toast.makeText(WriteTask.this,"发布失败",Toast.LENGTH_SHORT).show();
-                                }
-                            });
+                if (type.equals("task")) {
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if("SUCCESS".equals(DaoGroup.addTask(group,username,msg.getText().toString()))){
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Toast.makeText(WriteTask.this,"任务发布成功！",Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                            }else {
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Toast.makeText(WriteTask.this,"任务发布失败",Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                            }
                         }
-                    }
-                }).start();
+                    }).start();
+                } else {
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if("SUCCESS".equals(DaoGroup.addGroupCall(group,username,msg.getText().toString()))){
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Toast.makeText(WriteTask.this,"招募发布成功！",Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                            }else {
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Toast.makeText(WriteTask.this,"招募发布失败",Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                            }
+                        }
+                    }).start();
+                }
                 break;
             case R.id.writetask_return:
                 Intent intent = new Intent(WriteTask.this,Manage.class);

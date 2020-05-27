@@ -101,7 +101,6 @@ public class GroupMessage extends AppCompatActivity implements View.OnClickListe
                     e.printStackTrace();
                 }
                 if(leader.equals(username)){
-                    manageText.setVisibility(View.GONE);
                     mButton.setVisibility(View.GONE);
                 }else {
                     if(admin == 0){
