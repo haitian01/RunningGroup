@@ -21,6 +21,15 @@ public class DaoAct {
         if (length == null) return "0";
         return length;
     }
+    //插入一条活动记录
+    public static boolean insertAct(String username,long beginTime,long endTime,long length,int score){
+        String result =  PostRequest.postRequest("http://192.168.0.104:8080/act/insertAct","username="+username+"&beginTime="+beginTime+"&endTime="+endTime+"&score="+score);
+        if (result == null) return false;
+        else {
+            if("SUCCESS".equals(result)){return true;}
+            return false;
+        }
+    }
 
 
 }
