@@ -43,7 +43,7 @@ public class Write extends AppCompatActivity implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.write_return:
-                Intent intent = new Intent();
+                Intent intent = new Intent(Write.this,MainInterface.class);
                 intent.putExtra("username",username);
                 startActivity(intent);
                 break;

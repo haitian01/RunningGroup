@@ -76,7 +76,7 @@ public class GroupMessage extends AppCompatActivity implements View.OnClickListe
                 mIntent = getIntent();
                 username = mIntent.getStringExtra("username");
                 List<GroupHelper> list = DaoUser.getMyGroupAll(username);
-                if(list.size() != 0 && list!=null){
+                if(list.size() != 0){
                     groupText.setText(list.get(0).getGroupName());
                     numText.setText(list.get(0).getNumbers()+"");
                     nameText.setText(list.get(0).getLeaderName());

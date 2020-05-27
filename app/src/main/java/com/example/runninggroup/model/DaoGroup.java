@@ -30,16 +30,20 @@ public class DaoGroup {
     public static List<GroupHelper> getGroups(){
         String json =  GetRequest.getRequest("http://192.168.0.104:8080/group/findAll");
         List<GroupHelper> list = JSONObject.parseArray(json,GroupHelper.class);
-        return list;
+        if(list != null){
+            return list;
+        }
+        return new ArrayList<GroupHelper>();
 
     }
     //拿到某个跑团的所有任务信息
     public static List<GroupTaskHelper> getGroupTask(String groupName){
         String json =  PostRequest.postRequest("http://192.168.0.104:8080/group/findAllTask","groupName="+groupName);
-        Log.v("json",json);
         List<GroupTaskHelper> list = JSONObject.parseArray(json,GroupTaskHelper.class);
-        Log.v("list",list.toString()+"");
-        return list;
+        if(list != null){
+            return list;
+        }
+        return new ArrayList<GroupTaskHelper>();
     }
     //拿到某个跑团的leader
     public static String getLeader(String groupName){
@@ -53,11 +57,13 @@ public class DaoGroup {
     public static String addTask(String groupName,String releaseName,String task){
         long time = System.currentTimeMillis();
         String code =  PostRequest.postRequest("http://192.168.0.104:8080/group/addTask","groupName="+groupName+"&releaseName="+releaseName+"&task="+task+"&time="+time);
+        if (code == null) return "ERROR";
         return code;
     }
     //创建跑团
     public static String addGroup(String groupName,String leaderName,byte[] logo,String slogan){
         String code =  PostRequest.postRequest("http://192.168.0.104:8080/group/addGroup","groupName="+groupName+"&leaderName="+leaderName+"&slogan="+slogan);
+        if (code == null) return "ERROR";
         return code;
     }
 
@@ -75,12 +81,14 @@ public class DaoGroup {
     public static boolean addGroupCall(String groupName,String releaseName,String call){
         long time = System.currentTimeMillis();
         String result =  PostRequest.postRequest("http://192.168.0.104:8080/group/addGroupCall","groupName="+groupName+"&releaseName="+releaseName+"&call="+call+"&time="+time);
+        if(result == null) return false;
         if("SUCCESS".equals(result)) return true;
         return false;
     }
     //解散某个跑团
     public static boolean dismissGroup(String groupName){
         String result =  PostRequest.postRequest("http://192.168.0.104:8080/group/dismissGroup","groupName="+groupName);
+        if(result == null) return false;
         if("SUCCESS".equals(result)) return true;
         return false;
     }
@@ -96,12 +104,14 @@ public class DaoGroup {
     //踢出跑团成员
     public static boolean removeSb(String groupName,String member){
         String result =  PostRequest.postRequest("http://192.168.0.104:8080/group/removeSb","groupName="+groupName+"&member="+member);
+        if(result == null) return false;
         if("SUCCESS".equals(result)) return true;
         return false;
     }
     //设置管理员权限
     public static boolean setAdmin(String groupName,String member,int admin){
         String result =  PostRequest.postRequest("http://192.168.0.104:8080/group/setAdmin","groupName="+groupName+"&member="+member+"&admin="+admin);
+        if (result == null) return false;
         if("SUCCESS".equals(result)) return true;
         return false;
     }

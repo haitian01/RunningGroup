@@ -66,11 +66,13 @@ public class CardPersonal extends AppCompatActivity {
                 switch (v.getId()){
                     case R.id.card_personal:
 
-                        mBeginTime = mDatePicker.getYear()+"-"+mDatePicker.getMonth()+"-"+mDatePicker.getDayOfMonth()+" "+startTimePicker.getHour()+":"+startTimePicker.getMinute();
-                        mEndTime = mDatePicker.getYear()+"-"+mDatePicker.getMonth()+"-"+mDatePicker.getDayOfMonth()+" "+endTimePicker.getHour()+":"+endTimePicker.getMinute();
+                        mBeginTime = mDatePicker.getYear()+"-"+appendZero(mDatePicker.getMonth())+"-"+appendZero(mDatePicker.getDayOfMonth())+" "+appendZero(startTimePicker.getHour())+":"+appendZero(startTimePicker.getMinute());
+                        mEndTime = mDatePicker.getYear()+"-"+appendZero(mDatePicker.getMonth())+"-"+appendZero(mDatePicker.getDayOfMonth())+" "+appendZero(endTimePicker.getHour())+":"+appendZero(endTimePicker.getMinute());
+
                         try {
                             beginTime = new SimpleDateFormat("yyyy-MM--dd HH:mm").parse(mBeginTime).getTime();
                             endTime = new SimpleDateFormat("yyyy-MM--dd HH:mm").parse(mEndTime).getTime();
+                            Toast.makeText(CardPersonal.this,mBeginTime+"\n"+mEndTime,Toast.LENGTH_LONG).show();
 
                         } catch (ParseException e) {
                             Toast.makeText(CardPersonal.this,"时间转换错误",Toast.LENGTH_LONG).show();
@@ -94,6 +96,15 @@ public class CardPersonal extends AppCompatActivity {
 
 
     }
+
+    private String appendZero(int obj){
+        if (obj < 10) {
+            return "0" + obj;
+        } else {
+            return obj+"";
+        }
+
+    };
 
 
     }

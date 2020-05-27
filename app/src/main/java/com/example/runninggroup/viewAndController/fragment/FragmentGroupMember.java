@@ -40,23 +40,9 @@ public class FragmentGroupMember extends Fragment {
             public void run() {
                 Bundle arguments = getArguments();
                 list = DaoUser.getAllMember(arguments.getString("group"));
-                if ("[null]".equals(list.toString())){
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Toast.makeText(getActivity(),"网络异常",Toast.LENGTH_SHORT).show();
-                        }
-                    });
-
-
-                    list = new ArrayList<User>();
-                    Log.v("tag","网络异常555");
-                }else {
-                    for(User user:list){
-                        user.setPic(R.mipmap.user);
-                    }
+                for(User user:list){
+                    user.setPic(R.mipmap.user);
                 }
-
             }
         });
         t.start();

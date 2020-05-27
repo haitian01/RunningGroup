@@ -31,11 +31,11 @@ public class DaoFriend {
     //发送添加好友申请
     public static String insertMoment(String username, String friendName,String content){
         String result =  PostRequest.postRequest("http://192.168.0.104:8080/moment/insertMoment","username="+username+"&friendName="+friendName+"&content="+content+"&moment_time="+Long.toString(System.currentTimeMillis()));
+        if (result == null) return "ERROR";
         return result;
     }
     public static List<MomentHelper> queryMomentList(String username){
         String json =  PostRequest.postRequest("http://192.168.0.104:8080/moment/queryMomentList","username="+username);
-        Log.v("json----------->",json);
         List<MomentHelper> list = JSONObject.parseArray(json,MomentHelper.class);
         if(list != null){
             for (MomentHelper momentHelper:list){
@@ -50,11 +50,13 @@ public class DaoFriend {
     //添加好友
     public static String addFriend(String username,String friendName){
         String result =  PostRequest.postRequest("http://192.168.0.104:8080/friend/addFriend","username="+username+"&friendName="+friendName);
+        if (result == null) return "ERROR";
         return result;
     }
     //更改状态
     public static String updateProcessed(String username,String friendName){
         String result =  PostRequest.postRequest("http://192.168.0.104:8080/moment/updateProcessed","username="+username+"&friendName="+friendName);
+        if (result == null) return "ERROR";
         return result;
     }
     //查询好友关系

@@ -26,12 +26,14 @@ public class DaoUser {
 //        return Inner.daoUser;
 //    }
     public static String isLoad(String username,String password){
-      return PostRequest.postRequest("http://192.168.0.104:8080/user/load","username="+username+"&password="+password);
+      String result = PostRequest.postRequest("http://192.168.0.104:8080/user/load","username="+username+"&password="+password);
+        if (result == null) return "ERROR";
+        return result;
     }
     public static String register(String username,String password,String sex){
-        String a =  PostRequest.postRequest("http://192.168.0.104:8080/user/register","username="+username+"&password="+password+"&sex="+sex);
-        Log.v("TAG",a);
-        return a;
+        String result =  PostRequest.postRequest("http://192.168.0.104:8080/user/register","username="+username+"&password="+password+"&sex="+sex);
+        if (result == null) return "ERROR";
+        return result;
     }
     public static List<FriendsHelper> getFriends(String username){
         String json =  PostRequest.postRequest("http://192.168.0.104:8080/user/getFriends","username="+username);
@@ -43,24 +45,27 @@ public class DaoUser {
     }
     public static String getMyGroup(String username){
         String group =  PostRequest.postRequest("http://192.168.0.104:8080/user/getMyGroup","username="+username);
+        if (group == null) return "ERROR";
         return group;
     }
 
     public static List<GroupHelper> getMyGroupAll(String username){
         String group =  PostRequest.postRequest("http://192.168.0.104:8080/user/getMyGroupAll","username="+username);
-        System.out.println(group);
         List<GroupHelper> list = JSONObject.parseArray(group, GroupHelper.class);
-        return list;
+        if (list == null) return new ArrayList<GroupHelper>();
+        return  list;
     }
     public static String setMyGroup(String username,String groupName,int change,String type){
         String group =  PostRequest.postRequest("http://192.168.0.104:8080/user/setMyGroup","username="+username+"&groupName="+groupName+"&change="+change+"&type="+type);
+        if (group == null) return "ERROR";
         return group;
     }
 
     public static List<User> getAllMember(String groupName){
         String json =  PostRequest.postRequest("http://192.168.0.104:8080/user/getAllMember","groupName="+groupName);
         List<User> list = JSONObject.parseArray(json,User.class);
-        return list;
+        if (list == null) return new ArrayList<User>();
+        return  list;
     }
 
 }
