@@ -83,15 +83,11 @@ public class MemberManage extends AppCompatActivity {
     }
     //刷新界面
     private void updateView(){
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
 
-                //拿到成员列表
-                mList = DaoGroup.getMemberTitle(group);
-                memberManageList.setAdapter(new MemberManageAdapter(getLayoutInflater(),mList));
-            }
-        }).start();
+        //拿到成员列表
+        mList = DaoGroup.getMemberTitle(group);
+        memberManageList.setAdapter(new MemberManageAdapter(getLayoutInflater(),mList));
+
     }
     //成员管理
     private void manage(final String memberName){

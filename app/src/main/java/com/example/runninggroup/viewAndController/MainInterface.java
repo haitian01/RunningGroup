@@ -49,6 +49,7 @@ public class MainInterface extends AppCompatActivity implements View.OnClickList
     private ListView mListView,mRightList;
     Intent mIntent;
     String username;
+    int id;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -64,7 +65,12 @@ public class MainInterface extends AppCompatActivity implements View.OnClickList
 
     }
 
+
+
     private void initView() {
+        mIntent = getIntent();
+        username = mIntent.getStringExtra("username");
+        id = getIntent().getIntExtra("id",0);
         mViewPager = findViewById(R.id.viewPager);
         mTabLayout = findViewById(R.id.tabLayout);
         mBtn_sideSetting = findViewById(R.id.sideSetting);
@@ -75,8 +81,6 @@ public class MainInterface extends AppCompatActivity implements View.OnClickList
         mLineraLayout = findViewById(R.id.ll_container);
         mListView = findViewById(R.id.personalListView);
         mRightList = findViewById(R.id.rightList);
-        mIntent = getIntent();
-        username = mIntent.getStringExtra("username");
         ArrayList<Fragment> fragmentList = new ArrayList<>();
         ArrayList<String> list_Title = new ArrayList<>();
         fragmentList.add(new FragmentData());
@@ -89,9 +93,7 @@ public class MainInterface extends AppCompatActivity implements View.OnClickList
         list_Title.add("跑团");
         mViewPager.setAdapter(new MyPagerAdapter(getSupportFragmentManager(), fragmentList,list_Title));
         mTabLayout.setupWithViewPager(mViewPager);//此方法就是让tablayout和ViewPager联动
-        Intent intent = getIntent();
-        int jump = intent.getIntExtra("jump",0);
-        mViewPager.setCurrentItem(jump);
+        mViewPager.setCurrentItem(id);
 
     }
 

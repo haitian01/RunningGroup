@@ -1,5 +1,6 @@
 package com.example.runninggroup.viewAndController;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -46,7 +47,7 @@ public class FriendManage extends AppCompatActivity {
     private void initEvent() {
         friendManageList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemClick(AdapterView<?> parent, View view, int position, final long id) {
                 switch (position){
                     case 0:
                         //删除好友
@@ -54,25 +55,30 @@ public class FriendManage extends AppCompatActivity {
                             @Override
                             public void run() {
                                 if(DaoFriend.deleteFriend(username,name)){
-                                    runOnUiThread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            Toast.makeText(FriendManage.this, "删除成功", Toast.LENGTH_SHORT).show();
-                                        }
-                                    });
+                                   makeToast("删除成功");
+                                   Intent intent = new Intent(FriendManage.this,MainInterface.class);
+                                   intent.putExtra("username",username);
+                                   intent.putExtra("group",group);
+                                   intent.putExtra("name",name);
+                                   intent.putExtra("length",length);
+                                   intent.putExtra("id",2);
+                                   startActivity(intent);
 
                                 }else {
-                                    runOnUiThread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            Toast.makeText(FriendManage.this, "删除失败", Toast.LENGTH_SHORT).show();
-                                        }
-                                    });
+                                    makeToast("删除失败");
                                 }
                             }
                         }).start();
                         break;
                 }
+            }
+        });
+    }
+    private void makeToast(final String msg){
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(FriendManage.this, msg, Toast.LENGTH_SHORT).show();
             }
         });
     }

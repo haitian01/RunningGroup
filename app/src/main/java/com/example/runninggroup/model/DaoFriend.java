@@ -70,7 +70,7 @@ public class DaoFriend {
     //删除好友
     public static boolean deleteFriend(String username,String friendName){
         String result =  PostRequest.postRequest("http://192.168.0.104:8080/friend/deleteFriend","username="+username+"&friendName="+friendName);
-        if(result == "SUCCESS"){
+        if("SUCCESS".equals(result)){
             return true;
         }
         return false;
