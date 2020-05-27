@@ -27,8 +27,10 @@ import com.example.runninggroup.viewAndController.fragment.FragmentGroup;
 import com.example.runninggroup.viewAndController.fragment.FragmentGroupMember;
 import com.example.runninggroup.viewAndController.fragment.FragmentGroupTask;
 import com.example.runninggroup.viewAndController.helper.GroupHelper;
+import com.example.runninggroup.viewAndController.helper.MemberManageHelper;
 import com.google.android.material.tabs.TabLayout;
 
+import java.lang.reflect.Member;
 import java.sql.BatchUpdateException;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +45,7 @@ public class GroupMessage extends AppCompatActivity implements View.OnClickListe
     String group;
     String num;
     String leader;
+    int admin;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,6 +68,7 @@ public class GroupMessage extends AppCompatActivity implements View.OnClickListe
         ArrayList<Fragment> fragmentList = new ArrayList<>();
         ArrayList<String> list_Title = new ArrayList<>();
 
+
         //访问服务器
         Thread t = new Thread(new Runnable() {
             @Override
@@ -81,10 +85,27 @@ public class GroupMessage extends AppCompatActivity implements View.OnClickListe
                 group = groupText.getText().toString();
                 num = numText.getText().toString();
                 leader = nameText.getText().toString();
-                if(! leader.equals(username)){
-                    manageText.setVisibility(View.GONE);
-                }else {
+                Thread m = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        List<MemberManageHelper> list1 = DaoGroup.getMemberTitle(group);
+                        for(MemberManageHelper memberManageHelper:list1){
+                            if(memberManageHelper.getUsername().equals(username)){admin=memberManageHelper.getAdmin();}
+                        }
+                    }
+                });
+                m.start();
+                try {
+                    m.join();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                if(leader.equals(username)){
                     mButton.setVisibility(View.GONE);
+                }else {
+                    if(admin == 0){
+                        manageText.setVisibility(View.GONE);
+                    }
                 }
             }
         });

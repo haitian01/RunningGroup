@@ -1,22 +1,24 @@
 package com.example.runninggroup.viewAndController.adapter;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.example.runninggroup.viewAndController.helper.FriendsHelper;
-import com.example.runninggroup.R;
 
+import com.example.runninggroup.R;
+import com.example.runninggroup.viewAndController.helper.GroupCallHelper;
+import com.example.runninggroup.viewAndController.helper.GroupTaskHelper;
+
+import java.text.SimpleDateFormat;
 import java.util.List;
 
-public class FriendsAdapter extends BaseAdapter {
+public class GroupCallAdapter extends BaseAdapter {
     public LayoutInflater mInflater;
-    public List<FriendsHelper> mList;
+    public List<GroupCallHelper> mList;
 
-    public FriendsAdapter(LayoutInflater inflater, List<FriendsHelper> list) {
+    public GroupCallAdapter(LayoutInflater inflater, List<GroupCallHelper> list) {
         mInflater = inflater;
         mList = list;
     }
@@ -41,32 +43,30 @@ public class FriendsAdapter extends BaseAdapter {
         //ViewHolder内部类
         class ViewHolder{
             public ImageView img;
-            public TextView name;
-            public TextView group;
-            public TextView length;
-            public TextView score;
+            public TextView callName;
+            public TextView callMsg;
+            public TextView callTime;
+
         }
         //判断converView是否为空
         ViewHolder viewHolder;
         if (convertView==null){
-            convertView=mInflater.inflate(R.layout.helper_friendshelper,null);
+            convertView=mInflater.inflate(R.layout.helper_grouptask,null);
             viewHolder=new ViewHolder();
             viewHolder.img=convertView.findViewById(R.id.img);
-            viewHolder.name=convertView.findViewById(R.id.name);
-            viewHolder.group=convertView.findViewById(R.id.group);
-            viewHolder.length=convertView.findViewById(R.id.length);
-            viewHolder.score=convertView.findViewById(R.id.score);
+            viewHolder.callName=convertView.findViewById(R.id.release_name);
+            viewHolder.callMsg=convertView.findViewById(R.id.task_msg);
+            viewHolder.callTime=convertView.findViewById(R.id.task_time);
             convertView.setTag(viewHolder);
         }else {
             viewHolder= (ViewHolder) convertView.getTag();
         }
 
         //赋值
-        viewHolder.img.setImageResource(R.mipmap.defaultpic);
-        viewHolder.name.setText(mList.get(position).getUsername());
-        viewHolder.group.setText(mList.get(position).getGroupName());
-        viewHolder.length.setText(mList.get(position).getLength()+"");
-        viewHolder.score.setText(mList.get(position).getScore()+"");
+        viewHolder.callName.setText(mList.get(position).getCallName());
+        viewHolder.callMsg.setText(mList.get(position).getCallMsg());
+        viewHolder.callTime.setText(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(mList.get(position).getCallTime()));
+
 
 
 
