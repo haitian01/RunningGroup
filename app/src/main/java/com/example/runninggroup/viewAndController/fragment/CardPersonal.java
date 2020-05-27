@@ -6,11 +6,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -22,6 +25,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import com.example.runninggroup.R;
+import com.example.runninggroup.model.DaoAct;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -32,9 +36,12 @@ public class CardPersonal extends AppCompatActivity {
     private TimePicker startTimePicker,endTimePicker;
     private DatePicker mDatePicker;
     private EditText mEditText;
+    private Spinner mSpinner;
+    private String[] act_type={"常规跑步","全马/半马","校比赛"};
+    private int score = 0;
     long beginTime;
     long endTime;
-    int length;
+    int length = 0;
     String username;
     String mBeginTime;
     String mEndTime;
@@ -57,8 +64,12 @@ public class CardPersonal extends AppCompatActivity {
         endTimePicker.setIs24HourView(true);
         mDatePicker = findViewById(R.id.date);
         mEditText = findViewById(R.id.length);
+        mSpinner = findViewById(R.id.act_type);
+        mSpinner.setAdapter(new ArrayAdapter<String>(this,R.layout.support_simple_spinner_dropdown_item,act_type));
+
     }
     private void initEvent() {
+
         mBtn_cardperson.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
@@ -70,9 +81,9 @@ public class CardPersonal extends AppCompatActivity {
                         mEndTime = mDatePicker.getYear()+"-"+appendZero(mDatePicker.getMonth())+"-"+appendZero(mDatePicker.getDayOfMonth())+" "+appendZero(endTimePicker.getHour())+":"+appendZero(endTimePicker.getMinute());
 
                         try {
-                            beginTime = new SimpleDateFormat("yyyy-MM--dd HH:mm").parse(mBeginTime).getTime();
-                            endTime = new SimpleDateFormat("yyyy-MM--dd HH:mm").parse(mEndTime).getTime();
-                            Toast.makeText(CardPersonal.this,mBeginTime+"\n"+mEndTime,Toast.LENGTH_LONG).show();
+                            beginTime = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(mBeginTime).getTime();
+                            endTime = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(mEndTime).getTime();
+                            Toast.makeText(CardPersonal.this,beginTime+"\n"+endTime,Toast.LENGTH_LONG).show();
 
                         } catch (ParseException e) {
                             Toast.makeText(CardPersonal.this,"时间转换错误",Toast.LENGTH_LONG).show();
@@ -85,7 +96,18 @@ public class CardPersonal extends AppCompatActivity {
                             Toast.makeText(CardPersonal.this,"跑步长度格式错误",Toast.LENGTH_LONG).show();
                             e.printStackTrace();
                         }
+                        //插入活动记录
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if(DaoAct.insertAct(username,beginTime,endTime,length,score)){
+                                makeToast("打卡成功");
 
+                            }else {
+                                makeToast("打卡失败");
+                            }
+                        }
+                    }).start();
 
                         break;
                 }
@@ -105,6 +127,14 @@ public class CardPersonal extends AppCompatActivity {
         }
 
     };
+    private void makeToast(final String msg){
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(CardPersonal.this, msg, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 
 
     }

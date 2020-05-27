@@ -38,8 +38,9 @@ public class FragmentFriends extends Fragment {
     public List<FriendsHelper> list;
     public List<MomentHelper> list1;
     public FriendsAdapter mAdapter;
-    public TextView applicationTextView;
+    public TextView applicationTextView,friendTextView;
     public View view;
+    private RelativeLayout mRelativeLayout;
     String username;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -108,6 +109,10 @@ public class FragmentFriends extends Fragment {
                                             if(list1.size() == 0){
                                                 applicationTextView.setVisibility(View.GONE);
                                             }
+                                            if(list.size() == 0){
+                                                friendTextView.setVisibility(View.GONE);
+                                            }
+                                            if (list1.size() == 0 && list.size() == 0){mRelativeLayout.setVisibility(View.VISIBLE);}
 
                                         }
                                     });
@@ -134,6 +139,10 @@ public class FragmentFriends extends Fragment {
                                             if(list1.size() == 0){
                                                 applicationTextView.setVisibility(View.GONE);
                                             }
+                                            if(list.size() == 0){
+                                                friendTextView.setVisibility(View.GONE);
+                                            }
+                                            if (list1.size() == 0 && list.size() == 0){mRelativeLayout.setVisibility(View.VISIBLE);}
                                         }
                                     });
                                 }else {
@@ -154,6 +163,8 @@ public class FragmentFriends extends Fragment {
     private void initView() {
         username = getActivity().getIntent().getStringExtra("username");
         applicationTextView = view.findViewById(R.id.application);
+        friendTextView = view.findViewById(R.id.friend);
+        mRelativeLayout = view.findViewById(R.id.nofriend);
         //find
         mListView=view.findViewById(R.id.listView);
         mListView1 = view.findViewById(R.id.applicationListView);
@@ -163,6 +174,12 @@ public class FragmentFriends extends Fragment {
         //设置适配器
         mListView.setAdapter(mAdapter);
         mListView1.setAdapter(new MomentAdapter(getLayoutInflater(),list1));
-        if(list1.size() == 0){applicationTextView.setVisibility(View.GONE);}
+        if(list1.size() == 0){
+            applicationTextView.setVisibility(View.GONE);
+        }
+        if(list.size() == 0){
+            friendTextView.setVisibility(View.GONE);
+        }
+        if (list1.size() == 0 && list.size() == 0){mRelativeLayout.setVisibility(View.VISIBLE);}
     }
 }
