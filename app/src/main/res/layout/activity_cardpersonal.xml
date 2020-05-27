@@ -20,19 +20,16 @@
         android:layout_marginLeft="50dp"
         android:layout_marginRight="50dp"
         android:layout_marginTop="50dp"
-        android:text="输入打卡时间："
+        android:text="输入开始时间："
         android:textSize="24sp">
 
     </TextView>
 
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginLeft="50dp"
-        android:layout_marginRight="50dp"
-        android:id="@+id/date">
-
-    </EditText>
+    <TimePicker
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:timePickerMode="spinner"
+        ></TimePicker>
 
     <TextView
         android:layout_width="match_parent"
@@ -40,7 +37,7 @@
         android:layout_marginLeft="50dp"
         android:layout_marginRight="50dp"
         android:layout_marginTop="30dp"
-        android:text="输入起始位置："
+        android:text="输入结束时间："
         android:textSize="24sp">
 
     </TextView>
@@ -60,7 +57,7 @@
         android:layout_marginLeft="50dp"
         android:layout_marginRight="50dp"
         android:layout_marginTop="30dp"
-        android:text="跑步时长："
+        android:text="跑步长度（米）："
         android:textSize="24sp">
 
     </TextView>

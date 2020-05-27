@@ -14,45 +14,46 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import com.example.runninggroup.R;
 
-public class FragmentCardPersonal extends Fragment {
+public class CardPersonal extends AppCompatActivity {
 
     private Button mBtn_cardperson;
     private EditText mEt_date, mEt_position, mEt_length;
     private RadioGroup rg;
+    String username;
 
-    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_cardpersonal,container,false);
-        return view;
-
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_cardpersonal);
+        initView();
+        initEvent();
     }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
 
-        mBtn_cardperson = view.findViewById(R.id.card_personal);
-        mEt_date = view.findViewById(R.id.date);
-        mEt_position = view.findViewById(R.id.position);
-        mEt_length = view.findViewById(R.id.length);
-        rg = view.findViewById(R.id.radio_group);
-
+    private void initView() {
+        username = getIntent().getStringExtra("username");
+        mBtn_cardperson = findViewById(R.id.card_personal);
+        mEt_date = findViewById(R.id.date);
+        mEt_position = findViewById(R.id.position);
+        mEt_length = findViewById(R.id.length);
+        rg = findViewById(R.id.radio_group);
+    }
+    private void initEvent() {
         mBtn_cardperson.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 switch (v.getId()){
                     case R.id.card_personal:
-                        Toast.makeText(getContext(),"打卡完成",Toast.LENGTH_LONG).show();
+                        Toast.makeText(CardPersonal.this,"打卡完成",Toast.LENGTH_LONG).show();
                         break;
                 }
             }
         });
-
         rg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -68,7 +69,8 @@ public class FragmentCardPersonal extends Fragment {
             }
         });
 
-        }
+    }
+
 
     }
 
