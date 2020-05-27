@@ -1,30 +1,43 @@
 package com.example.runninggroup.viewAndController.fragment;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import com.example.runninggroup.R;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+
 public class CardPersonal extends AppCompatActivity {
 
     private Button mBtn_cardperson;
-    private EditText mEt_date, mEt_position, mEt_length;
-    private RadioGroup rg;
+    private TimePicker startTimePicker,endTimePicker;
+    private DatePicker mDatePicker;
+    private EditText mEditText;
+    long beginTime;
+    long endTime;
+    int length;
     String username;
+    String mBeginTime;
+    String mEndTime;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -38,36 +51,47 @@ public class CardPersonal extends AppCompatActivity {
     private void initView() {
         username = getIntent().getStringExtra("username");
         mBtn_cardperson = findViewById(R.id.card_personal);
-        mEt_date = findViewById(R.id.date);
-        mEt_position = findViewById(R.id.position);
-        mEt_length = findViewById(R.id.length);
-        rg = findViewById(R.id.radio_group);
+        startTimePicker = findViewById(R.id.start_time);
+        endTimePicker = findViewById(R.id.end_time);
+        startTimePicker.setIs24HourView(true);
+        endTimePicker.setIs24HourView(true);
+        mDatePicker = findViewById(R.id.date);
+        mEditText = findViewById(R.id.length);
     }
     private void initEvent() {
         mBtn_cardperson.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.M)
             @Override
             public void onClick(View v) {
                 switch (v.getId()){
                     case R.id.card_personal:
-                        Toast.makeText(CardPersonal.this,"打卡完成",Toast.LENGTH_LONG).show();
-                        break;
-                }
-            }
-        });
-        rg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                switch(checkedId){
-                    case R.id.single:
-                        Log.e("rb","选择个人打卡");
-                        break;
-                    case R.id.group:
-                        Log.e("rb","选择跑团打卡");
-                        break;
 
+                        mBeginTime = mDatePicker.getYear()+"-"+mDatePicker.getMonth()+"-"+mDatePicker.getDayOfMonth()+" "+startTimePicker.getHour()+":"+startTimePicker.getMinute();
+                        mEndTime = mDatePicker.getYear()+"-"+mDatePicker.getMonth()+"-"+mDatePicker.getDayOfMonth()+" "+endTimePicker.getHour()+":"+endTimePicker.getMinute();
+                        try {
+                            beginTime = new SimpleDateFormat("yyyy-MM--dd HH:mm").parse(mBeginTime).getTime();
+                            endTime = new SimpleDateFormat("yyyy-MM--dd HH:mm").parse(mEndTime).getTime();
+
+                        } catch (ParseException e) {
+                            Toast.makeText(CardPersonal.this,"时间转换错误",Toast.LENGTH_LONG).show();
+                            e.printStackTrace();
+                        }
+                        try {
+                            length = Integer.parseInt(mEditText.getText().toString());
+
+                        } catch (NumberFormatException e) {
+                            Toast.makeText(CardPersonal.this,"跑步长度格式错误",Toast.LENGTH_LONG).show();
+                            e.printStackTrace();
+                        }
+
+
+                        break;
                 }
             }
         });
+
+
+
 
     }
 
