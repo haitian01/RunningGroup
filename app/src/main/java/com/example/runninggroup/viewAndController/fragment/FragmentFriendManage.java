@@ -1,47 +1,69 @@
-package com.example.runninggroup.viewAndController;
+package com.example.runninggroup.viewAndController.fragment;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 import com.example.runninggroup.R;
 import com.example.runninggroup.model.DaoFriend;
+import com.example.runninggroup.model.DaoUser;
+import com.example.runninggroup.viewAndController.MainInterface;
 
-public class FriendManage extends AppCompatActivity {
+public class FragmentFriendManage extends Fragment {
+    View mView;
     TextView nameText,groupText,lengthText;
     ListView friendManageList;
+    ImageView mImageView;
+    Drawable mDrawable;
     String username;
     String name;
     String group;
     String length;
+
+    @Nullable
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_friendmanage);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        mView = inflater.inflate(R.layout.fragment_friendmanage,container,false);
         initView();
         initEvent();
+        return mView;
     }
 
-
     private void initView() {
-        username = getIntent().getStringExtra("username");
-        name = getIntent().getStringExtra("name");
-        group = getIntent().getStringExtra("group");
-        length = getIntent().getStringExtra("length");
-        nameText = findViewById(R.id.friendmanage_name);
-        groupText = findViewById(R.id.friendmanage_group);
-        lengthText = findViewById(R.id.friendmanage_runNum);
-        friendManageList = findViewById(R.id.friendmanage_list);
+        username = getActivity().getIntent().getStringExtra("username");
+        name = getActivity().getIntent().getStringExtra("name");
+        group = getActivity().getIntent().getStringExtra("group");
+        length = getActivity().getIntent().getStringExtra("length");
+        mImageView = mView.findViewById(R.id.friendmanage_img);
+        nameText = mView.findViewById(R.id.friendmanage_name);
+        groupText = mView.findViewById(R.id.friendmanage_group);
+        lengthText = mView.findViewById(R.id.friendmanage_runNum);
+        friendManageList = mView.findViewById(R.id.friendmanage_list);
         nameText.setText(name);
         groupText.setText(group);
         lengthText.setText(length);
+        Thread t = new Thread(() -> {
+            mDrawable = DaoUser.getImg(DaoUser.getUserHeadImgName(name));
+        });
+        t.start();
+        try {
+            t.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        mImageView.setImageDrawable(mDrawable);
     }
 
     private void initEvent() {
@@ -56,7 +78,7 @@ public class FriendManage extends AppCompatActivity {
                             public void run() {
                                 if(DaoFriend.deleteFriend(username,name)){
                                    makeToast("删除成功");
-                                   Intent intent = new Intent(FriendManage.this,MainInterface.class);
+                                   Intent intent = new Intent(getActivity(), MainInterface.class);
                                    intent.putExtra("username",username);
                                    intent.putExtra("group",group);
                                    intent.putExtra("name",name);
@@ -75,10 +97,10 @@ public class FriendManage extends AppCompatActivity {
         });
     }
     private void makeToast(final String msg){
-        runOnUiThread(new Runnable() {
+        getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Toast.makeText(FriendManage.this, msg, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), msg, Toast.LENGTH_SHORT).show();
             }
         });
     }

@@ -52,7 +52,6 @@ public class MyPagerAdapter extends FragmentStatePagerAdapter {
     @NonNull
     @Override
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
-        Log.e("zrg", "instantiateItem: 当前位置position=" + position);
         return super.instantiateItem(container, position);
     }
    

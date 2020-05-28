@@ -1,5 +1,6 @@
 package com.example.runninggroup.viewAndController.adapter;
 
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.runninggroup.R;
+import com.example.runninggroup.model.DaoUser;
 import com.example.runninggroup.viewAndController.helper.DynamicHelper;
 import com.example.runninggroup.viewAndController.helper.MomentHelper;
 
@@ -19,6 +21,7 @@ import java.util.List;
 public class MomentAdapter extends BaseAdapter {
     public LayoutInflater mInflater;
     public List<MomentHelper> mList;
+    Drawable mDrawable;
 
     public MomentAdapter(LayoutInflater inflater, List<MomentHelper> list) {
         mInflater = inflater;
@@ -65,11 +68,18 @@ public class MomentAdapter extends BaseAdapter {
         }
 
         //赋值
-        viewHolder.img.setImageResource(R.mipmap.defaultpic);
         viewHolder.msg.setText(mList.get(position).getContent());
-        Log.v("name------>",mList.get(position).getFrom_name());
         viewHolder.name.setText(mList.get(position).getFrom_name());
         viewHolder.time.setText(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(mList.get(position).getMoment_time())));
+        Thread t = new Thread(() -> mDrawable = DaoUser.getImg(DaoUser.getUserHeadImgName(mList.get(position).getFrom_name())));
+        t.start();
+        try {
+            t.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        if(mDrawable != null) viewHolder.img.setImageDrawable(mDrawable);
+        else viewHolder.img.setImageResource(R.mipmap.defaultpic);
 
 
 

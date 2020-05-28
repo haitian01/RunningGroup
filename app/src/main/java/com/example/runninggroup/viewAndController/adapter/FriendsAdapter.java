@@ -1,5 +1,7 @@
 package com.example.runninggroup.viewAndController.adapter;
 
+import android.app.Activity;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,6 +9,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.example.runninggroup.model.DaoUser;
 import com.example.runninggroup.viewAndController.helper.FriendsHelper;
 import com.example.runninggroup.R;
 
@@ -15,10 +19,14 @@ import java.util.List;
 public class FriendsAdapter extends BaseAdapter {
     public LayoutInflater mInflater;
     public List<FriendsHelper> mList;
+    private Drawable mDrawable;
+    private Activity mActivity;
 
-    public FriendsAdapter(LayoutInflater inflater, List<FriendsHelper> list) {
+    public FriendsAdapter(LayoutInflater inflater, List<FriendsHelper> list,Activity activity) {
+
         mInflater = inflater;
         mList = list;
+        mActivity = activity;
     }
 
     @Override
@@ -62,11 +70,19 @@ public class FriendsAdapter extends BaseAdapter {
         }
 
         //赋值
-        viewHolder.img.setImageResource(R.mipmap.defaultpic);
         viewHolder.name.setText(mList.get(position).getUsername());
         viewHolder.group.setText(mList.get(position).getGroupName());
         viewHolder.length.setText(mList.get(position).getLength()+"");
         viewHolder.score.setText(mList.get(position).getScore()+"");
+        Thread t = new Thread(() -> mDrawable = DaoUser.getImg(DaoUser.getUserHeadImgName(mList.get(position).getUsername())));
+        t.start();
+        try {
+            t.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        if(mDrawable != null) viewHolder.img.setImageDrawable(mDrawable);
+        else viewHolder.img.setImageResource(R.mipmap.defaultpic);
 
 
 

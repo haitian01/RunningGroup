@@ -50,6 +50,16 @@
             android:text="北邮跑团"/>
 
     </RelativeLayout>
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/manage_tbl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"></com.google.android.material.tabs.TabLayout>
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/manage_vpg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </androidx.viewpager.widget.ViewPager>
     <ListView
         android:id="@+id/friend_menu"
         android:layout_width="match_parent"
@@ -58,9 +68,6 @@
         >
 
     </ListView>
-    <ListView
-        android:id="@+id/dynamic"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"></ListView>
+
 
 </LinearLayout>

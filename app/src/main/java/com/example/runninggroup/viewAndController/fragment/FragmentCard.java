@@ -4,24 +4,20 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.runninggroup.R;
+import com.example.runninggroup.viewAndController.CardPersonal;
 
 import java.util.Random;
-
-import static androidx.core.os.LocaleListCompat.create;
 
 public class FragmentCard extends Fragment implements View.OnClickListener {
     Button mButton;
@@ -96,7 +92,7 @@ public class FragmentCard extends Fragment implements View.OnClickListener {
                             public void onClick(DialogInterface dialogInterface, int i) {
                                switch (i){
                                    case 1:
-                                       Intent intent = new Intent(getActivity(),CardPersonal.class);
+                                       Intent intent = new Intent(getActivity(), CardPersonal.class);
                                        intent.putExtra("username",username);
                                        startActivity(intent);
                                        break;

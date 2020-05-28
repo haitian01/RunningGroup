@@ -1,98 +1,80 @@
 package com.example.runninggroup.request;
 
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.DrawableContainer;
+import android.util.Log;
+
 import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 
 public class ImgPost {
-    /**
-     * 文件上传
-     *
-     * @param urlStr 接口路径
-     * @param filePath 本地图片路径
-     * @return
-     */
-    public static String formUpload(String urlStr, String filePath) {
-        String rsp = "";
-        HttpURLConnection conn = null;
-        String BOUNDARY = "|"; // request头和上传文件内容分隔符
+    private static String urls = "http://192.168.0.104:8080/user/getImg";
+    public static Drawable getImg(String imgName) {
         try {
-            URL url = new URL(urlStr);
-            conn = (HttpURLConnection) url.openConnection();
-            conn.setConnectTimeout(5000);
-            conn.setReadTimeout(30000);
-            conn.setDoOutput(true);
-            conn.setDoInput(true);
-            conn.setUseCaches(false);
-            conn.setRequestMethod("POST");
-            conn.setRequestProperty("Connection", "Keep-Alive");
-            conn.setRequestProperty("User-Agent",
-                    "Mozilla/5.0 (Windows; U; Windows NT 6.1; zh-CN; rv:1.9.2.6)");
-            conn.setRequestProperty("Content-Type",
-                    "multipart/form-data; boundary=" + BOUNDARY);
-
-            OutputStream out = new DataOutputStream(conn.getOutputStream());
-            File file = new File(filePath);
-            String filename = file.getName();
-            String contentType = "";
-            if (filename.endsWith(".png")) {
-                contentType = "image/png";
-            }
-            if (filename.endsWith(".jpg")) {
-                contentType = "image/jpg";
-            }
-            if (filename.endsWith(".gif")) {
-                contentType = "image/gif";
-            }
-            if (filename.endsWith(".bmp")) {
-                contentType = "image/bmp";
-            }
-            if (contentType == null || contentType.equals("")) {
-                contentType = "application/octet-stream";
-            }
-            StringBuffer strBuf = new StringBuffer();
-            strBuf.append("\r\n").append("--").append(BOUNDARY).append("\r\n");
-            strBuf.append("Content-Disposition: form-data; name=\"" + filePath
-                    + "\"; filename=\"" + filename + "\"\r\n");
-            strBuf.append("Content-Type:" + contentType + "\r\n\r\n");
-            out.write(strBuf.toString().getBytes());
-//            DataInputStream in = new DataInputStream(new FileInputStream(file));
-            DataInputStream in = new DataInputStream(new FileInputStream("/DCIM/Camera/IMG_20200507_105440.jpg"));
-            int bytes = 0;
-            byte[] bufferOut = new byte[1024];
-            while ((bytes = in.read(bufferOut)) != -1) {
-                out.write(bufferOut);
-            }
-            in.close();
-            byte[] endData = ("\r\n--" + BOUNDARY + "--\r\n").getBytes();
-            out.write(endData);
+            String params = "imgName="+imgName;
+            // 1. 获取访问地址URL
+            URL url = new URL(urls);
+            // 2. 创建HttpURLConnection对象
+            HttpURLConnection connection = (HttpURLConnection) url
+                    .openConnection();
+            /* 3. 设置请求参数等 */
+            // 请求方式
+            connection.setRequestMethod("POST");
+            // 超时时间
+            connection.setConnectTimeout(100);
+            // 设置是否输出
+            connection.setDoOutput(true);
+            // 设置是否读入
+            connection.setDoInput(true);
+            // 设置是否使用缓存
+            connection.setUseCaches(true);
+            // 设置此 HttpURLConnection 实例是否应该自动执行 HTTP 重定向
+            connection.setInstanceFollowRedirects(true);
+            // 设置使用标准编码格式编码参数的名-值对
+            connection.setRequestProperty("Content-Type",
+                    "application/x-www-form-urlencoded");
+            // 连接(有问题)
+//            connection.connect();
+            /* 4. 处理输入输出 */
+            // 写入参数到请求中
+            OutputStream out = connection.getOutputStream();
+            out.write(params.getBytes());
             out.flush();
             out.close();
+            // 从连接中读取响应信息
+            String msg = "";
+            int code = connection.getResponseCode();
+            if (code == 200) {
+               return loadImageFromNetwork(connection.getInputStream());
 
-            // 读取返回数据
-            StringBuffer buffer = new StringBuffer();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream(), "utf-8"));
-            String line = null;
-            while ((line = reader.readLine()) != null) {
-                buffer.append(line).append("\n");
             }
-            rsp = buffer.toString();
-            reader.close();
-            reader = null;
-        } catch (Exception e) {
+            // 5. 断开连接
+            connection.disconnect();
+
+            // 处理结果
+            System.out.println(msg);
+        } catch (MalformedURLException e) {
             e.printStackTrace();
-        } finally {
-            if (conn != null) {
-                conn.disconnect();
-                conn = null;
-            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        return rsp;
+        return null;
+
+    }
+    private static Drawable loadImageFromNetwork(InputStream inputStream) {
+
+        Drawable drawable = Drawable.createFromStream(inputStream, null);
+        return drawable;
+
     }
 }

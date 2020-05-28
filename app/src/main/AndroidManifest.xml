@@ -29,10 +29,10 @@
         <activity android:name=".viewAndController.Manage" />
 
         <activity android:name=".viewAndController.Write"></activity>
-        <activity android:name=".viewAndController.FriendManage"></activity>
+        <activity android:name=".viewAndController.fragment.FragmentFriendManage"></activity>
         <activity android:name=".viewAndController.MemberManage"></activity>
         <activity android:name=".viewAndController.WriteTask"></activity>
-        <activity android:name=".viewAndController.fragment.CardPersonal"></activity>
+        <activity android:name=".viewAndController.CardPersonal"></activity>
 
     </application>
 

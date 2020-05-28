@@ -74,6 +74,7 @@ public class MainInterface extends AppCompatActivity implements View.OnClickList
 
 
 
+
     private void initView() {
         mIntent = getIntent();
         username = mIntent.getStringExtra("username");
@@ -228,11 +229,13 @@ public class MainInterface extends AppCompatActivity implements View.OnClickList
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        final Drawable drawable = DaoUser.loadImageFromNetwork(DaoUser.getUserHeadImgName(username));
+//                        final Drawable drawable = DaoUser.getImg(DaoUser.getUserHeadImgName(username));
+                        final Drawable drawable = DaoUser.getImg(DaoUser.getUserHeadImgName(username));
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                personalHead.setImageDrawable(drawable);
+                                if(drawable != null) personalHead.setImageDrawable(drawable);
+                                else personalHead.setImageResource(R.mipmap.defaultpic);
                             }
                         });
                     }

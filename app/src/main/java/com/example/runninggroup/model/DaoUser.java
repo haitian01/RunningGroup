@@ -75,23 +75,11 @@ public class DaoUser {
         return  list;
     }
     //上传用户头像
-    public static String setUserImg(String username, Uri uri){
-        String group =  ImgPost.formUpload("http://192.168.0.104:8080/user/setUserImg",uri.getPath());
-        if (group == null) return "ERROR";
-        return group;
-    }
-    //获取用户头像
-    public static Drawable loadImageFromNetwork(String imgName) {
 
-        try {
-            Drawable drawable = Drawable.createFromStream(new URL("http://192.168.0.104:8080/user/setUserImg").openStream(), imgName+".jpg");
-            return drawable;
-        } catch (IOException e) {
-            e.printStackTrace();
-            Log.v("DRAWABLE","空指针");
-            return new DrawableContainer();
-        }
-    }
+    //获取用户头像
+   public static Drawable getImg(String imgName){
+       return ImgPost.getImg(imgName);
+   }
     //获取用户头像的imgName
     public static String getUserHeadImgName(String username){
         return "user_"+username+"_head";

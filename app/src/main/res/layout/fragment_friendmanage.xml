@@ -50,6 +50,7 @@
             android:text="北邮跑团"/>
 
     </RelativeLayout>
+
     <ListView
         android:id="@+id/friendmanage_list"
         android:layout_width="match_parent"
