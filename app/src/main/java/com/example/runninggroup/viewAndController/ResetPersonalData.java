@@ -17,12 +17,14 @@ import android.os.Environment;
 import android.os.FileUtils;
 import android.provider.MediaStore;
 import android.provider.OpenableColumns;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.example.runninggroup.R;
+import com.example.runninggroup.model.DaoUser;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -32,7 +34,7 @@ import java.net.URI;
 
 
 public class ResetPersonalData extends AppCompatActivity implements View.OnClickListener {
-    private Button mBtn_return;
+    private Button mBtn_return,mBtn_resetData;
     private Button mBtn_changeData;
     private ImageView mIma_chosePic;
     private EditText mEd_oldPas;
@@ -41,6 +43,8 @@ public class ResetPersonalData extends AppCompatActivity implements View.OnClick
     public static final int TAKE_CAMERA = 101;
     private Uri imageUri;
     private Context context;
+    private Uri uri;
+    String username;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,19 +59,23 @@ public class ResetPersonalData extends AppCompatActivity implements View.OnClick
             // 从相册返回的数据
             if (data != null) {
                 //得到图片的全路径
-                Uri uri = data.getData();
+                uri = data.getData();
                 mIma_chosePic.setImageURI(uri);
             }
         }
     }
 
     private void initView(){
+        username = getIntent().getStringExtra("username");
         mBtn_return = findViewById(R.id.returnToMain);
+        mBtn_resetData = findViewById(R.id.resetData);
         mIma_chosePic = findViewById(R.id.choseImage);
+
     }
 
     private void initEvent(){
         mBtn_return.setOnClickListener(this);
+        mBtn_resetData.setOnClickListener(this);
         mIma_chosePic.setOnClickListener(this);
         context = ResetPersonalData.this;
     }
@@ -93,6 +101,10 @@ public class ResetPersonalData extends AppCompatActivity implements View.OnClick
                 });
                 builder.create();
                 builder.show();
+                break;
+            case R.id.resetData:
+                Log.v("TAG",uri.getPath());
+
                 break;
 //            case R.id:
 //                break;

@@ -62,11 +62,12 @@ public class ImgPost {
                     + "\"; filename=\"" + filename + "\"\r\n");
             strBuf.append("Content-Type:" + contentType + "\r\n\r\n");
             out.write(strBuf.toString().getBytes());
-            DataInputStream in = new DataInputStream(new FileInputStream(file));
+//            DataInputStream in = new DataInputStream(new FileInputStream(file));
+            DataInputStream in = new DataInputStream(new FileInputStream("/DCIM/Camera/IMG_20200507_105440.jpg"));
             int bytes = 0;
             byte[] bufferOut = new byte[1024];
             while ((bytes = in.read(bufferOut)) != -1) {
-                out.write(bufferOut, 0, bytes);
+                out.write(bufferOut);
             }
             in.close();
             byte[] endData = ("\r\n--" + BOUNDARY + "--\r\n").getBytes();

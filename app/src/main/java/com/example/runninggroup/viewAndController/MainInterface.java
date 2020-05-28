@@ -6,6 +6,8 @@ import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.DrawableContainer;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.util.Log;
@@ -16,6 +18,7 @@ import android.webkit.WebViewClient;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Switch;
@@ -30,6 +33,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.example.runninggroup.R;
 import com.example.runninggroup.model.DaoFriend;
+import com.example.runninggroup.model.DaoUser;
 import com.example.runninggroup.viewAndController.adapter.MyPagerAdapter;
 import com.example.runninggroup.viewAndController.fragment.FragmentCard;
 import com.example.runninggroup.viewAndController.fragment.FragmentData;
@@ -37,6 +41,8 @@ import com.example.runninggroup.viewAndController.fragment.FragmentFriends;
 import com.example.runninggroup.viewAndController.fragment.FragmentGroup;
 import com.google.android.material.tabs.TabLayout;
 
+import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 
 public class MainInterface extends AppCompatActivity implements View.OnClickListener {
@@ -47,6 +53,7 @@ public class MainInterface extends AppCompatActivity implements View.OnClickList
     private ConstraintLayout mPesonalSetting,mRightSetting;
     private LinearLayout mLineraLayout;
     private ListView mListView,mRightList;
+    private ImageView personalHead;
     Intent mIntent;
     String username;
     int id;
@@ -81,6 +88,8 @@ public class MainInterface extends AppCompatActivity implements View.OnClickList
         mLineraLayout = findViewById(R.id.ll_container);
         mListView = findViewById(R.id.personalListView);
         mRightList = findViewById(R.id.rightList);
+        personalHead = findViewById(R.id.personalImage);
+
         ArrayList<Fragment> fragmentList = new ArrayList<>();
         ArrayList<String> list_Title = new ArrayList<>();
         fragmentList.add(new FragmentData());
@@ -215,6 +224,20 @@ public class MainInterface extends AppCompatActivity implements View.OnClickList
             case R.id.sideSetting:
                 mPesonalSetting.setVisibility(View.VISIBLE);
                 mLineraLayout.setVisibility(View.VISIBLE);
+                //设置头像
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        final Drawable drawable = DaoUser.loadImageFromNetwork(DaoUser.getUserHeadImgName(username));
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                personalHead.setImageDrawable(drawable);
+                            }
+                        });
+                    }
+                }).start();
+
                 break;
             case R.id.button_quit:
                 AlertDialog.Builder builder = new AlertDialog.Builder(MainInterface.this);
@@ -242,5 +265,8 @@ public class MainInterface extends AppCompatActivity implements View.OnClickList
                 break;
         }
     }
+
+
+
 
 }

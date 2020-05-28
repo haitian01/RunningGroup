@@ -1,8 +1,12 @@
 package com.example.runninggroup.model;
 
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.DrawableContainer;
+import android.net.Uri;
 import android.util.JsonWriter;
 import android.util.Log;
 
+import com.example.runninggroup.request.ImgPost;
 import com.example.runninggroup.request.PostRequest;
 import com.example.runninggroup.viewAndController.helper.FriendsHelper;
 
@@ -12,6 +16,9 @@ import com.example.runninggroup.viewAndController.helper.GroupHelper;
 import com.example.runninggroup.viewAndController.helper.User;
 
 
+import java.io.IOException;
+import java.net.URI;
+import java.net.URL;
 import java.security.acl.Group;
 import java.util.ArrayList;
 import java.util.List;
@@ -66,6 +73,44 @@ public class DaoUser {
         List<User> list = JSONObject.parseArray(json,User.class);
         if (list == null) return new ArrayList<User>();
         return  list;
+    }
+    //上传用户头像
+    public static String setUserImg(String username, Uri uri){
+        String group =  ImgPost.formUpload("http://192.168.0.104:8080/user/setUserImg",uri.getPath());
+        if (group == null) return "ERROR";
+        return group;
+    }
+    //获取用户头像
+    public static Drawable loadImageFromNetwork(String imgName) {
+
+        try {
+            Drawable drawable = Drawable.createFromStream(new URL("http://192.168.0.104:8080/user/setUserImg").openStream(), imgName+".jpg");
+            return drawable;
+        } catch (IOException e) {
+            e.printStackTrace();
+            Log.v("DRAWABLE","空指针");
+            return new DrawableContainer();
+        }
+    }
+    //获取用户头像的imgName
+    public static String getUserHeadImgName(String username){
+        return "user_"+username+"_head";
+    }
+    //获取跑团的头像
+    public static String getGroupHeadImgName(String groupName){
+        return "group_"+groupName+"_head";
+    }
+    //获取好友某条动态的图片
+    public static String getDynamicImgName(String username,long dynamic_time){
+        return "dynamic_"+username+"_"+dynamic_time;
+    }
+    //获取跑团某条任务的图片
+    public static String getTaskImgName(String admin,long task_time){
+        return "task_"+admin+"_"+task_time;
+    }
+    //获取跑团招募的图片
+    public static String getCallImgName(String admin,long task_time){
+        return "call_"+admin+"_"+task_time;
     }
 
 }
