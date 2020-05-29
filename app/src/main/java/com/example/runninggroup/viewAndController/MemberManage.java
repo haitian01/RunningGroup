@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.runninggroup.R;
 import com.example.runninggroup.model.DaoGroup;
+import com.example.runninggroup.model.DaoUser;
 import com.example.runninggroup.viewAndController.adapter.MemberManageAdapter;
 import com.example.runninggroup.viewAndController.helper.MemberManageHelper;
 
@@ -36,12 +37,15 @@ public class MemberManage extends AppCompatActivity {
         username = getIntent().getStringExtra("username");
         group = getIntent().getStringExtra("group");
 
-        memberManageList = findViewById(R.id.membermanage_list);
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
+                leaderName = DaoGroup.getLeader(group);
                 //拿到成员列表
                 mList = DaoGroup.getMemberTitle(group);
+                for (MemberManageHelper memberManageHelper : mList) {
+                    memberManageHelper.setImg(DaoUser.getImg(DaoUser.getUserHeadImgName(memberManageHelper.getUsername())));
+                }
             }
         });
         t.start();
@@ -50,14 +54,9 @@ public class MemberManage extends AppCompatActivity {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        memberManageList = findViewById(R.id.membermanage_list);
         memberManageList.setAdapter(new MemberManageAdapter(getLayoutInflater(),mList));
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                leaderName = DaoGroup.getLeader(group);
-            }
-        }).start();
     }
     private void initEvent() {
         memberManageList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -86,6 +85,9 @@ public class MemberManage extends AppCompatActivity {
 
         //拿到成员列表
         mList = DaoGroup.getMemberTitle(group);
+        for (MemberManageHelper memberManageHelper : mList) {
+            memberManageHelper.setImg(DaoUser.getImg(DaoUser.getUserHeadImgName(memberManageHelper.getUsername())));
+        }
         memberManageList.setAdapter(new MemberManageAdapter(getLayoutInflater(),mList));
 
     }

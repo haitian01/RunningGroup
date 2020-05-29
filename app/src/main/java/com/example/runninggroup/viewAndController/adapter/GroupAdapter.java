@@ -1,5 +1,6 @@
 package com.example.runninggroup.viewAndController.adapter;
 
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,7 +61,9 @@ public class GroupAdapter extends BaseAdapter {
         }
 
         //赋值
-        viewHolder.img.setImageResource(mList.get(position).getLogo());
+        Drawable drawable = mList.get(position).getLogo();
+        if(drawable != null) viewHolder.img.setImageDrawable(drawable);
+        else viewHolder.img.setImageResource(R.mipmap.defaultpic);
         viewHolder.name.setText(mList.get(position).getGroupName());
         viewHolder.num.setText(mList.get(position).getNumbers()+"");
 

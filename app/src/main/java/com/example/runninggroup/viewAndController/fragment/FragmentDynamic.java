@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.runninggroup.R;
 import com.example.runninggroup.model.DaoFriend;
+import com.example.runninggroup.model.DaoUser;
 import com.example.runninggroup.viewAndController.adapter.DynamicAdapter;
 import com.example.runninggroup.viewAndController.helper.DynamicHelper;
 
@@ -46,7 +47,7 @@ public class FragmentDynamic extends Fragment {
             public void run() {
                 mList = DaoFriend.getDynamic(name);
                 for(DynamicHelper list:mList){
-                    list.setDynamic_img("defaultpic");
+                    list.setDynamic_img(DaoUser.getImg(DaoUser.getGroupHeadImgName(name)));
                 }
             }
         });
@@ -56,8 +57,9 @@ public class FragmentDynamic extends Fragment {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        dynamicListView.setAdapter(new DynamicAdapter(getLayoutInflater(),mList));
     }
     private void initEvent() {
-        dynamicListView.setAdapter(new DynamicAdapter(getLayoutInflater(),mList));
+
     }
 }

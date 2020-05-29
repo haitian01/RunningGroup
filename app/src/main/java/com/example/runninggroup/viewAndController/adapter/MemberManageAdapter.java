@@ -1,5 +1,6 @@
 package com.example.runninggroup.viewAndController.adapter;
 
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,7 +62,9 @@ public class MemberManageAdapter extends BaseAdapter {
         }
 
         //赋值
-        viewHolder.img.setImageResource(R.mipmap.defaultpic);
+        Drawable drawable = mList.get(position).getImg();
+        if(drawable != null) viewHolder.img.setImageDrawable(drawable);
+        else viewHolder.img.setImageResource(R.mipmap.defaultpic);
         viewHolder.name.setText(mList.get(position).getUsername());
         viewHolder.title.setText((mList.get(position).getAdmin()==1) ? "管理员":"成员");
 

@@ -6,4 +6,20 @@
         <item>通用设置 \u3000 \u3000 \u3000 \u3000 \u3000 ></item>
         <item>联系客服 \u3000 \u3000 \u3000 \u3000 \u3000 ></item>
     </string-array>
+    <string-array name="addicon">
+        <item>添加好友 \u3000 \u3000 \u3000 \u3000 \u3000 ></item>
+        <item>发表动态 \u3000 \u3000 \u3000 \u3000 \u3000 ></item>
+    </string-array>
+    <string-array name="friendmanage">
+        <item>删除好友</item>
+    </string-array>
+    <string-array name="groupmanage">
+        <item>任务发布 \u3000 \u3000 \u3000 \u3000 \u3000 ></item>
+        <item>招募发布 \u3000 \u3000 \u3000 \u3000 \u3000 ></item>
+        <item>权限管理 \u3000 \u3000 \u3000 \u3000 \u3000 ></item>
+        <item>解散跑团 \u3000 \u3000 \u3000 \u3000 \u3000 ></item>
+    </string-array>
+    <string-array name="friend_menu">
+        <item>好友管理 \u3000 \u3000 \u3000 \u3000 \u3000 ></item>
+    </string-array>
 </resources>

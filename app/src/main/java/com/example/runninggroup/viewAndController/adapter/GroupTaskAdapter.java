@@ -1,5 +1,6 @@
 package com.example.runninggroup.viewAndController.adapter;
 
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import com.example.runninggroup.R;
 import com.example.runninggroup.viewAndController.helper.FriendsHelper;
 import com.example.runninggroup.viewAndController.helper.GroupTaskHelper;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class GroupTaskAdapter extends BaseAdapter {
@@ -52,7 +54,7 @@ public class GroupTaskAdapter extends BaseAdapter {
         if (convertView==null){
             convertView=mInflater.inflate(R.layout.helper_grouptask,null);
             viewHolder=new ViewHolder();
-            viewHolder.img=convertView.findViewById(R.id.img);
+            viewHolder.img=convertView.findViewById(R.id.task_img);
             viewHolder.release_name=convertView.findViewById(R.id.release_name);
             viewHolder.task_msg=convertView.findViewById(R.id.task_msg);
             viewHolder.task_time=convertView.findViewById(R.id.task_time);
@@ -62,9 +64,12 @@ public class GroupTaskAdapter extends BaseAdapter {
         }
 
         //赋值
+        Drawable drawable = mList.get(position).getImg();
+        if(drawable != null) viewHolder.img.setImageDrawable(drawable);
+        else viewHolder.img.setImageResource(R.mipmap.defaultpic);
         viewHolder.release_name.setText(mList.get(position).getRelease_name());
+        viewHolder.task_time.setText(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(mList.get(position).getTask_time()));
         viewHolder.task_msg.setText(mList.get(position).getTask_msg());
-        viewHolder.task_time.setText(mList.get(position).getTask_time()+"");
 
 
 

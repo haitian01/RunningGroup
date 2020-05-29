@@ -19,8 +19,6 @@ import com.example.runninggroup.model.DaoGroup;
 
 public class Manage extends AppCompatActivity implements View.OnClickListener {
     ListView groupmanageList;
-    Button releaseBtn;
-    EditText msg;
     Intent mIntent;
     String username;
     String group;
@@ -83,11 +81,11 @@ public class Manage extends AppCompatActivity implements View.OnClickListener {
                                                @Override
                                                public void run() {
                                                    if(DaoGroup.dismissGroup(group)){
-                                                       Toast.makeText(Manage.this,"解散成功",Toast.LENGTH_SHORT).show();
+                                                       makeToast("解散成功");
                                                        Intent intent = new Intent(Manage.this,MainInterface.class);
                                                        intent.putExtra("username",username);
                                                        startActivity(intent);
-                                                   }else {Toast.makeText(Manage.this,"解散失败",Toast.LENGTH_SHORT).show();}
+                                                   }else {makeToast("解散失败");}
                                                }
                                            }).start();
                                        }
@@ -118,6 +116,14 @@ public class Manage extends AppCompatActivity implements View.OnClickListener {
 
         }
 
+    }
+    public void makeToast(String msg){
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(Manage.this,msg,Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
 }

@@ -1,25 +1,16 @@
 package com.example.runninggroup.model;
 
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.DrawableContainer;
-import android.net.Uri;
-import android.util.JsonWriter;
-import android.util.Log;
 
-import com.example.runninggroup.request.ImgPost;
+import com.example.runninggroup.request.ImgGet;
 import com.example.runninggroup.request.PostRequest;
 import com.example.runninggroup.viewAndController.helper.FriendsHelper;
 
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.example.runninggroup.viewAndController.helper.GroupHelper;
 import com.example.runninggroup.viewAndController.helper.User;
 
 
-import java.io.IOException;
-import java.net.URI;
-import java.net.URL;
-import java.security.acl.Group;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -78,7 +69,7 @@ public class DaoUser {
 
     //获取用户头像
    public static Drawable getImg(String imgName){
-       return ImgPost.getImg(imgName);
+       return ImgGet.getImg(imgName);
    }
     //获取用户头像的imgName
     public static String getUserHeadImgName(String username){

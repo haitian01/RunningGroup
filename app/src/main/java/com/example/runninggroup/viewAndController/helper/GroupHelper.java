@@ -1,17 +1,19 @@
 package com.example.runninggroup.viewAndController.helper;
 
+import android.graphics.drawable.Drawable;
+
 public class GroupHelper {
-    private int logo;
+    private Drawable logo;
     private String groupName;
     private int numbers;
     private String leaderName;
     private String slogan;
 
-    public int getLogo() {
+    public Drawable getLogo() {
         return logo;
     }
 
-    public void setLogo(int logo) {
+    public void setLogo(Drawable logo) {
         this.logo = logo;
     }
 

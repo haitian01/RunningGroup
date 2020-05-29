@@ -40,12 +40,12 @@ public class GroupMessage extends AppCompatActivity implements View.OnClickListe
     Button mButton;
     TabLayout mTabLayout;
     ViewPager mViewPager;
-    Intent mIntent;
     String username;
     String group;
     String num;
     String leader;
     int admin;
+    int id;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,6 +57,11 @@ public class GroupMessage extends AppCompatActivity implements View.OnClickListe
 
 
     private void initView() {
+        username = getIntent().getStringExtra("username");
+        id = getIntent().getIntExtra("id",0);
+
+
+
         nameText = findViewById(R.id.leaderName);
         groupText = findViewById(R.id.group);
         numText = findViewById(R.id.num);
@@ -73,18 +78,17 @@ public class GroupMessage extends AppCompatActivity implements View.OnClickListe
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
-                mIntent = getIntent();
-                username = mIntent.getStringExtra("username");
                 List<GroupHelper> list = DaoUser.getMyGroupAll(username);
                 if(list.size() != 0){
-                    groupText.setText(list.get(0).getGroupName());
-                    numText.setText(list.get(0).getNumbers()+"");
-                    nameText.setText(list.get(0).getLeaderName());
+                    group = list.get(0).getGroupName();
+                    num = list.get(0).getNumbers()+"";
+                    leader = list.get(0).getLeaderName();
+                    group = list.get(0).getGroupName();
+                    groupText.setText(group);
+                    numText.setText(num);
+                    nameText.setText(leader);
                 }
 
-                group = groupText.getText().toString();
-                num = numText.getText().toString();
-                leader = nameText.getText().toString();
                 Thread m = new Thread(new Runnable() {
                     @Override
                     public void run() {
@@ -131,6 +135,7 @@ public class GroupMessage extends AppCompatActivity implements View.OnClickListe
         list_Title.add("Tasks");
         mViewPager.setAdapter(new MyPagerAdapter(getSupportFragmentManager(), fragmentList,list_Title));
         mTabLayout.setupWithViewPager(mViewPager);
+        mViewPager.setCurrentItem(id);
 
     }
     private void initEvent() {

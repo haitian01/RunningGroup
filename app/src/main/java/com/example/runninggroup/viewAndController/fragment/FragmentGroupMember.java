@@ -26,6 +26,7 @@ public class FragmentGroupMember extends Fragment {
     ListView mListView;
     View view;
     List<User> list;
+    String username;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,22 +36,6 @@ public class FragmentGroupMember extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        Thread t = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                Bundle arguments = getArguments();
-                list = DaoUser.getAllMember(arguments.getString("group"));
-                for(User user:list){
-                    user.setPic(R.mipmap.user);
-                }
-            }
-        });
-        t.start();
-        try {
-            t.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
         view =inflater.inflate(R.layout.fragment_groupmember,container,false);
 
         initView();
@@ -60,6 +45,23 @@ public class FragmentGroupMember extends Fragment {
     }
 
     private void initView() {
+        username = getActivity().getIntent().getStringExtra("username");
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Bundle arguments = getArguments();
+                list = DaoUser.getAllMember(arguments.getString("group"));
+                for(User user:list){
+                    user.setPic(DaoUser.getImg(DaoUser.getUserHeadImgName(user.getUsername())));
+                }
+            }
+        });
+        t.start();
+        try {
+            t.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         mListView = view.findViewById(R.id.groupmember_listview);
         mListView.setAdapter(new GroupMemberAdapter(getLayoutInflater(),list));
     }

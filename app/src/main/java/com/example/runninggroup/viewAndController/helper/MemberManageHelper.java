@@ -1,24 +1,26 @@
 package com.example.runninggroup.viewAndController.helper;
 
+import android.graphics.drawable.Drawable;
+
 public class MemberManageHelper {
-    String img;
+    Drawable img;
     String username;
     int admin;
 
     public MemberManageHelper() {
     }
 
-    public MemberManageHelper(String img, String username, int admin) {
+    public MemberManageHelper(Drawable img, String username, int admin) {
         this.img = img;
         this.username = username;
         this.admin = admin;
     }
 
-    public String getImg() {
+    public Drawable getImg() {
         return img;
     }
 
-    public void setImg(String img) {
+    public void setImg(Drawable img) {
         this.img = img;
     }
 

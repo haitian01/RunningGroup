@@ -1,12 +1,14 @@
 package com.example.runninggroup.viewAndController.helper;
 
+import android.graphics.drawable.Drawable;
+
 public class User {
     private int id;
     private String username;
     private String password;
     private int groupID;
     private int score;
-    private int pic;
+    private Drawable pic;
     private String sex;
 
     public int getId() {
@@ -49,11 +51,11 @@ public class User {
         this.score = score;
     }
 
-    public int getPic() {
+    public Drawable getPic() {
         return pic;
     }
 
-    public void setPic(int pic) {
+    public void setPic(Drawable pic) {
         this.pic = pic;
     }
 

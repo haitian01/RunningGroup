@@ -19,14 +19,12 @@ import java.util.List;
 public class FriendsAdapter extends BaseAdapter {
     public LayoutInflater mInflater;
     public List<FriendsHelper> mList;
-    private Drawable mDrawable;
-    private Activity mActivity;
 
-    public FriendsAdapter(LayoutInflater inflater, List<FriendsHelper> list,Activity activity) {
+
+    public FriendsAdapter(LayoutInflater inflater, List<FriendsHelper> list) {
 
         mInflater = inflater;
         mList = list;
-        mActivity = activity;
     }
 
     @Override
@@ -70,7 +68,9 @@ public class FriendsAdapter extends BaseAdapter {
         }
 
         //赋值
-        viewHolder.img.setImageDrawable(mList.get(position).getPic());
+        Drawable drawable = mList.get(position).getPic();
+        if(drawable != null) viewHolder.img.setImageDrawable(drawable);
+        else viewHolder.img.setImageResource(R.mipmap.defaultpic);
         viewHolder.name.setText(mList.get(position).getUsername());
         viewHolder.group.setText(mList.get(position).getGroupName());
         viewHolder.length.setText(mList.get(position).getLength()+"");

@@ -42,7 +42,7 @@ public class WriteTask extends AppCompatActivity implements View.OnClickListener
     public void onClick(View v) {
         switch (R.id.writetask_release){
             case R.id.writetask_release:
-                if (type.equals("task")) {
+                if ("task".equals(type)) {
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
@@ -51,6 +51,10 @@ public class WriteTask extends AppCompatActivity implements View.OnClickListener
                                     @Override
                                     public void run() {
                                         Toast.makeText(WriteTask.this,"任务发布成功！",Toast.LENGTH_SHORT).show();
+                                        Intent intent = new Intent(WriteTask.this,GroupMessage.class);
+                                        intent.putExtra("id",1);
+                                        intent.putExtra("username",username);
+                                        startActivity(intent);
                                     }
                                 });
                             }else {
@@ -67,11 +71,15 @@ public class WriteTask extends AppCompatActivity implements View.OnClickListener
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
-                            if("SUCCESS".equals(DaoGroup.addGroupCall(group,username,msg.getText().toString()))){
+                            if(DaoGroup.addGroupCall(group,username,msg.getText().toString())){
                                 runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
                                         Toast.makeText(WriteTask.this,"招募发布成功！",Toast.LENGTH_SHORT).show();
+                                        Intent intent = new Intent(WriteTask.this,Manage.class);
+                                        intent.putExtra("id",1);
+                                        intent.putExtra("username",username);
+                                        startActivity(intent);
                                     }
                                 });
                             }else {

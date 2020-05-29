@@ -1,5 +1,6 @@
 package com.example.runninggroup.viewAndController.adapter;
 
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import com.example.runninggroup.R;
 import com.example.runninggroup.viewAndController.helper.DynamicHelper;
 import com.example.runninggroup.viewAndController.helper.GroupTaskHelper;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class DynamicAdapter extends BaseAdapter {
@@ -60,9 +62,11 @@ public class DynamicAdapter extends BaseAdapter {
         }
 
         //赋值
-        viewHolder.img.setImageResource(R.mipmap.defaultpic);
+        Drawable drawable = mList.get(position).getDynamic_img();
+        if(drawable != null) viewHolder.img.setImageDrawable(drawable);
+        else viewHolder.img.setImageResource(R.mipmap.defaultpic);
         viewHolder.msg.setText(mList.get(position).getDynamic_msg());
-        viewHolder.time.setText(mList.get(position).getDynamic_time());
+        viewHolder.time.setText(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(mList.get(position).getDynamic_time()));
 
 
 

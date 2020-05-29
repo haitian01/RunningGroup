@@ -42,11 +42,6 @@ public class FragmentFriends extends Fragment {
     public View view;
     private RelativeLayout mRelativeLayout;
     String username;
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -111,7 +106,7 @@ public class FragmentFriends extends Fragment {
                                             Toast.makeText(getContext(),"添加成功",Toast.LENGTH_SHORT).show();
                                             list = DaoUser.getFriends(getActivity().getIntent().getStringExtra("username"));
                                             list1 = DaoFriend.queryMomentList(getActivity().getIntent().getStringExtra("username"));
-                                            mListView.setAdapter(new FriendsAdapter(getLayoutInflater(),list,getActivity()));
+                                            mListView.setAdapter(new FriendsAdapter(getLayoutInflater(),list));
                                             mListView1.setAdapter(new MomentAdapter(getLayoutInflater(),list1));
                                             if(list1.size() == 0){
                                                 applicationTextView.setVisibility(View.GONE);
@@ -168,18 +163,14 @@ public class FragmentFriends extends Fragment {
     }
 
     private void initView() {
-        username = getActivity().getIntent().getStringExtra("username");
         applicationTextView = view.findViewById(R.id.application);
         friendTextView = view.findViewById(R.id.friend);
         mRelativeLayout = view.findViewById(R.id.nofriend);
         //find
         mListView=view.findViewById(R.id.listView);
         mListView1 = view.findViewById(R.id.applicationListView);
-        //初始化适配器
-        mAdapter=new FriendsAdapter(this.getLayoutInflater(),list,getActivity());
-
         //设置适配器
-        mListView.setAdapter(mAdapter);
+        mListView.setAdapter(new FriendsAdapter(this.getLayoutInflater(),list));
         mListView1.setAdapter(new MomentAdapter(getLayoutInflater(),list1));
         if(list1.size() == 0){
             applicationTextView.setVisibility(View.GONE);

@@ -59,7 +59,7 @@ public class FragmentGroup extends Fragment implements View.OnClickListener {
                     list = new ArrayList<GroupHelper>();
                 }else {
                     for(GroupHelper groupHelper:list){
-                        groupHelper.setLogo(R.mipmap.defaultpic);
+                        groupHelper.setLogo(DaoUser.getImg(DaoUser.getGroupHeadImgName(groupHelper.getGroupName())));
                     }
                 }
 

@@ -37,8 +37,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/name"
-            android:layout_toRightOf="@id/name"
-            android:layout_marginLeft="30dp"
+            android:layout_toRightOf="@id/group"
+            android:layout_marginLeft="50dp"
             android:text="20"
             />
         <TextView

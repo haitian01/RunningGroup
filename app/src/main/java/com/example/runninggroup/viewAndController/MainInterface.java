@@ -22,6 +22,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -54,7 +55,7 @@ public class MainInterface extends AppCompatActivity implements View.OnClickList
     private LinearLayout mLineraLayout;
     private ListView mListView,mRightList;
     private ImageView personalHead;
-    Intent mIntent;
+    private TextView usernameText;
     String username;
     int id;
 
@@ -76,8 +77,7 @@ public class MainInterface extends AppCompatActivity implements View.OnClickList
 
 
     private void initView() {
-        mIntent = getIntent();
-        username = mIntent.getStringExtra("username");
+        username = getIntent().getStringExtra("username");
         id = getIntent().getIntExtra("id",0);
         mViewPager = findViewById(R.id.viewPager);
         mTabLayout = findViewById(R.id.tabLayout);
@@ -90,6 +90,7 @@ public class MainInterface extends AppCompatActivity implements View.OnClickList
         mListView = findViewById(R.id.personalListView);
         mRightList = findViewById(R.id.rightList);
         personalHead = findViewById(R.id.personalImage);
+        usernameText = findViewById(R.id.text_userName);
 
         ArrayList<Fragment> fragmentList = new ArrayList<>();
         ArrayList<String> list_Title = new ArrayList<>();
@@ -101,6 +102,7 @@ public class MainInterface extends AppCompatActivity implements View.OnClickList
         list_Title.add("打卡");
         list_Title.add("好友");
         list_Title.add("跑团");
+        usernameText.setText(username);
         mViewPager.setAdapter(new MyPagerAdapter(getSupportFragmentManager(), fragmentList,list_Title));
         mTabLayout.setupWithViewPager(mViewPager);//此方法就是让tablayout和ViewPager联动
         mViewPager.setCurrentItem(id);

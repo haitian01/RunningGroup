@@ -26,6 +26,7 @@ public class FragmentGroupTask extends Fragment {
     View view;
     ListView mListView;
     List<GroupTaskHelper> list;
+    String username;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,25 +35,23 @@ public class FragmentGroupTask extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-//        list=new ArrayList<GroupTaskHelper>();
+        view =inflater.inflate(R.layout.fragment_grouptask,container,false);
+        initView();
+        initEvent();
+        return view;
+    }
+
+    private void initView() {
+        username = getActivity().getIntent().getStringExtra("username");
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
                 Bundle arguments = getArguments();
                 list = DaoGroup.getGroupTask(arguments.getString("group"));
 
-                if ("[null]".equals(list.toString())){
-//                    Looper.prepare();
-//                    Toast.makeText(getActivity(),"网络异常",Toast.LENGTH_SHORT).show();
-//                    Looper.loop();
-                    list = new ArrayList<GroupTaskHelper>();
-                    Log.v("tag","网络异常555");
-                }else {
-                    for(GroupTaskHelper groupTaskHelper:list){
-                        groupTaskHelper.setImg(R.mipmap.defaultpic);
-                    }
+                for(GroupTaskHelper groupTaskHelper:list){
+                    groupTaskHelper.setImg(DaoUser.getImg(DaoUser.getUserHeadImgName(groupTaskHelper.getRelease_name())));
                 }
-
             }
         });
         t.start();
@@ -61,16 +60,6 @@ public class FragmentGroupTask extends Fragment {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
-
-        view =inflater.inflate(R.layout.fragment_grouptask,container,false);
-        initView();
-        initEvent();
-
-        return view;
-    }
-
-    private void initView() {
         mListView = view.findViewById(R.id.grouptask_listview);
         mListView.setAdapter(new GroupTaskAdapter(getLayoutInflater(),list));
     }
