@@ -56,6 +56,12 @@ public class FragmentFriends extends Fragment {
             public void run() {
                 list = DaoUser.getFriends(username);
                 list1 = DaoFriend.queryMomentList(username);
+                for (FriendsHelper friendsHelper : list) {
+                    friendsHelper.setPic(DaoUser.getImg(DaoUser.getUserHeadImgName(friendsHelper.getUsername())));
+                }
+                for (MomentHelper momentHelper : list1) {
+                    momentHelper.setPic(DaoUser.getImg(DaoUser.getUserHeadImgName(momentHelper.getFrom_name())));
+                }
             }
         });
         t.start();
@@ -64,6 +70,7 @@ public class FragmentFriends extends Fragment {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+
 
         view =inflater.inflate(R.layout.fragment_friends,container,false);
         initView();

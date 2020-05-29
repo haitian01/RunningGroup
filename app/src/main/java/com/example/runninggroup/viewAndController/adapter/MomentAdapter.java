@@ -68,18 +68,10 @@ public class MomentAdapter extends BaseAdapter {
         }
 
         //赋值
+        viewHolder.img.setImageDrawable(mList.get(position).getPic());
         viewHolder.msg.setText(mList.get(position).getContent());
         viewHolder.name.setText(mList.get(position).getFrom_name());
         viewHolder.time.setText(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(mList.get(position).getMoment_time())));
-        Thread t = new Thread(() -> mDrawable = DaoUser.getImg(DaoUser.getUserHeadImgName(mList.get(position).getFrom_name())));
-        t.start();
-        try {
-            t.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        if(mDrawable != null) viewHolder.img.setImageDrawable(mDrawable);
-        else viewHolder.img.setImageResource(R.mipmap.defaultpic);
 
 
 

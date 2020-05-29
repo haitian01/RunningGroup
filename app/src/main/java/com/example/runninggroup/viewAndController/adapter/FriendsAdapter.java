@@ -70,19 +70,12 @@ public class FriendsAdapter extends BaseAdapter {
         }
 
         //赋值
+        viewHolder.img.setImageDrawable(mList.get(position).getPic());
         viewHolder.name.setText(mList.get(position).getUsername());
         viewHolder.group.setText(mList.get(position).getGroupName());
         viewHolder.length.setText(mList.get(position).getLength()+"");
         viewHolder.score.setText(mList.get(position).getScore()+"");
-        Thread t = new Thread(() -> mDrawable = DaoUser.getImg(DaoUser.getUserHeadImgName(mList.get(position).getUsername())));
-        t.start();
-        try {
-            t.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        if(mDrawable != null) viewHolder.img.setImageDrawable(mDrawable);
-        else viewHolder.img.setImageResource(R.mipmap.defaultpic);
+
 
 
 

@@ -17,13 +17,13 @@ public class DaoAct {
 
     //拿到某时间段跑步长度
     public static String getLength(String username,long beginTime,long endTime){
-        String length =  PostRequest.postRequest("http://192.168.0.104:8080/act/getLength","username="+username+"&beginTime="+beginTime+"&endTime="+endTime);
+        String length =  PostRequest.postRequest("http://39.97.66.19:8080/act/getLength","username="+username+"&beginTime="+beginTime+"&endTime="+endTime);
         if (length == null) return "0";
         return length;
     }
     //插入一条活动记录
     public static boolean insertAct(String username,long beginTime,long endTime,long length,int score){
-        String result =  PostRequest.postRequest("http://192.168.0.104:8080/act/insertAct","username="+username+"&beginTime="+beginTime+"&endTime="+endTime+"&score="+score);
+        String result =  PostRequest.postRequest("http://39.97.66.19:8080/act/insertAct","username="+username+"&beginTime="+beginTime+"&endTime="+endTime+"&score="+score);
         if (result == null) return false;
         else {
             if("SUCCESS".equals(result)){return true;}

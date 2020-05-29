@@ -23,9 +23,7 @@ import com.example.runninggroup.viewAndController.MainInterface;
 
 public class FragmentFriendManage extends Fragment {
     View mView;
-    TextView nameText,groupText,lengthText;
     ListView friendManageList;
-    ImageView mImageView;
     Drawable mDrawable;
     String username;
     String name;
@@ -46,14 +44,7 @@ public class FragmentFriendManage extends Fragment {
         name = getActivity().getIntent().getStringExtra("name");
         group = getActivity().getIntent().getStringExtra("group");
         length = getActivity().getIntent().getStringExtra("length");
-        mImageView = mView.findViewById(R.id.friendmanage_img);
-        nameText = mView.findViewById(R.id.friendmanage_name);
-        groupText = mView.findViewById(R.id.friendmanage_group);
-        lengthText = mView.findViewById(R.id.friendmanage_runNum);
         friendManageList = mView.findViewById(R.id.friendmanage_list);
-        nameText.setText(name);
-        groupText.setText(group);
-        lengthText.setText(length);
         Thread t = new Thread(() -> {
             mDrawable = DaoUser.getImg(DaoUser.getUserHeadImgName(name));
         });
@@ -63,7 +54,7 @@ public class FragmentFriendManage extends Fragment {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        mImageView.setImageDrawable(mDrawable);
+
     }
 
     private void initEvent() {

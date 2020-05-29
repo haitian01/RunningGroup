@@ -19,7 +19,7 @@ public class DaoFriend {
 
     //拿到好友动态列表
     public static List<DynamicHelper> getDynamic(String username){
-        String json =  PostRequest.postRequest("http://192.168.0.104:8080/friend/getDynamic","username="+username);
+        String json =  PostRequest.postRequest("http://39.97.66.19:8080/friend/getDynamic","username="+username);
         List<DynamicHelper> list = JSONObject.parseArray(json,DynamicHelper.class);
         if(list != null){
             return list;
@@ -30,12 +30,12 @@ public class DaoFriend {
 
     //发送添加好友申请
     public static String insertMoment(String username, String friendName,String content){
-        String result =  PostRequest.postRequest("http://192.168.0.104:8080/moment/insertMoment","username="+username+"&friendName="+friendName+"&content="+content+"&moment_time="+Long.toString(System.currentTimeMillis()));
+        String result =  PostRequest.postRequest("http://39.97.66.19:8080/moment/insertMoment","username="+username+"&friendName="+friendName+"&content="+content+"&moment_time="+Long.toString(System.currentTimeMillis()));
         if (result == null) return "ERROR";
         return result;
     }
     public static List<MomentHelper> queryMomentList(String username){
-        String json =  PostRequest.postRequest("http://192.168.0.104:8080/moment/queryMomentList","username="+username);
+        String json =  PostRequest.postRequest("http://39.97.66.19:8080/moment/queryMomentList","username="+username);
         List<MomentHelper> list = JSONObject.parseArray(json,MomentHelper.class);
         if(list != null){
             for (MomentHelper momentHelper:list){
@@ -49,19 +49,19 @@ public class DaoFriend {
 
     //添加好友
     public static String addFriend(String username,String friendName){
-        String result =  PostRequest.postRequest("http://192.168.0.104:8080/friend/addFriend","username="+username+"&friendName="+friendName);
+        String result =  PostRequest.postRequest("http://39.97.66.19:8080/friend/addFriend","username="+username+"&friendName="+friendName);
         if (result == null) return "ERROR";
         return result;
     }
     //更改状态
     public static String updateProcessed(String username,String friendName){
-        String result =  PostRequest.postRequest("http://192.168.0.104:8080/moment/updateProcessed","username="+username+"&friendName="+friendName);
+        String result =  PostRequest.postRequest("http://39.97.66.19:8080/moment/updateProcessed","username="+username+"&friendName="+friendName);
         if (result == null) return "ERROR";
         return result;
     }
     //查询好友关系
     public static boolean queryFriend(String username,String friendName){
-        String result =  PostRequest.postRequest("http://192.168.0.104:8080/friend/queryFriend","username="+username+"&friendName="+friendName);
+        String result =  PostRequest.postRequest("http://39.97.66.19:8080/friend/queryFriend","username="+username+"&friendName="+friendName);
         if(result == "SUCCESS"){
             return true;
         }
@@ -69,7 +69,8 @@ public class DaoFriend {
     }
     //删除好友
     public static boolean deleteFriend(String username,String friendName){
-        String result =  PostRequest.postRequest("http://192.168.0.104:8080/friend/deleteFriend","username="+username+"&friendName="+friendName);
+
+        String result =  PostRequest.postRequest("http://39.97.66.19:8080/friend/deleteFriend","username="+username+"&friendName="+friendName);
         if("SUCCESS".equals(result)){
             return true;
         }

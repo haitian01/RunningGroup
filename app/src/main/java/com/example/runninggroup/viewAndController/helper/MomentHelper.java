@@ -1,6 +1,9 @@
 package com.example.runninggroup.viewAndController.helper;
 
+import android.graphics.drawable.Drawable;
+
 public class MomentHelper {
+    private Drawable pic;
     String from_name;
     String content;
     long moment_time;
@@ -8,10 +11,19 @@ public class MomentHelper {
     public MomentHelper() {
     }
 
-    public MomentHelper(String from_name, String content, long moment_time) {
+    public MomentHelper(String from_name, String content, long moment_time,Drawable pic) {
         this.from_name = from_name;
         this.content = content;
         this.moment_time = moment_time;
+        this.pic = pic;
+    }
+
+    public Drawable getPic() {
+        return pic;
+    }
+
+    public void setPic(Drawable pic) {
+        this.pic = pic;
     }
 
     public String getFrom_name() {

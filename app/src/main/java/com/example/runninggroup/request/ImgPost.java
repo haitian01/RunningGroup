@@ -18,7 +18,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 public class ImgPost {
-    private static String urls = "http://192.168.0.104:8080/user/getImg";
+    private static String urls = "http://39.97.66.19:8080/user/getImg";
     public static Drawable getImg(String imgName) {
         try {
             String params = "imgName="+imgName;
