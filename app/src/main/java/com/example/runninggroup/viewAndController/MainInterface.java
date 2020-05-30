@@ -1,11 +1,13 @@
 package com.example.runninggroup.viewAndController;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.DrawableContainer;
 import android.os.Bundle;
@@ -13,6 +15,7 @@ import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.AdapterView;
@@ -21,6 +24,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -43,6 +47,7 @@ import com.example.runninggroup.viewAndController.fragment.FragmentGroup;
 import com.google.android.material.tabs.TabLayout;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 
@@ -54,9 +59,10 @@ public class MainInterface extends AppCompatActivity implements View.OnClickList
     private ConstraintLayout mPesonalSetting,mRightSetting;
     private LinearLayout mLineraLayout;
     private ListView mListView,mRightList;
-    private ImageView personalHead;
+    private ImageView personalHead,bigPersonalHead;
     private TextView usernameText;
     String username;
+    Dialog mDialog;
     int id;
 
     @Override
@@ -106,6 +112,11 @@ public class MainInterface extends AppCompatActivity implements View.OnClickList
         mViewPager.setAdapter(new MyPagerAdapter(getSupportFragmentManager(), fragmentList,list_Title));
         mTabLayout.setupWithViewPager(mViewPager);//此方法就是让tablayout和ViewPager联动
         mViewPager.setCurrentItem(id);
+        //大图
+        mDialog = new Dialog(MainInterface.this, R.style.Theme_AppCompat_Light_Dialog_Alert);
+        bigPersonalHead = getImageView();
+        mDialog.setContentView(bigPersonalHead);
+
 
     }
 
@@ -114,6 +125,7 @@ public class MainInterface extends AppCompatActivity implements View.OnClickList
         mBtn_sideSetting.setOnClickListener(this);
         mBtn_exit.setOnClickListener(this);
         mBtn_rightSideSetting.setOnClickListener(this);
+        personalHead.setOnClickListener(this);
         mLineraLayout.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -127,7 +139,8 @@ public class MainInterface extends AppCompatActivity implements View.OnClickList
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (id == 0){
-                    Intent intent = new Intent(MainInterface.this, ResetPersonalData.class);
+                    Intent intent = new Intent(MainInterface.this, PersonalSetting.class);
+                    intent.putExtra("username",username);
                     startActivity(intent);
                 }else if (id == 1){
                     Toast.makeText(MainInterface.this, "该功能暂未上线", Toast.LENGTH_SHORT).show();
@@ -214,6 +227,12 @@ public class MainInterface extends AppCompatActivity implements View.OnClickList
                 }
             }
         });
+        bigPersonalHead.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDialog.dismiss();
+            }
+        });
 
 
 
@@ -268,8 +287,24 @@ public class MainInterface extends AppCompatActivity implements View.OnClickList
                 mRightSetting.setVisibility(View.VISIBLE);
                 mLineraLayout.setVisibility(View.VISIBLE);
                 break;
+
+            case R.id.personalImage:
+                mDialog.show();
+                break;
         }
     }
+    //动态图片
+    private ImageView getImageView(){
+        ImageView iv = new ImageView(MainInterface.this);
+        //宽高
+        iv.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        //设置Padding
+        iv.setPadding(20,20,20,20);
+        //imageView设置图片
+        iv.setImageDrawable(DaoUser.getImg(DaoUser.getUserHeadImgName(username)));
+        return iv;
+    }
+
 
 
 

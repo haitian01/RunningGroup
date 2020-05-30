@@ -36,6 +36,6 @@
         android:layout_below="@+id/write_msg"
         android:layout_marginTop="15dp"
         android:layout_marginLeft="15dp"
-        android:src="@mipmap/defaultpic"/>
+        android:src="@mipmap/dynamic"/>
 
 </RelativeLayout>

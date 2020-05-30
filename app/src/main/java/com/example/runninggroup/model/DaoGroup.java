@@ -54,8 +54,7 @@ public class DaoGroup {
         return "";
     }
     //发布跑团任务
-    public static String addTask(String groupName,String releaseName,String task){
-        long time = System.currentTimeMillis();
+    public static String addTask(String groupName,String releaseName,String task,long time){
         String code =  PostRequest.postRequest("http://39.97.66.19:8080/group/addTask","groupName="+groupName+"&releaseName="+releaseName+"&task="+task+"&time="+time);
         if (code == null) return "ERROR";
         return code;

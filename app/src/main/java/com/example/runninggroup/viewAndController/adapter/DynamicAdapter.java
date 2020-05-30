@@ -63,8 +63,7 @@ public class DynamicAdapter extends BaseAdapter {
 
         //赋值
         Drawable drawable = mList.get(position).getDynamic_img();
-        if(drawable != null) viewHolder.img.setImageDrawable(drawable);
-        else viewHolder.img.setImageResource(R.mipmap.defaultpic);
+        viewHolder.img.setImageDrawable(drawable);
         viewHolder.msg.setText(mList.get(position).getDynamic_msg());
         viewHolder.time.setText(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(mList.get(position).getDynamic_time()));
 

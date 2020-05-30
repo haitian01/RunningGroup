@@ -1,8 +1,10 @@
 package com.example.runninggroup.request;
 
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 
 import java.io.BufferedReader;
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -11,77 +13,96 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 
 public class ImgUpload {
-    private static String urls = "http://192.168.0.104/user/uploadImg";
-    public static Boolean uploadImg(String path,String imgName) {
+    public static String uploadFile(File file,String imgName) {
+        String end = "\r\n";
+        String twoHyphens = "--";
+        String boundary = "---------------------------823928434";
         try {
-
-            // 1. 获取访问地址URL
-            URL url = new URL(urls);
-            // 2. 创建HttpURLConnection对象
-            HttpURLConnection connection = (HttpURLConnection) url
-                    .openConnection();
-            /* 3. 设置请求参数等 */
-            // 请求方式
-            connection.setRequestMethod("POST");
-            // 超时时间
-            connection.setConnectTimeout(100);
-            // 设置是否输出
-            connection.setDoOutput(true);
-            // 设置是否读入
-            connection.setDoInput(true);
-            // 设置是否使用缓存
-            connection.setUseCaches(true);
-            // 设置此 HttpURLConnection 实例是否应该自动执行 HTTP 重定向
-            connection.setInstanceFollowRedirects(true);
-            // 设置使用标准编码格式编码参数的名-值对
-            connection.setRequestProperty("Content-Type",
-                    "application/x-www-form-urlencoded");
-            // 连接(有问题)
-//            connection.connect();
+            URL url = new URL("http://39.97.66.19:8080/user/uploadImg");
+//            URL url = new URL("http://192.168.0.104:8080/run/user/uploadImg");
+            HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+            httpURLConnection.setDoInput(true);
+            httpURLConnection.setDoOutput(true);
+            httpURLConnection.setUseCaches(false);
+            httpURLConnection.setRequestMethod("POST");
+            httpURLConnection.setRequestProperty("Connection", "Keep-Alive");
+            httpURLConnection.setRequestProperty("Charset", "UTF-8");
+            httpURLConnection.setRequestProperty("Content-Type", "multipart/form-data;boundary=" + boundary);
+            OutputStream outputStream = httpURLConnection.getOutputStream();
+            DataOutputStream dos = new DataOutputStream(outputStream);
+            dos.writeBytes(twoHyphens + boundary + end);
+            dos.writeBytes("Content-Disposition: form-data; name=\"file2\"; filename="+imgName+".jpg" + end);
+            dos.writeBytes(end);
             byte[] bytes = new byte[1024];
-            InputStream inputStream = new FileInputStream(new File(path));
-            /* 4. 处理输入输出 */
-            // 写入参数到请求中
-            OutputStream out = connection.getOutputStream();
-            while (inputStream.read(bytes) != -1){
-                out.write(bytes);
+            InputStream inputStream = new FileInputStream(file);
+            while (inputStream.read(bytes) != -1) {
+                dos.write(bytes);
             }
-            out.write(-1);
-            out.write(imgName.getBytes());
-            out.flush();
-            out.close();
-            // 从连接中读取响应信息
-            StringBuffer msg = new StringBuffer();
-            String line;
-            int code = connection.getResponseCode();
-            if (code == 200) {
-                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-                while ((line=bufferedReader.readLine()) != null){
-                    msg.append(line);
-                }
-                String result = msg.toString();
-                if (result == null) return false;
-                else {
-                    if ("SUCCESS".equals(result)) return true;
-                    return false;
-                }
+            dos.writeBytes(end);
+            dos.writeBytes(twoHyphens + boundary + twoHyphens + end);
+            dos.flush();
 
+            // 读取服务器返回结果
+            InputStream is = httpURLConnection.getInputStream();
+            InputStreamReader isr = new InputStreamReader(is, "utf-8");
+            BufferedReader br = new BufferedReader(isr);
+            String result = br.readLine();
+            is.close();
+            if(result != null) return  result;
+            else return "NullPointer";
 
-            }
-            // 5. 断开连接
-            connection.disconnect();
-
-            // 处理结果
-            System.out.println(msg);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
+            return "Exception";
         }
-        return null;
+
+    }
+    public static String uploadFileNative(File file,String imgName) {
+        String end = "\r\n";
+        String twoHyphens = "--";
+        String boundary = "---------------------------823928434";
+        try {
+//            URL url = new URL("http://39.97.66.19:8080/user/uploadImg");
+            URL url = new URL("http://192.168.0.104:8080/run/user/uploadImg");
+            HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
+            httpURLConnection.setDoInput(true);
+            httpURLConnection.setDoOutput(true);
+            httpURLConnection.setUseCaches(false);
+            httpURLConnection.setRequestMethod("POST");
+            httpURLConnection.setRequestProperty("Connection", "Keep-Alive");
+            httpURLConnection.setRequestProperty("Charset", "UTF-8");
+            httpURLConnection.setRequestProperty("Content-Type", "multipart/form-data;boundary=" + boundary);
+            OutputStream outputStream = httpURLConnection.getOutputStream();
+            DataOutputStream dos = new DataOutputStream(outputStream);
+            dos.writeBytes(twoHyphens + boundary + end);
+            dos.writeBytes("Content-Disposition: form-data; name=\"file2\"; filename="+imgName+".jpg" + end);
+            dos.writeBytes(end);
+            byte[] bytes = new byte[1024];
+            InputStream inputStream = new FileInputStream(file);
+            while (inputStream.read(bytes) != -1) {
+                dos.write(bytes);
+            }
+            dos.writeBytes(end);
+            dos.writeBytes(twoHyphens + boundary + twoHyphens + end);
+            dos.flush();
+
+            // 读取服务器返回结果
+            InputStream is = httpURLConnection.getInputStream();
+            InputStreamReader isr = new InputStreamReader(is, "utf-8");
+            BufferedReader br = new BufferedReader(isr);
+            String result = br.readLine();
+            is.close();
+            if(result != null) return  result;
+            else return "NullPointer";
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "Exception";
+        }
 
     }
 

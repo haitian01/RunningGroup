@@ -1,22 +1,39 @@
 package com.example.runninggroup.viewAndController;
 
+import android.content.ContentResolver;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.loader.content.CursorLoader;
 
 import com.example.runninggroup.R;
 import com.example.runninggroup.model.DaoGroup;
+import com.example.runninggroup.model.DaoUser;
+
+import java.io.FileNotFoundException;
 
 public class WriteTask extends AppCompatActivity implements View.OnClickListener {
     EditText msg;
     Button releaseBtn;
     String username,group,num,type;
+    ImageView mImageView;
+    private String img_src;
+    private final int SELECT_PHOTO = 2;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,10 +41,63 @@ public class WriteTask extends AppCompatActivity implements View.OnClickListener
         initView();
         initEvent();
     }
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case SELECT_PHOTO:
+                switch (resultCode) {
+                    case RESULT_OK:
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Uri uri = data.getData();
+                                img_src = uri.getPath();//这是本机的图片路径
+
+                                ContentResolver cr = getContentResolver();
+                                try {
+
+                                    Bitmap bitmap = BitmapFactory.decodeStream(cr.openInputStream(uri));
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            mImageView.setImageBitmap(bitmap);
+                                        }
+                                    });
+
+
+                                    String[] proj = {MediaStore.Images.Media.DATA};
+                                    CursorLoader loader = new CursorLoader(WriteTask.this, uri, proj, null, null, null);
+                                    Cursor cursor = loader.loadInBackground();
+                                    if (cursor != null) {
+                                        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+                                        cursor.moveToFirst();
+
+                                        img_src = cursor.getString(column_index);//图片实际路径
+
+                                    }
+                                    cursor.close();
+
+                                } catch (FileNotFoundException e) {
+                                    Log.e("Exception", e.getMessage(), e);
+                                }
+
+                            }
+                        }).start();
+
+                        break;
+                }
+                break;
+
+
+        }
+
+    }
 
     private void initView() {
         releaseBtn = findViewById(R.id.writetask_release);
         msg = findViewById(R.id.writetask_msg);
+        mImageView = findViewById(R.id.writetask_img);
         username = getIntent().getStringExtra("username");
         group = getIntent().getStringExtra("group");
         num = getIntent().getStringExtra("name");
@@ -36,17 +106,19 @@ public class WriteTask extends AppCompatActivity implements View.OnClickListener
     }
     private void initEvent() {
         releaseBtn.setOnClickListener(this);
+        mImageView.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
-        switch (R.id.writetask_release){
+        switch (v.getId()){
             case R.id.writetask_release:
                 if ("task".equals(type)) {
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
-                            if("SUCCESS".equals(DaoGroup.addTask(group,username,msg.getText().toString()))){
+                            long time = System.currentTimeMillis();
+                            if("SUCCESS".equals(DaoGroup.addTask(group,username,msg.getText().toString(),time)) && "SUCCESS".equals(DaoUser.getTaskImgName(username,time))){
                                 runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
@@ -100,6 +172,21 @@ public class WriteTask extends AppCompatActivity implements View.OnClickListener
                 intent.putExtra("group",group);
                 intent.putExtra("num",num);
                 startActivity(intent);
+            case R.id.writetask_img:
+                AlertDialog.Builder builder = new AlertDialog.Builder(WriteTask.this);
+                builder.setTitle("请选择头像：");
+                builder.setMessage("可以通过相机或者相册选取头像。");
+                builder.setPositiveButton("相册选取", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                        intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
+                        startActivityForResult(intent, SELECT_PHOTO);
+                    }
+                });
+                builder.create();
+                builder.show();
+                break;
         }
     }
 }
