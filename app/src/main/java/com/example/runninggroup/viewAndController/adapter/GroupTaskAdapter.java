@@ -44,6 +44,7 @@ public class GroupTaskAdapter extends BaseAdapter {
         //ViewHolder内部类
         class ViewHolder{
             public ImageView img;
+            public ImageView task_img;
             public TextView release_name;
             public TextView task_msg;
             public TextView task_time;
@@ -54,7 +55,8 @@ public class GroupTaskAdapter extends BaseAdapter {
         if (convertView==null){
             convertView=mInflater.inflate(R.layout.helper_grouptask,null);
             viewHolder=new ViewHolder();
-            viewHolder.img=convertView.findViewById(R.id.task_img);
+            viewHolder.img=convertView.findViewById(R.id.img);
+            viewHolder.task_img=convertView.findViewById(R.id.task_img);
             viewHolder.release_name=convertView.findViewById(R.id.release_name);
             viewHolder.task_msg=convertView.findViewById(R.id.task_msg);
             viewHolder.task_time=convertView.findViewById(R.id.task_time);
@@ -66,6 +68,8 @@ public class GroupTaskAdapter extends BaseAdapter {
         //赋值
         Drawable drawable = mList.get(position).getImg();
         viewHolder.img.setImageDrawable(drawable);
+        Drawable drawable1 = mList.get(position).getTask_img();
+        viewHolder.task_img.setImageDrawable(drawable1);
         viewHolder.release_name.setText(mList.get(position).getRelease_name());
         viewHolder.task_time.setText(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(mList.get(position).getTask_time()));
         viewHolder.task_msg.setText(mList.get(position).getTask_msg());

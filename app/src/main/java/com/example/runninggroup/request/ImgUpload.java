@@ -37,15 +37,17 @@ public class ImgUpload {
             dos.writeBytes(twoHyphens + boundary + end);
             dos.writeBytes("Content-Disposition: form-data; name=\"file2\"; filename="+imgName+".jpg" + end);
             dos.writeBytes(end);
+
             byte[] bytes = new byte[1024];
             InputStream inputStream = new FileInputStream(file);
             while (inputStream.read(bytes) != -1) {
                 dos.write(bytes);
             }
+            inputStream.close();
             dos.writeBytes(end);
             dos.writeBytes(twoHyphens + boundary + twoHyphens + end);
             dos.flush();
-
+            dos.close();
             // 读取服务器返回结果
             InputStream is = httpURLConnection.getInputStream();
             InputStreamReader isr = new InputStreamReader(is, "utf-8");

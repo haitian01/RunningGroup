@@ -80,7 +80,6 @@ public class DaoGroup {
     public static boolean addGroupCall(String groupName,String releaseName,String call){
         long time = System.currentTimeMillis();
         String result =  PostRequest.postRequest("http://39.97.66.19:8080/group/addGroupCall","groupName="+groupName+"&releaseName="+releaseName+"&call="+call+"&time="+time);
-        if(result == null) return false;
         if("SUCCESS".equals(result)) return true;
         return false;
     }

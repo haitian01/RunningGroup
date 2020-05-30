@@ -160,8 +160,38 @@ public class PersonalSetting extends AppCompatActivity {
                         startActivity(intent);
                         break;
                     case 3:
+                        AlertDialog.Builder builder1 = new AlertDialog.Builder(PersonalSetting.this);
+                        builder1.setMessage("确定要更改性别吗？")
+                                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        new Thread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                if (DaoUser.changeSex(username)) {
+                                                    makeToast("修改成功！");
+                                                }
+                                                else makeToast("修改失败！");
+                                            }
+                                        }).start();
+                                    }
+                                })
+                                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+
+                                    }
+                                }).create().show();
                         break;
                 }
+            }
+        });
+    }
+    public void makeToast(String msg){
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(PersonalSetting.this, msg, Toast.LENGTH_SHORT).show();
             }
         });
     }

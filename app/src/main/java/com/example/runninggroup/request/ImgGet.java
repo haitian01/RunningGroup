@@ -52,10 +52,11 @@ public class ImgGet {
             out.flush();
             out.close();
             // 从连接中读取响应信息
+            InputStream inputStream = connection.getInputStream();
             String msg = "";
             int code = connection.getResponseCode();
             if (code == 200) {
-               return loadImageFromNetwork(connection.getInputStream());
+               return loadImageFromNetwork(inputStream);
 
             }
             // 5. 断开连接
@@ -74,6 +75,11 @@ public class ImgGet {
     private static Drawable loadImageFromNetwork(InputStream inputStream) {
 
         Drawable drawable = Drawable.createFromStream(inputStream, null);
+        try {
+            inputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return drawable;
 
     }

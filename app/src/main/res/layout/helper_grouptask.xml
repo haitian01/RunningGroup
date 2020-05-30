@@ -7,18 +7,26 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp">
         <ImageView
-            android:id="@+id/task_img"
+            android:id="@+id/img"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"
+            android:src="@mipmap/defaultpic"/>
+        <ImageView
+            android:id="@+id/task_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/img"
+            android:layout_marginTop="10dp"
+            android:layout_below="@+id/task_msg"
             android:src="@mipmap/defaultpic"/>
         <TextView
             android:id="@+id/release_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:layout_toRightOf="@id/task_img"
+            android:layout_toRightOf="@id/img"
             android:layout_marginLeft="10dp"
             android:text="张三"
             android:textColor="@color/blue"/>
@@ -26,10 +34,10 @@
             android:id="@+id/task_msg"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/task_img"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="40dp"
             android:layout_below="@id/release_name"
+            android:layout_toRightOf="@+id/img"
             android:paddingRight="0dp"
             android:textColor="#000"
             android:text="人生本是一本书，自己是作者，别人是读者。有些人的故事跌宕起伏，充满传奇色彩；有些人的故事平淡无奇，但他懂得用优美的句子来装饰；而有些人把自己的书，记成了一本流水账，记成了一本枯燥的万年历。"
@@ -38,11 +46,10 @@
             android:id="@+id/task_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/task_img"
-            android:layout_marginLeft="10dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
             android:textSize="10dp"
-            android:layout_below="@id/task_msg"
-            android:layout_marginTop="5dp"
+            android:layout_marginRight="10dp"
             android:text="2020-05-19 10:34"/>
     </RelativeLayout>
     <TextView

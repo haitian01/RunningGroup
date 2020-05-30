@@ -24,14 +24,19 @@ import androidx.loader.content.CursorLoader;
 import com.example.runninggroup.R;
 import com.example.runninggroup.model.DaoGroup;
 import com.example.runninggroup.model.DaoUser;
+import com.example.runninggroup.request.ImgUpload;
 
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 
 public class WriteTask extends AppCompatActivity implements View.OnClickListener {
     EditText msg;
     Button releaseBtn;
     String username,group,num,type;
     ImageView mImageView;
+    File file;
     private String img_src;
     private final int SELECT_PHOTO = 2;
     @Override
@@ -56,8 +61,13 @@ public class WriteTask extends AppCompatActivity implements View.OnClickListener
 
                                 ContentResolver cr = getContentResolver();
                                 try {
-
-                                    Bitmap bitmap = BitmapFactory.decodeStream(cr.openInputStream(uri));
+                                    InputStream inputStream = cr.openInputStream(uri);
+                                    Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+                                    try {
+                                        inputStream.close();
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
                                     runOnUiThread(new Runnable() {
                                         @Override
                                         public void run() {
@@ -118,11 +128,18 @@ public class WriteTask extends AppCompatActivity implements View.OnClickListener
                         @Override
                         public void run() {
                             long time = System.currentTimeMillis();
-                            if("SUCCESS".equals(DaoGroup.addTask(group,username,msg.getText().toString(),time)) && "SUCCESS".equals(DaoUser.getTaskImgName(username,time))){
+                            try {
+                                file = new File(img_src);
+                                ImgUpload.uploadFile(file,DaoUser.getTaskImgName(username,time));
+                            }catch (Exception e){
+                                e.printStackTrace();
+                            }
+
+                            if("SUCCESS".equals(DaoGroup.addTask(group,username,msg.getText().toString(),time))){
                                 runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
-                                        Toast.makeText(WriteTask.this,"任务发布成功！",Toast.LENGTH_SHORT).show();
+                                        makeToast("任务发布成功");
                                         Intent intent = new Intent(WriteTask.this,GroupMessage.class);
                                         intent.putExtra("id",1);
                                         intent.putExtra("username",username);
@@ -188,5 +205,13 @@ public class WriteTask extends AppCompatActivity implements View.OnClickListener
                 builder.show();
                 break;
         }
+    }
+    private void makeToast(String msg){
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(WriteTask.this, msg, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }
