@@ -23,7 +23,7 @@ public class DaoAct {
     }
     //插入一条活动记录
     public static boolean insertAct(String username,long beginTime,long endTime,long length,double score){
-        String result =  PostRequest.postRequest("http://192.168.0.104:8080/run/act/insertAct","username="+username+"&beginTime="+beginTime+"&endTime="+endTime+"&length="+length+"&score="+score);
+        String result =  PostRequest.postRequest("http://39.97.66.19:8080/act/insertAct","username="+username+"&beginTime="+beginTime+"&endTime="+endTime+"&length="+length+"&score="+score);
         if (result == null) return false;
         else {
             if("SUCCESS".equals(result)){return true;}

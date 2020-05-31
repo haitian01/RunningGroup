@@ -82,8 +82,8 @@ public class CardPersonal extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //开始和结束时间（字符串）
-                mBeginTime = mDatePicker.getYear() + "-" + appendZero(mDatePicker.getMonth()) + "-" + appendZero(mDatePicker.getDayOfMonth()) + " " + appendZero(startTimePicker.getHour()) + ":" + appendZero(startTimePicker.getMinute());
-                mEndTime = mDatePicker.getYear() + "-" + appendZero(mDatePicker.getMonth()) + "-" + appendZero(mDatePicker.getDayOfMonth()) + " " + appendZero(endTimePicker.getHour()) + ":" + appendZero(endTimePicker.getMinute());
+                mBeginTime = mDatePicker.getYear() + "-" + appendZero(mDatePicker.getMonth()+1) + "-" + appendZero(mDatePicker.getDayOfMonth()) + " " + appendZero(startTimePicker.getHour()) + ":" + appendZero(startTimePicker.getMinute());
+                mEndTime = mDatePicker.getYear() + "-" + appendZero(mDatePicker.getMonth()+1) + "-" + appendZero(mDatePicker.getDayOfMonth()) + " " + appendZero(endTimePicker.getHour()) + ":" + appendZero(endTimePicker.getMinute());
                 //性别
                 Thread t = new Thread(new Runnable() {
                     @Override
@@ -112,13 +112,13 @@ public class CardPersonal extends AppCompatActivity {
                     //分数
                     switch (type) {
                         case "常规跑步":
-                            score = length / 1500;
+                            score = length / 1500.00;
                             break;
                         case "全马/半马":
-                            score = length/1000;
+                            score = length/1000.00;
                             break;
                         case "校比赛":
-                            score = length/1000;
+                            score = length/1000.00;
                             break;
                     }
                     score = ("男".equals(sex)) ? score : 1.5*score;

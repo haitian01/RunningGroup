@@ -67,12 +67,12 @@ public class DaoUser {
     }
     //查询用户性别
     public static String getSex(String username){
-        String result = PostRequest.postRequest("http://192.168.0.104:8080/run/user/getSex","username="+username);
+        String result = PostRequest.postRequest("http://39.97.66.19:8080/user/getSex","username="+username);
         return result;
     }
     //修改用户
     public static boolean changeSex(String username){
-        String result = PostRequest.postRequest("http://192.168.0.104:8080/run/user/changeSex","username="+username);
+        String result = PostRequest.postRequest("http://39.97.66.19:8080/user/changeSex","username="+username);
         if("SUCCESS".equals(result)){return true;}
         return false;
     }
