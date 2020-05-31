@@ -63,9 +63,6 @@ public class FragmentDynamic extends Fragment {
             @Override
             public void run() {
                 mList = DaoFriend.getDynamic(name);
-                for(DynamicHelper list:mList){
-                    list.setDynamic_img(DaoUser.getImg(DaoUser.getDynamicImgName(name,list.getDynamic_time())));
-                }
             }
         });
         t.start();

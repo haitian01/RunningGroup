@@ -15,8 +15,8 @@
             android:src="@mipmap/defaultpic"/>
         <ImageView
             android:id="@+id/task_img"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
             android:layout_toRightOf="@id/img"
             android:layout_marginTop="10dp"
             android:layout_below="@+id/task_msg"

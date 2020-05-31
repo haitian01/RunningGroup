@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.runninggroup.R;
+import com.example.runninggroup.model.DaoUser;
 import com.example.runninggroup.viewAndController.helper.FriendsHelper;
 import com.example.runninggroup.viewAndController.helper.GroupTaskHelper;
 
@@ -22,6 +23,7 @@ public class GroupTaskAdapter extends BaseAdapter {
     public GroupTaskAdapter(LayoutInflater inflater, List<GroupTaskHelper> list) {
         mInflater = inflater;
         mList = list;
+
     }
 
     @Override
@@ -66,10 +68,8 @@ public class GroupTaskAdapter extends BaseAdapter {
         }
 
         //赋值
-        Drawable drawable = mList.get(position).getImg();
-        viewHolder.img.setImageDrawable(drawable);
-        Drawable drawable1 = mList.get(position).getTask_img();
-        viewHolder.task_img.setImageDrawable(drawable1);
+        viewHolder.img.setImageDrawable(DaoUser.getImg(DaoUser.getUserHeadImgName(mList.get(position).getRelease_name())));
+        viewHolder.task_img.setImageDrawable(DaoUser.getImg(DaoUser.getTaskImgName(mList.get(position).getRelease_name(),mList.get(position).getTask_time())));
         viewHolder.release_name.setText(mList.get(position).getRelease_name());
         viewHolder.task_time.setText(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(mList.get(position).getTask_time()));
         viewHolder.task_msg.setText(mList.get(position).getTask_msg());

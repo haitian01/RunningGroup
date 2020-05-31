@@ -1,12 +1,14 @@
 package com.example.runninggroup.viewAndController;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,10 +42,12 @@ public class GroupMessage extends AppCompatActivity implements View.OnClickListe
     Button mButton;
     TabLayout mTabLayout;
     ViewPager mViewPager;
+    ImageView groupImg;
     String username;
     String group;
     String num;
     String leader;
+    Drawable mDrawable;
     int admin;
     int id;
     @Override
@@ -67,6 +71,7 @@ public class GroupMessage extends AppCompatActivity implements View.OnClickListe
         numText = findViewById(R.id.num);
         manageText = findViewById(R.id.manage);
         mButton = findViewById(R.id.join);
+        groupImg = findViewById(R.id.img);
 
         mViewPager = findViewById(R.id.groupmessage_viewPager);
         mTabLayout = findViewById(R.id.groupmessage_tabLayout);
@@ -81,6 +86,7 @@ public class GroupMessage extends AppCompatActivity implements View.OnClickListe
                 List<GroupHelper> list = DaoUser.getMyGroupAll(username);
                 if(list.size() != 0){
                     group = list.get(0).getGroupName();
+                    mDrawable = DaoUser.getImg(DaoUser.getGroupHeadImgName(group));
                     num = list.get(0).getNumbers()+"";
                     leader = list.get(0).getLeaderName();
                     group = list.get(0).getGroupName();
@@ -99,6 +105,7 @@ public class GroupMessage extends AppCompatActivity implements View.OnClickListe
                     }
                 });
                 m.start();
+
                 try {
                     m.join();
                 } catch (InterruptedException e) {
@@ -119,6 +126,7 @@ public class GroupMessage extends AppCompatActivity implements View.OnClickListe
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        if (mDrawable != null) groupImg.setImageDrawable(mDrawable);
         //Activity向 FragmentGroupTask传递group信息
         FragmentGroupTask fragmentGroupTask = new FragmentGroupTask();
         FragmentGroupMember fragmentGroupMember = new FragmentGroupMember();

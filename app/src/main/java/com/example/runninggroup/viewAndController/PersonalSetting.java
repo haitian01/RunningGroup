@@ -24,6 +24,7 @@ import androidx.loader.content.CursorLoader;
 import com.example.runninggroup.R;
 import com.example.runninggroup.model.DaoUser;
 import com.example.runninggroup.request.ImgUpload;
+import com.example.runninggroup.util.BitmapUtil;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -53,7 +54,7 @@ public class PersonalSetting extends AppCompatActivity {
                             public void run() {
                                 Uri uri = data.getData();
                                 img_src = uri.getPath();//这是本机的图片路径
-
+                                Log.v("本机路径：",img_src);
                                 ContentResolver cr = getContentResolver();
                                 try {
 
@@ -75,8 +76,8 @@ public class PersonalSetting extends AppCompatActivity {
                                                             new Thread(new Runnable() {
                                                                 @Override
                                                                 public void run() {
-                                                                    File file = new File(img_src);
-                                                                    Log.v("图片路径", img_src);
+                                                                    String path = BitmapUtil.saveMyBitmap(PersonalSetting.this,bitmap,DaoUser.getUserHeadImgName(username));
+                                                                    File file = new File(path);
                                                                     String result = ImgUpload.uploadFile(file, DaoUser.getUserHeadImgName(username));
                                                                     runOnUiThread(new Runnable() {
                                                                         @Override
@@ -107,6 +108,7 @@ public class PersonalSetting extends AppCompatActivity {
                                         cursor.moveToFirst();
 
                                         img_src = cursor.getString(column_index);//图片实际路径
+                                        Log.v("实际路径：",img_src);
 
                                     }
                                     cursor.close();

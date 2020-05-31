@@ -49,10 +49,10 @@ public class FragmentGroupTask extends Fragment {
                 Bundle arguments = getArguments();
                 list = DaoGroup.getGroupTask(arguments.getString("group"));
 
-                for(GroupTaskHelper groupTaskHelper:list){
-                    groupTaskHelper.setImg(DaoUser.getImg(DaoUser.getUserHeadImgName(groupTaskHelper.getRelease_name())));
-                    groupTaskHelper.setTask_img(DaoUser.getImg(DaoUser.getTaskImgName(groupTaskHelper.getRelease_name(),groupTaskHelper.getTask_time())));
-                }
+//                for(GroupTaskHelper groupTaskHelper:list){
+//                    groupTaskHelper.setImg(DaoUser.getImg(DaoUser.getUserHeadImgName(groupTaskHelper.getRelease_name())));
+//                    groupTaskHelper.setTask_img(DaoUser.getImg(DaoUser.getTaskImgName(groupTaskHelper.getRelease_name(),groupTaskHelper.getTask_time())));
+//                }
             }
         });
         t.start();

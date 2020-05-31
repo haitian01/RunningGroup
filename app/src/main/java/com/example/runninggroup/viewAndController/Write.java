@@ -26,6 +26,7 @@ import com.example.runninggroup.R;
 import com.example.runninggroup.model.DaoDynamic;
 import com.example.runninggroup.model.DaoUser;
 import com.example.runninggroup.request.ImgUpload;
+import com.example.runninggroup.util.BitmapUtil;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -36,6 +37,7 @@ public class Write extends AppCompatActivity implements View.OnClickListener {
     EditText msgEdt;
     String username;
     ImageView mImageView;
+    File mFile;
     private String img_src;
     private final int SELECT_PHOTO = 2;
     @Override
@@ -62,12 +64,6 @@ public class Write extends AppCompatActivity implements View.OnClickListener {
                                 try {
 
                                     Bitmap bitmap = BitmapFactory.decodeStream(cr.openInputStream(uri));
-                                    runOnUiThread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            mImageView.setImageBitmap(bitmap);
-                                        }
-                                    });
 
 
                                     String[] proj = {MediaStore.Images.Media.DATA};
@@ -81,6 +77,15 @@ public class Write extends AppCompatActivity implements View.OnClickListener {
 
                                     }
                                     cursor.close();
+                                    String path = BitmapUtil.saveMyBitmap(Write.this,bitmap,DaoUser.getUserHeadImgName(username));
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            mImageView.setImageBitmap(bitmap);
+                                        }
+                                    });
+                                    mFile = new File(path);
+
 
                                 } catch (FileNotFoundException e) {
                                     Log.e("Exception", e.getMessage(), e);
@@ -127,7 +132,7 @@ public class Write extends AppCompatActivity implements View.OnClickListener {
                         long dynamic_time = System.currentTimeMillis();
                         //发表动态
                         String result = DaoDynamic.writeDynamic(username,msgEdt.getText().toString(),dynamic_time);
-                        String result1 = ImgUpload.uploadFile(new File(img_src),DaoUser.getDynamicImgName(username,dynamic_time));
+                        String result1 = ImgUpload.uploadFile(mFile,DaoUser.getDynamicImgName(username,dynamic_time));
                         if("SUCCESS".equals(result) && "SUCCESS".equals(result)){
                             runOnUiThread(new Runnable() {
                                 @Override

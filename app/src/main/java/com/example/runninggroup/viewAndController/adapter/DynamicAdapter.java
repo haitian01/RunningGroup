@@ -18,6 +18,7 @@ import java.util.List;
 public class DynamicAdapter extends BaseAdapter {
     public LayoutInflater mInflater;
     public List<DynamicHelper> mList;
+    boolean mUpdate;
 
     public DynamicAdapter(LayoutInflater inflater, List<DynamicHelper> list) {
         mInflater = inflater;

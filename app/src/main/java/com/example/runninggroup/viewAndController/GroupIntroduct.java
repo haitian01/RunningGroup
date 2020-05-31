@@ -1,10 +1,12 @@
 package com.example.runninggroup.viewAndController;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Looper;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,6 +33,7 @@ public class GroupIntroduct extends AppCompatActivity {
     String num;
     String leaderName;
     String username;
+    ImageView groupImg;
     List<GroupCallHelper> list;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -52,6 +55,7 @@ public class GroupIntroduct extends AppCompatActivity {
         leaderText = findViewById(R.id.leaderName);
         mButton = findViewById(R.id.join);
         introductListView = findViewById(R.id.groupintroduct_list);
+        groupImg = findViewById(R.id.img);
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -65,6 +69,9 @@ public class GroupIntroduct extends AppCompatActivity {
             e.printStackTrace();
         }
         introductListView.setAdapter(new GroupCallAdapter(getLayoutInflater(),list));
+        if(leaderName.equals(username)){
+            mButton.setVisibility(View.GONE);
+        }
     }
     private void initEvent() {
         mButton.setOnClickListener(new View.OnClickListener() {
@@ -136,6 +143,7 @@ public class GroupIntroduct extends AppCompatActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
+                Drawable drawable = DaoUser.getImg(DaoUser.getGroupHeadImgName(group));
                 groupText.setText(group);
                 numText.setText(num);
                 leaderText.setText(leaderName);
@@ -143,6 +151,7 @@ public class GroupIntroduct extends AppCompatActivity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
+                            if (drawable != null) groupImg.setImageDrawable(drawable);
                             mButton.setText("退出");
                         }
                     });

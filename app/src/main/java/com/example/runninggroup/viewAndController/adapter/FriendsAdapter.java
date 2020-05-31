@@ -68,7 +68,7 @@ public class FriendsAdapter extends BaseAdapter {
         }
 
         //赋值
-        Drawable drawable = mList.get(position).getPic();
+        Drawable drawable = DaoUser.getImg(DaoUser.getUserHeadImgName(mList.get(position).getUsername()));
         if(drawable != null) viewHolder.img.setImageDrawable(drawable);
         else viewHolder.img.setImageResource(R.mipmap.defaultpic);
         viewHolder.name.setText(mList.get(position).getUsername());

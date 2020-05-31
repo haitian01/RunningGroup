@@ -25,6 +25,7 @@ import com.example.runninggroup.R;
 import com.example.runninggroup.model.DaoGroup;
 import com.example.runninggroup.model.DaoUser;
 import com.example.runninggroup.request.ImgUpload;
+import com.example.runninggroup.util.BitmapUtil;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -37,6 +38,8 @@ public class WriteTask extends AppCompatActivity implements View.OnClickListener
     String username,group,num,type;
     ImageView mImageView;
     File file;
+    String path;
+    Bitmap bitmap;
     private String img_src;
     private final int SELECT_PHOTO = 2;
     @Override
@@ -62,18 +65,12 @@ public class WriteTask extends AppCompatActivity implements View.OnClickListener
                                 ContentResolver cr = getContentResolver();
                                 try {
                                     InputStream inputStream = cr.openInputStream(uri);
-                                    Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+                                    bitmap = BitmapFactory.decodeStream(inputStream);
                                     try {
                                         inputStream.close();
                                     } catch (IOException e) {
                                         e.printStackTrace();
                                     }
-                                    runOnUiThread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            mImageView.setImageBitmap(bitmap);
-                                        }
-                                    });
 
 
                                     String[] proj = {MediaStore.Images.Media.DATA};
@@ -84,6 +81,13 @@ public class WriteTask extends AppCompatActivity implements View.OnClickListener
                                         cursor.moveToFirst();
 
                                         img_src = cursor.getString(column_index);//图片实际路径
+
+                                        runOnUiThread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                mImageView.setImageBitmap(bitmap);
+                                            }
+                                        });
 
                                     }
                                     cursor.close();
@@ -129,7 +133,8 @@ public class WriteTask extends AppCompatActivity implements View.OnClickListener
                         public void run() {
                             long time = System.currentTimeMillis();
                             try {
-                                file = new File(img_src);
+                                path = BitmapUtil.saveMyBitmap(WriteTask.this,bitmap,DaoUser.getTaskImgName(username,time));
+                                file = new File(path);
                                 ImgUpload.uploadFile(file,DaoUser.getTaskImgName(username,time));
                             }catch (Exception e){
                                 e.printStackTrace();
@@ -160,7 +165,16 @@ public class WriteTask extends AppCompatActivity implements View.OnClickListener
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
-                            if(DaoGroup.addGroupCall(group,username,msg.getText().toString())){
+                            long time = System.currentTimeMillis();
+                            try {
+                                path = BitmapUtil.saveMyBitmap(WriteTask.this,bitmap,img_src);
+                                File file = new File(path);
+                                ImgUpload.uploadFile(file,DaoUser.getCallImgName(username,time));
+                            }catch (Exception e){
+                                makeToast("图片上传失败");
+                            }
+
+                            if(DaoGroup.addGroupCall(group,username,msg.getText().toString(),time)){
                                 runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {

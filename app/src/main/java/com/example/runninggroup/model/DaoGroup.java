@@ -77,9 +77,8 @@ public class DaoGroup {
         return new ArrayList<GroupCallHelper>();
     }
     //发布招募信息
-    public static boolean addGroupCall(String groupName,String releaseName,String call){
-        long time = System.currentTimeMillis();
-        String result =  PostRequest.postRequest("http://39.97.66.19:8080/group/addGroupCall","groupName="+groupName+"&releaseName="+releaseName+"&call="+call+"&time="+time);
+    public static boolean addGroupCall(String groupName,String releaseName,String call,long time){
+        String result =  PostRequest.postRequest("http://192.168.0.104:8080/run/group/addGroupCall","groupName="+groupName+"&releaseName="+releaseName+"&call="+call+"&time="+time);
         if("SUCCESS".equals(result)) return true;
         return false;
     }

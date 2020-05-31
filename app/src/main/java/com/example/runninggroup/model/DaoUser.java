@@ -1,6 +1,7 @@
 package com.example.runninggroup.model;
 
 import android.graphics.drawable.Drawable;
+import android.os.Environment;
 
 import com.example.runninggroup.request.ImgGet;
 import com.example.runninggroup.request.PostRequest;
@@ -11,6 +12,7 @@ import com.example.runninggroup.viewAndController.helper.GroupHelper;
 import com.example.runninggroup.viewAndController.helper.User;
 
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -80,7 +82,17 @@ public class DaoUser {
 
     //获取用户头像
    public static Drawable getImg(String imgName){
-       return ImgGet.getImg(imgName);
+
+        String path = Environment.getExternalStorageDirectory() + "/DCIM/RunningGroup/"+imgName+".jpg";
+        File file = new File(path);
+        if (file.exists()){
+            return Drawable.createFromPath(path);
+        }
+
+        return ImgGet.getImg(imgName);
+
+
+
    }
     //获取用户头像的imgName
     public static String getUserHeadImgName(String username){
@@ -88,7 +100,7 @@ public class DaoUser {
     }
     //获取跑团的头像
     public static String getGroupHeadImgName(String groupName){
-        return "group_"+groupName+"_head";
+        return "group_"+groupName.getBytes()+"_head";
     }
     //获取好友某条动态的图片
     public static String getDynamicImgName(String username,long dynamic_time){
