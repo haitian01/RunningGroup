@@ -4,6 +4,7 @@ import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.contentcapture.DataRemovalRequest;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -14,15 +15,36 @@ import com.example.runninggroup.viewAndController.helper.FriendsHelper;
 import com.example.runninggroup.viewAndController.helper.GroupTaskHelper;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class GroupTaskAdapter extends BaseAdapter {
     public LayoutInflater mInflater;
     public List<GroupTaskHelper> mList;
+    HashMap<Integer,Drawable> mDrawable_img;
+    HashMap<Integer,Drawable> mDrawable_task_img;
+
 
     public GroupTaskAdapter(LayoutInflater inflater, List<GroupTaskHelper> list) {
         mInflater = inflater;
         mList = list;
+        mDrawable_img = new HashMap<>(list.size());
+        mDrawable_task_img = new HashMap<>(list.size());
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                for(int i=0;i<list.size();i++){
+                    String admin = mList.get(i).getRelease_name();
+                    long begin_time = mList.get(i).getTask_time();
+                    Drawable img = DaoUser.getImg(DaoUser.getUserHeadImgName(admin));
+                    Drawable task_img = DaoUser.getImg(DaoUser.getTaskImgName(admin,begin_time));
+                    if (img != null) mDrawable_img.put(i,img);
+                    if (task_img != null) mDrawable_task_img.put(i,task_img);
+                }
+
+            }
+        }).start();
 
     }
 
@@ -68,8 +90,31 @@ public class GroupTaskAdapter extends BaseAdapter {
         }
 
         //赋值
-        viewHolder.img.setImageDrawable(DaoUser.getImg(DaoUser.getUserHeadImgName(mList.get(position).getRelease_name())));
-        viewHolder.task_img.setImageDrawable(DaoUser.getImg(DaoUser.getTaskImgName(mList.get(position).getRelease_name(),mList.get(position).getTask_time())));
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String admin = mList.get(position).getRelease_name();
+                long begin_time = mList.get(position).getTask_time();
+
+                if(mDrawable_img.get(position) == null) {
+                    Drawable img = DaoUser.getImg(DaoUser.getUserHeadImgName(admin));
+                    if (img != null){mDrawable_img.put(position,img);}
+                }
+                if(mDrawable_task_img.get(position) == null) {
+                    Drawable task_img = DaoUser.getImg(DaoUser.getTaskImgName(admin,begin_time));
+                    if (task_img != null){mDrawable_task_img.put(position,task_img);}
+                }
+            }
+        });
+        t.start();
+        try {
+            t.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        if(mDrawable_img.get(position) != null){viewHolder.img.setImageDrawable(mDrawable_img.get(position));}
+        else {viewHolder.img.setImageResource(R.mipmap.defaultpic);}
+        viewHolder.task_img.setImageDrawable(mDrawable_task_img.get(position));
         viewHolder.release_name.setText(mList.get(position).getRelease_name());
         viewHolder.task_time.setText(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(mList.get(position).getTask_time()));
         viewHolder.task_msg.setText(mList.get(position).getTask_msg());

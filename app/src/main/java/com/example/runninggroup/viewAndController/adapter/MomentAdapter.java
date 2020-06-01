@@ -16,16 +16,28 @@ import com.example.runninggroup.viewAndController.helper.MomentHelper;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 public class MomentAdapter extends BaseAdapter {
     public LayoutInflater mInflater;
     public List<MomentHelper> mList;
-    Drawable mDrawable;
+    HashMap<Integer, Drawable> mDrawable;
 
     public MomentAdapter(LayoutInflater inflater, List<MomentHelper> list) {
         mInflater = inflater;
         mList = list;
+        mDrawable = new HashMap<>(list.size());
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                for(int i=0;i<list.size();i++){
+                    Drawable drawable =  DaoUser.getImg(DaoUser.getUserHeadImgName(mList.get(i).getFrom_name()));
+                    if(drawable != null) mDrawable.put(i,drawable);
+                }
+
+            }
+        }).start();
     }
 
     @Override
@@ -68,8 +80,25 @@ public class MomentAdapter extends BaseAdapter {
         }
 
         //赋值
-        Drawable drawable = DaoUser.getImg(DaoUser.getUserHeadImgName(mList.get(position).getFrom_name()));
-        viewHolder.img.setImageDrawable(drawable);
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(mDrawable.get(position) == null){
+                    Drawable drawable =  DaoUser.getImg(DaoUser.getUserHeadImgName(mList.get(position).getFrom_name()));
+                    if(drawable != null) mDrawable.put(position,drawable);
+                }
+
+
+            }
+        });
+        t.start();
+        try {
+            t.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        if(mDrawable.get(position) != null){viewHolder.img.setImageDrawable(mDrawable.get(position));}
+        else {viewHolder.img.setImageResource(R.mipmap.defaultpic);}
         viewHolder.msg.setText(mList.get(position).getContent());
         viewHolder.name.setText(mList.get(position).getFrom_name());
         viewHolder.time.setText(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(mList.get(position).getMoment_time())));

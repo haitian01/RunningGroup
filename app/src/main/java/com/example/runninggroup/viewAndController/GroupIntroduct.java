@@ -144,9 +144,14 @@ public class GroupIntroduct extends AppCompatActivity {
             @Override
             public void run() {
                 Drawable drawable = DaoUser.getImg(DaoUser.getGroupHeadImgName(group));
-                groupText.setText(group);
-                numText.setText(num);
-                leaderText.setText(leaderName);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        groupText.setText(group);
+                        numText.setText(num);
+                        leaderText.setText(leaderName);
+                    }
+                });
                 if(group.equals(DaoUser.getMyGroup(username))){
                     runOnUiThread(new Runnable() {
                         @Override

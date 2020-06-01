@@ -22,6 +22,7 @@ import com.example.runninggroup.viewAndController.adapter.DynamicAdapter;
 import com.example.runninggroup.viewAndController.adapter.MyPagerAdapter;
 import com.example.runninggroup.viewAndController.fragment.FragmentDynamic;
 import com.example.runninggroup.viewAndController.fragment.FragmentFriendManage;
+import com.example.runninggroup.viewAndController.fragment.FragmentPersonalCard;
 import com.example.runninggroup.viewAndController.helper.DynamicHelper;
 import com.google.android.material.tabs.TabLayout;
 
@@ -49,6 +50,10 @@ public class FriendMessage extends AppCompatActivity {
 
     private void initView() {
         username = getIntent().getStringExtra("username");
+        mIntent = getIntent();
+        name = mIntent.getStringExtra("name");
+        group = mIntent.getStringExtra("group");
+        length = mIntent.getStringExtra("length");
         nameText = findViewById(R.id.name);
         groupText = findViewById(R.id.group);
         lengthText = findViewById(R.id.runNum);
@@ -59,15 +64,17 @@ public class FriendMessage extends AppCompatActivity {
         ArrayList<Fragment> list = new ArrayList<>();
         ArrayList<String> list1 = new ArrayList<>();
         list.add(new FragmentDynamic());
-        list.add(new FragmentFriendManage());
+        list.add(new FragmentPersonalCard());
+        if(! name.equals(username)){
+            list.add(new FragmentFriendManage());
+        }
         list1.add("动态");
-        list1.add("管理");
+        list1.add("打卡");
+        if(! name.equals(username)){
+            list1.add("管理");
+        }
         mViewPager.setAdapter(new MyPagerAdapter(getSupportFragmentManager(),list,list1));
         mTabLayout.setupWithViewPager(mViewPager);
-        mIntent = getIntent();
-        name = mIntent.getStringExtra("name");
-        group = mIntent.getStringExtra("group");
-        length = mIntent.getStringExtra("length");
         setView();
     }
     private void initEvent() {

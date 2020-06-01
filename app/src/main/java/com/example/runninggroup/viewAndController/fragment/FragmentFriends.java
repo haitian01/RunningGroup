@@ -50,7 +50,13 @@ public class FragmentFriends extends Fragment {
             @Override
             public void run() {
                 list = DaoUser.getFriends(username);
+                for (FriendsHelper friendsHelper : list) {
+                    Log.v("friend",friendsHelper.toString());
+                }
                 list1 = DaoFriend.queryMomentList(username);
+                for (MomentHelper momentHelper : list1) {
+                    Log.v("moment",momentHelper.toString());
+                }
             }
         });
         t.start();

@@ -31,6 +31,8 @@ import com.example.runninggroup.util.BitmapUtil;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 
 public class Manage extends AppCompatActivity implements View.OnClickListener {
     ListView groupmanageList;
@@ -63,8 +65,9 @@ public class Manage extends AppCompatActivity implements View.OnClickListener {
                                 Log.v("本机路径：",img_src);
                                 ContentResolver cr = getContentResolver();
                                 try {
-
-                                    Bitmap bitmap = BitmapFactory.decodeStream(cr.openInputStream(uri));
+                                    InputStream inputStream = cr.openInputStream(uri);
+                                    Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+                                    inputStream.close();
                                     /* 将Bitmap设定到ImageView */
                                     runOnUiThread(new Runnable() {
                                         @Override
@@ -89,6 +92,12 @@ public class Manage extends AppCompatActivity implements View.OnClickListener {
                                                                         @Override
                                                                         public void run() {
                                                                             Toast.makeText(Manage.this, result, Toast.LENGTH_SHORT).show();
+                                                                            Intent intent = new Intent(Manage.this,GroupMessage.class);
+                                                                            intent.putExtra("username",username);
+                                                                            intent.putExtra("id",0);
+                                                                            startActivity(intent);
+
+
                                                                         }
                                                                     });
                                                                 }
@@ -121,6 +130,8 @@ public class Manage extends AppCompatActivity implements View.OnClickListener {
 
                                 } catch (FileNotFoundException e) {
                                     Log.e("Exception", e.getMessage(), e);
+                                } catch (IOException e) {
+                                    e.printStackTrace();
                                 }
 
                             }

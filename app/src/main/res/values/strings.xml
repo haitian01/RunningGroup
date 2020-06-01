@@ -18,4 +18,5 @@
     <string name="RUN">RUN</string>
     <string name="add">+</string>
     <string name="BACK">←</string>
+    <string name="filterUser">0123456789zxcvbnmasdfghjklqwertyuiopZXCVBNMASDFGHJKLQWERTYUIOP</string>
 </resources>

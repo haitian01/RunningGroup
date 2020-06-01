@@ -9,18 +9,31 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.runninggroup.R;
+import com.example.runninggroup.model.DaoUser;
 import com.example.runninggroup.viewAndController.helper.GroupTaskHelper;
 import com.example.runninggroup.viewAndController.helper.User;
 
+import java.util.HashMap;
 import java.util.List;
 
 public class GroupMemberAdapter extends BaseAdapter {
     public LayoutInflater mInflater;
     public List<User> mList;
-
+    HashMap<Integer, Drawable> mDrawable;
     public GroupMemberAdapter(LayoutInflater inflater, List<User> list) {
         mInflater = inflater;
         mList = list;
+        mDrawable = new HashMap<>(list.size());
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                for(int i=0;i<list.size();i++){
+                    Drawable drawable =  DaoUser.getImg(DaoUser.getUserHeadImgName(mList.get(i).getUsername()));
+                    if(drawable != null) mDrawable.put(i,drawable);
+                }
+
+            }
+        }).start();
     }
 
     @Override
@@ -62,9 +75,25 @@ public class GroupMemberAdapter extends BaseAdapter {
         }
 
         //赋值
-        Drawable drawable = mList.get(position).getPic();
-        if(drawable != null) viewHolder.img.setImageDrawable(drawable);
-        else viewHolder.img.setImageResource(R.mipmap.defaultpic);
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(mDrawable.get(position) == null){
+                    Drawable drawable =  DaoUser.getImg(DaoUser.getUserHeadImgName(mList.get(position).getUsername()));
+                    if(drawable != null) mDrawable.put(position,drawable);
+                }
+
+
+            }
+        });
+        t.start();
+        try {
+            t.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        if(mDrawable.get(position) != null){viewHolder.img.setImageDrawable(mDrawable.get(position));}
+        else {viewHolder.img.setImageResource(R.mipmap.defaultpic);}
         viewHolder.name.setText(mList.get(position).getUsername());
         viewHolder.sex.setText(mList.get(position).getSex());
 

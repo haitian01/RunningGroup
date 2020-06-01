@@ -5,6 +5,7 @@ import android.os.Environment;
 
 import com.example.runninggroup.request.ImgGet;
 import com.example.runninggroup.request.PostRequest;
+import com.example.runninggroup.util.CharacterUtil;
 import com.example.runninggroup.viewAndController.helper.FriendsHelper;
 
 import com.alibaba.fastjson.JSONObject;
@@ -100,7 +101,7 @@ public class DaoUser {
     }
     //获取跑团的头像
     public static String getGroupHeadImgName(String groupName){
-        return "group_"+groupName.getBytes()+"_head";
+        return "group_"+ CharacterUtil.toUNICODE(groupName) +"_head";
     }
     //获取好友某条动态的图片
     public static String getDynamicImgName(String username,long dynamic_time){
@@ -113,6 +114,10 @@ public class DaoUser {
     //获取跑团招募的图片
     public static String getCallImgName(String admin,long task_time){
         return "call_"+admin+"_"+task_time;
+    }
+    //获取打卡图片
+    public static String getCardImgName(String username,long begin_time){
+        return "call_"+username+"_"+begin_time;
     }
 
 }

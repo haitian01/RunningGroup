@@ -169,6 +169,7 @@ public class BitmapUtil {
 
     //保存文件到指定路径
     public static String saveMyBitmap(Context context, Bitmap bitmap,String fileName) {
+        FileOutputStream fos = null;
         String sdCardDir = Environment.getExternalStorageDirectory() + "/DCIM/";
         File appDir = new File(sdCardDir, "RunningGroup");
         if (!appDir.exists()) {
@@ -176,14 +177,19 @@ public class BitmapUtil {
         }
         File f = new File(appDir, fileName+".jpg");
         try {
-            FileOutputStream fos = new FileOutputStream(f);
+            fos = new FileOutputStream(f);
             bitmap.compress(Bitmap.CompressFormat.JPEG, 50, fos);
-            fos.flush();
-            fos.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
+        }finally {
+            try {
+                fos.flush();
+                fos.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
         // 通知图库更新
         Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);

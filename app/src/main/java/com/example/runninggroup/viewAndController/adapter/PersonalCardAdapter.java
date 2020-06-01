@@ -1,6 +1,7 @@
 package com.example.runninggroup.viewAndController.adapter;
 
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,33 +11,34 @@ import android.widget.TextView;
 
 import com.example.runninggroup.R;
 import com.example.runninggroup.model.DaoUser;
-import com.example.runninggroup.viewAndController.helper.DynamicHelper;
+import com.example.runninggroup.util.CharacterUtil;
 import com.example.runninggroup.viewAndController.helper.GroupTaskHelper;
+import com.example.runninggroup.viewAndController.helper.PersonalCardHelper;
 
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 
-public class DynamicAdapter extends BaseAdapter {
+public class PersonalCardAdapter extends BaseAdapter {
     public LayoutInflater mInflater;
-    public List<DynamicHelper> mList;
+    public List<PersonalCardHelper> mList;
     HashMap<Integer,Drawable> mDrawable;
-    String name;
-    public DynamicAdapter(LayoutInflater inflater, List<DynamicHelper> list,String name) {
+
+    public PersonalCardAdapter(LayoutInflater inflater, List<PersonalCardHelper> list) {
         mInflater = inflater;
         mList = list;
-        this.name = name;
         mDrawable = new HashMap<>(list.size());
         new Thread(new Runnable() {
             @Override
             public void run() {
                 for(int i=0;i<list.size();i++){
-                    Drawable drawable = DaoUser.getImg(DaoUser.getDynamicImgName(name, mList.get(i).getDynamic_time()));
-                    if(drawable!=null) mDrawable.put(i,drawable);
+                    Drawable drawable = DaoUser.getImg(DaoUser.getCardImgName(mList.get(i).getUsername(), mList.get(i).getBegin_time()));
+                    if(drawable != null) mDrawable.put(i,drawable);
                 }
 
             }
         }).start();
+
     }
 
     @Override
@@ -59,32 +61,34 @@ public class DynamicAdapter extends BaseAdapter {
         //ViewHolder内部类
         class ViewHolder{
             public ImageView img;
-            public TextView msg;
-            public TextView time;
+            public TextView act_type;
+            public TextView act_time;
+            public TextView act_length;
+            public TextView act_score;
 
         }
         //判断converView是否为空
         ViewHolder viewHolder;
         if (convertView==null){
-            convertView=mInflater.inflate(R.layout.helper_dynamic,null);
+            convertView=mInflater.inflate(R.layout.helper_personcard,null);
             viewHolder=new ViewHolder();
-            viewHolder.img=convertView.findViewById(R.id.dynamic_img);
-            viewHolder.msg=convertView.findViewById(R.id.dynamic_msg);
-            viewHolder.time=convertView.findViewById(R.id.dynamic_time);
+            viewHolder.img=convertView.findViewById(R.id.act_img);
+            viewHolder.act_type=convertView.findViewById(R.id.act_type);
+            viewHolder.act_time=convertView.findViewById(R.id.act_time);
+            viewHolder.act_length=convertView.findViewById(R.id.act_length);
+            viewHolder.act_score=convertView.findViewById(R.id.act_score);
             convertView.setTag(viewHolder);
         }else {
             viewHolder= (ViewHolder) convertView.getTag();
         }
 
-
+        //赋值
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
-                if(mDrawable.get(position) == null){
-                    Drawable drawable = DaoUser.getImg(DaoUser.getDynamicImgName(name,mList.get(position).getDynamic_time()));
-                    if(drawable != null){
-                        mDrawable.put(position,DaoUser.getImg(DaoUser.getDynamicImgName(name,mList.get(position).getDynamic_time())));
-                    }
+                if(mDrawable.get(position) == null) {
+                    Drawable drawable = DaoUser.getImg(DaoUser.getCardImgName(mList.get(position).getUsername(), mList.get(position).getBegin_time()));
+                    mDrawable.put(position,drawable);
                 }
             }
         });
@@ -94,11 +98,13 @@ public class DynamicAdapter extends BaseAdapter {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
         if(mDrawable.get(position) != null){viewHolder.img.setImageDrawable(mDrawable.get(position));}
-        //赋值
-        viewHolder.msg.setText(mList.get(position).getDynamic_msg());
-        viewHolder.time.setText(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(mList.get(position).getDynamic_time()));
+        viewHolder.act_type.setText(mList.get(position).getAct_type());
+        viewHolder.act_length.setText(mList.get(position).getLength()+"");
+        viewHolder.act_time.setText(CharacterUtil.getTimeLength(mList.get(position).getBegin_time(),mList.get(position).getEnd_time()));
+        viewHolder.act_score.setText(mList.get(position).getScore()+"");
+
+        ;
 
 
 

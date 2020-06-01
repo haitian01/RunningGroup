@@ -111,6 +111,11 @@
                 android:gravity="center"
                 >
             </Spinner>
+            <ImageView
+                android:id="@+id/img"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginLeft="-100dp"/>
             <Button
                 android:id="@+id/card_personal"
                 android:layout_width="match_parent"

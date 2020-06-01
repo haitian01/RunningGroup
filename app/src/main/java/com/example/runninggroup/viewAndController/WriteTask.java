@@ -167,7 +167,7 @@ public class WriteTask extends AppCompatActivity implements View.OnClickListener
                         public void run() {
                             long time = System.currentTimeMillis();
                             try {
-                                path = BitmapUtil.saveMyBitmap(WriteTask.this,bitmap,img_src);
+                                path = BitmapUtil.saveMyBitmap(WriteTask.this,bitmap,DaoUser.getCallImgName(username,time));
                                 File file = new File(path);
                                 ImgUpload.uploadFile(file,DaoUser.getCallImgName(username,time));
                             }catch (Exception e){

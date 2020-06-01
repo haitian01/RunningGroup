@@ -30,6 +30,8 @@ import com.example.runninggroup.util.BitmapUtil;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 
 public class Write extends AppCompatActivity implements View.OnClickListener {
     Button releaseBtn;
@@ -38,6 +40,7 @@ public class Write extends AppCompatActivity implements View.OnClickListener {
     String username;
     ImageView mImageView;
     File mFile;
+    Bitmap bitmap;
     private String img_src;
     private final int SELECT_PHOTO = 2;
     @Override
@@ -62,9 +65,9 @@ public class Write extends AppCompatActivity implements View.OnClickListener {
 
                                 ContentResolver cr = getContentResolver();
                                 try {
-
-                                    Bitmap bitmap = BitmapFactory.decodeStream(cr.openInputStream(uri));
-
+                                    InputStream inputStream = cr.openInputStream(uri);
+                                    bitmap = BitmapFactory.decodeStream(inputStream);
+                                    inputStream.close();
 
                                     String[] proj = {MediaStore.Images.Media.DATA};
                                     CursorLoader loader = new CursorLoader(Write.this, uri, proj, null, null, null);
@@ -77,18 +80,18 @@ public class Write extends AppCompatActivity implements View.OnClickListener {
 
                                     }
                                     cursor.close();
-                                    String path = BitmapUtil.saveMyBitmap(Write.this,bitmap,DaoUser.getUserHeadImgName(username));
                                     runOnUiThread(new Runnable() {
                                         @Override
                                         public void run() {
                                             mImageView.setImageBitmap(bitmap);
                                         }
                                     });
-                                    mFile = new File(path);
 
 
                                 } catch (FileNotFoundException e) {
                                     Log.e("Exception", e.getMessage(), e);
+                                } catch (IOException e) {
+                                    e.printStackTrace();
                                 }
 
                             }
@@ -132,8 +135,15 @@ public class Write extends AppCompatActivity implements View.OnClickListener {
                         long dynamic_time = System.currentTimeMillis();
                         //发表动态
                         String result = DaoDynamic.writeDynamic(username,msgEdt.getText().toString(),dynamic_time);
-                        String result1 = ImgUpload.uploadFile(mFile,DaoUser.getDynamicImgName(username,dynamic_time));
-                        if("SUCCESS".equals(result) && "SUCCESS".equals(result)){
+                        try {
+                            String path = BitmapUtil.saveMyBitmap(Write.this,bitmap,DaoUser.getDynamicImgName(username,dynamic_time));
+                            mFile = new File(path);
+                            ImgUpload.uploadFile(mFile,DaoUser.getDynamicImgName(username,dynamic_time));
+                        }catch (Exception e){
+                            makeToast("图片发表失败");
+                        }
+
+                        if("SUCCESS".equals(result)){
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
@@ -167,5 +177,13 @@ public class Write extends AppCompatActivity implements View.OnClickListener {
                 builder.show();
                 break;
         }
+    }
+    private void makeToast(String msg){
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(Write.this, msg, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }
