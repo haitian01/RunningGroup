@@ -259,8 +259,9 @@ public class MainInterface extends AppCompatActivity implements View.OnClickList
                             public void run() {
                                 if(drawable != null) {
                                     personalHead.setImageDrawable(drawable);
+                                }else {
+                                    personalHead.setImageResource(R.mipmap.defaultpic);
                                 }
-                                else personalHead.setImageResource(R.mipmap.defaultpic);
                             }
                         });
                     }

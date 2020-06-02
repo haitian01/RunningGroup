@@ -93,9 +93,9 @@ public class Manage extends AppCompatActivity implements View.OnClickListener {
                                                                         @Override
                                                                         public void run() {
                                                                             Toast.makeText(Manage.this, result, Toast.LENGTH_SHORT).show();
-                                                                            Intent intent = new Intent(Manage.this,GroupMessage.class);
+                                                                            Intent intent = new Intent(Manage.this,MainInterface.class);
                                                                             intent.putExtra("username",username);
-                                                                            intent.putExtra("id",0);
+                                                                            intent.putExtra("id",3);
                                                                             startActivity(intent);
 
 
@@ -197,6 +197,7 @@ public class Manage extends AppCompatActivity implements View.OnClickListener {
                                                        makeToast("解散成功");
                                                        Intent intent = new Intent(Manage.this,MainInterface.class);
                                                        intent.putExtra("username",username);
+                                                       intent.putExtra("id",3);
                                                        startActivity(intent);
                                                    }else {makeToast("解散失败");}
                                                }
