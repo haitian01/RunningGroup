@@ -10,7 +10,7 @@ import com.github.abel533.echarts.series.Line;
 public class EchartOptionUtil {
     public static GsonOption getLineChartOptions(Object[] xAxis, Object[] yAxis) {
         GsonOption option = new GsonOption();
-        option.title("跑团参与度：次数");
+        option.title("跑团参与度：积分值");
 //        option.legend("运动总时长");
         option.tooltip().trigger(Trigger.axis);
 
