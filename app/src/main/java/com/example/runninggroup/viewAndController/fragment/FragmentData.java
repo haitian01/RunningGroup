@@ -43,7 +43,7 @@ public class FragmentData extends Fragment {
                     public void run() {
                         GetData getData = new GetData();
                         getData.username = getActivity().getIntent().getStringExtra("username");
-                        runData =getData.getRunData();//需要一个方法获取
+                        runData = getData.getRunData();
                     }
                 });
                 t.start();
@@ -62,7 +62,7 @@ public class FragmentData extends Fragment {
                 super.onPageFinished(view, url);
                 //最好在h5页面加载完毕后再加载数据，防止html的标签还未加载完成，不能正常显示
                 Object[] Month = GetData.getGroudMonth();
-                Object[] groudData = {4,5,4,4,5};////需要一个方法获取
+                Object[] groudData = {4,5,4,4,5}; //需要一个方法获取
                 refreshLinkChart(Month, groudData);
             }
         });

@@ -65,18 +65,19 @@ public class GetData {
     public Object[] getGroud(){
         Object[] groudData = new Object[5];
         int month = GetTime.getMonthByTimeStamp(System.currentTimeMillis());
+        //本月
         long monthBegin = GetTime.monthTimeInMillis();
         long monthEnd = GetTime.monthTimeInMillis_end() - 1000;
-
+        //上个月
         long monthBegin_1 = GetTime.monthTimeInMillis_1();
         long monthEnd_1 = GetTime.monthTimeInMillis() - 1000;
-
+        //上上个月
         long monthBegin_2 = GetTime.monthTimeInMillis_2();
         long monthEnd_2 = GetTime.monthTimeInMillis_1() - 1000;
-
+        //上上上个月
         long monthBegin_3 = GetTime.monthTimeInMillis_3();
         long monthEnd_3 = GetTime.monthTimeInMillis_2() - 1000;
-
+        //上上上上个月
         long monthBegin_4 = GetTime.monthTimeInMillis_4();
         long monthEnd_4 = GetTime.monthTimeInMillis_3() - 1000;
 
@@ -85,50 +86,60 @@ public class GetData {
             groudData = new Object[]{
                     5,3,2,1,0
             };
+            //今年2月往回到去年10月的数据
         }else if (month == 2){
             groudData = new Object[]{
-                    "Oct","Nov","Dec","Mon","Jan"
+
             };
-        }
-        else if (month == 3){
+            //今年3月往回到去年11月的数据
+        } else if (month == 3){
             groudData = new Object[]{
-                    "Nov","Dec","Mon","Jan","Mar"
+
             };
+            //今年4月往回到去年12月的数据
         }else if (month == 4){
             groudData = new Object[]{
-                    "Dec","Mon","Jan","Mar","Apr"
+
             };
+            //今年5月往回到今年1月的数据
         }else if (month == 5){
             groudData = new Object[]{
-                    "Mon","Jan","Mar","Apr","May"
+
             };
+            //今年6月往回到今年2月的数据
         }else if (month == 6){
             groudData = new Object[]{
-                    "Jan","Mar","Apr","May","Jun"
+
             };
+            //今年7月往回到今年3月的数据
         }else if (month == 7){
             groudData = new Object[]{
-                    "Mar","Apr","May","Jun","Jul"
+
             };
+            //今年8月往回到今年4月的数据
         }else if (month == 8){
             groudData = new Object[]{
-                    "Apr","May","Jun","Jul","Aug"
+
             };
+            //今年9月往回到今年5月的数据
         }else if (month == 9){
             groudData = new Object[]{
-                    0,0,0,0,0
+
             };
+            //今年10月往回到今年6月的数据
         }else if (month == 10){
             groudData = new Object[]{
-                    "Jun","Jul","Aug","Sep","Oct"
+
             };
+            //今年11月往回到今年7月的数据
         }else if (month == 11){
             groudData = new Object[]{
-                    "Jul","Aug","Sep","Oct","Nov"
+
             };
+            //今年12月往回到今年8月的数据
         }else if (month == 12){
             groudData = new Object[]{
-                    "Aug","Sep","Oct","Nov","Dec"
+
             };
         }
         return groudData;
