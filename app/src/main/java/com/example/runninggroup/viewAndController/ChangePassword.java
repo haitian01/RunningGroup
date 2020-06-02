@@ -10,6 +10,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.runninggroup.R;
+import com.example.runninggroup.model.DaoUser;
 
 
 public class ChangePassword extends AppCompatActivity implements View.OnClickListener {
@@ -70,9 +71,16 @@ public class ChangePassword extends AppCompatActivity implements View.OnClickLis
                             @Override
                             public void run() {
                                 //更换密码
-
-                                //
-                                Toast.makeText(ChangePassword.this, "敬请期待！", Toast.LENGTH_SHORT).show();
+                                new Thread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        if(DaoUser.changePassword(username,newPwd)){
+                                            makeToast("修改成功！");
+                                        }else {
+                                            makeToast("修改失败");
+                                        }
+                                    }
+                                }).start();
                             }
                         }).start();
                     }
@@ -82,6 +90,14 @@ public class ChangePassword extends AppCompatActivity implements View.OnClickLis
 
 
         }
+    }
+    private void makeToast(String msg){
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(ChangePassword.this, msg, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
 

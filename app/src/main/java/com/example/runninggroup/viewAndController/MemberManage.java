@@ -214,7 +214,7 @@ public class MemberManage extends AppCompatActivity {
                                         case "管理员":
                                             AlertDialog.Builder builder = new AlertDialog.Builder(MemberManage.this);
                                             builder.setTitle("解除管理员")
-                                                    .setMessage("你确定接触"+memberName+"的管理员权限？")
+                                                    .setMessage("你确定解除"+memberName+"的管理员权限？")
                                                     .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                                                         @Override
                                                         public void onClick(DialogInterface dialog, int which) {

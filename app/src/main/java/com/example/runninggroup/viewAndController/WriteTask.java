@@ -179,8 +179,8 @@ public class WriteTask extends AppCompatActivity implements View.OnClickListener
                                     @Override
                                     public void run() {
                                         Toast.makeText(WriteTask.this,"招募发布成功！",Toast.LENGTH_SHORT).show();
-                                        Intent intent = new Intent(WriteTask.this,Manage.class);
-                                        intent.putExtra("id",1);
+                                        Intent intent = new Intent(WriteTask.this,MainInterface.class);
+                                        intent.putExtra("id",3);
                                         intent.putExtra("username",username);
                                         startActivity(intent);
                                     }

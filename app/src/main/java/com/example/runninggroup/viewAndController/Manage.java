@@ -33,6 +33,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.zip.Inflater;
 
 public class Manage extends AppCompatActivity implements View.OnClickListener {
     ListView groupmanageList;
@@ -230,6 +231,42 @@ public class Manage extends AppCompatActivity implements View.OnClickListener {
                        });
                        builder.create();
                        builder.show();
+                       break;
+                   case 5:
+                       androidx.appcompat.app.AlertDialog.Builder builder1 = new AlertDialog.Builder(Manage.this);
+                       View view1 = getLayoutInflater().inflate(R.layout.helper_slogan,null);
+                       builder1.setView(view1)
+                               .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                   @Override
+                                   public void onClick(DialogInterface dialog, int which) {
+                                        new Thread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                EditText editText = view1.findViewById(R.id.write_slogan);
+                                                String slogan = editText.getText().toString();
+                                                if(slogan==null){
+                                                    makeToast("口号不能为空");
+                                                }else {
+                                                    if(DaoGroup.changeSlogan(group,slogan)){
+                                                        makeToast("修改成功");
+                                                        Intent intent3 = new Intent(Manage.this,MainInterface.class);
+                                                        intent3.putExtra("username",username);
+                                                        intent3.putExtra("id",3);
+                                                        startActivity(intent3);
+                                                    }
+                                                }
+
+                                            }
+                                        }).start();
+                                        EditText editText = view1.findViewById(R.id.write_slogan);
+                                   }
+                               })
+                               .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                                   @Override
+                                   public void onClick(DialogInterface dialog, int which) {
+
+                                   }
+                               }).create().show();
                        break;
                }
            }
