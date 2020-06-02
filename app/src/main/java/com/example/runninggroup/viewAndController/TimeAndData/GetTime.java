@@ -173,7 +173,6 @@ public class GetTime {
         return Week;
     }
 
-//高岳要的方法
     public static String getBeginTime(String type){
         int year = getYearByTimeStamp(System.currentTimeMillis());
         int month = getMonthByTimeStamp(System.currentTimeMillis());
@@ -247,7 +246,6 @@ public class GetTime {
     }
 
 
-//刘齐瓒的方法
     public static String[][] transString(long timeStamp){
         String[][] array = new String[1][2];
         int year = getYearByTimeStamp(timeStamp);

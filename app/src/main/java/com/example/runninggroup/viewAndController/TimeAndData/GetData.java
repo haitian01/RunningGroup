@@ -1,6 +1,7 @@
 package com.example.runninggroup.viewAndController.TimeAndData;
 
 import com.example.runninggroup.model.DaoAct;
+import com.example.runninggroup.model.DaoUser;
 
 public class GetData {
     public String username = null;
@@ -62,9 +63,9 @@ public class GetData {
     }
 
     //根据时间戳获取跑团数据
-    public Object[] getGroud(){
+    public Object[] getGroudScore(){
         Object[] groudData = new Object[5];
-        int month = GetTime.getMonthByTimeStamp(System.currentTimeMillis());
+//        int month = GetTime.getMonthByTimeStamp(System.currentTimeMillis());
         //本月
         long monthBegin = GetTime.monthTimeInMillis();
         long monthEnd = GetTime.monthTimeInMillis_end() - 1000;
@@ -81,72 +82,14 @@ public class GetData {
         long monthBegin_4 = GetTime.monthTimeInMillis_4();
         long monthEnd_4 = GetTime.monthTimeInMillis_3() - 1000;
 
-        if (month == 1){
-            //今年1月往回到去年9月的数据
             groudData = new Object[]{
-                    5,3,2,1,0
+                    DaoAct.getScore(username, monthBegin_4, monthEnd_4), DaoAct.getScore(username, monthBegin_3, monthEnd_3), DaoAct.getScore(username, monthBegin_2, monthEnd_2), DaoAct.getScore(username, monthBegin_1, monthEnd_1), DaoAct.getScore(username, monthBegin, monthEnd)
             };
-            //今年2月往回到去年10月的数据
-        }else if (month == 2){
-            groudData = new Object[]{
-
-            };
-            //今年3月往回到去年11月的数据
-        } else if (month == 3){
-            groudData = new Object[]{
-
-            };
-            //今年4月往回到去年12月的数据
-        }else if (month == 4){
-            groudData = new Object[]{
-
-            };
-            //今年5月往回到今年1月的数据
-        }else if (month == 5){
-            groudData = new Object[]{
-
-            };
-            //今年6月往回到今年2月的数据
-        }else if (month == 6){
-            groudData = new Object[]{
-
-            };
-            //今年7月往回到今年3月的数据
-        }else if (month == 7){
-            groudData = new Object[]{
-
-            };
-            //今年8月往回到今年4月的数据
-        }else if (month == 8){
-            groudData = new Object[]{
-
-            };
-            //今年9月往回到今年5月的数据
-        }else if (month == 9){
-            groudData = new Object[]{
-
-            };
-            //今年10月往回到今年6月的数据
-        }else if (month == 10){
-            groudData = new Object[]{
-
-            };
-            //今年11月往回到今年7月的数据
-        }else if (month == 11){
-            groudData = new Object[]{
-
-            };
-            //今年12月往回到今年8月的数据
-        }else if (month == 12){
-            groudData = new Object[]{
-
-            };
-        }
         return groudData;
     }
 
     //Echart图，返回从现在往前的五个月份
-    public static Object[] getGroudMonth(){
+    public Object[] getGroudMonth(){
         Object[] Month = new Object[5];
         int month = GetTime.getMonthByTimeStamp(System.currentTimeMillis());
 

@@ -21,6 +21,8 @@ public class FragmentData extends Fragment {
     View view;
     private EchartView barChart;
     private EchartView2 lineChart;
+    Object[] scoreData;
+    Object[] months;
     Object[] runData;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -61,9 +63,22 @@ public class FragmentData extends Fragment {
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
                 //最好在h5页面加载完毕后再加载数据，防止html的标签还未加载完成，不能正常显示
-                Object[] Month = GetData.getGroudMonth();
-                Object[] groudData = {4,5,4,4,5}; //需要一个方法获取
-                refreshLinkChart(Month, groudData);
+                Thread t = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        GetData getData = new GetData();
+                        getData.username = getActivity().getIntent().getStringExtra("username");
+                        months = getData.getGroudMonth();
+                        scoreData = getData.getGroudScore();
+                    }
+                });
+                t.start();
+                try {
+                    t.join();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                refreshLinkChart(months, scoreData);
             }
         });
         return view;
