@@ -144,19 +144,13 @@ public class Write extends AppCompatActivity implements View.OnClickListener {
                         }
 
                         if("SUCCESS".equals(result)){
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    Toast.makeText(Write.this,"发表成功",Toast.LENGTH_SHORT).show();
-                                }
-                            });
+                           makeToast("发表成功！");
+                           Intent intent1 = new Intent(Write.this,MainInterface.class);
+                           intent1.putExtra("id",2);
+                           intent1.putExtra("username",username);
+                           startActivity(intent1);
                         }else {
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    Toast.makeText(Write.this,"发表失败",Toast.LENGTH_SHORT).show();
-                                }
-                            });
+                            makeToast("发表失败");
                         }
                     }
                 }).start();

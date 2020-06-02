@@ -16,6 +16,7 @@ import com.example.runninggroup.viewAndController.helper.GroupTaskHelper;
 import com.example.runninggroup.viewAndController.helper.PersonalCardHelper;
 
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -61,6 +62,7 @@ public class PersonalCardAdapter extends BaseAdapter {
         //ViewHolder内部类
         class ViewHolder{
             public ImageView img;
+            public TextView time;
             public TextView act_type;
             public TextView act_time;
             public TextView act_length;
@@ -73,6 +75,7 @@ public class PersonalCardAdapter extends BaseAdapter {
             convertView=mInflater.inflate(R.layout.helper_personcard,null);
             viewHolder=new ViewHolder();
             viewHolder.img=convertView.findViewById(R.id.act_img);
+            viewHolder.time=convertView.findViewById(R.id.time);
             viewHolder.act_type=convertView.findViewById(R.id.act_type);
             viewHolder.act_time=convertView.findViewById(R.id.act_time);
             viewHolder.act_length=convertView.findViewById(R.id.act_length);
@@ -99,10 +102,12 @@ public class PersonalCardAdapter extends BaseAdapter {
             e.printStackTrace();
         }
         if(mDrawable.get(position) != null){viewHolder.img.setImageDrawable(mDrawable.get(position));}
+        viewHolder.time.setText(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(mList.get(position).getEnd_time())));
         viewHolder.act_type.setText(mList.get(position).getAct_type());
         viewHolder.act_length.setText(mList.get(position).getLength()+"");
         viewHolder.act_time.setText(CharacterUtil.getTimeLength(mList.get(position).getBegin_time(),mList.get(position).getEnd_time()));
         viewHolder.act_score.setText(mList.get(position).getScore()+"");
+
 
         ;
 

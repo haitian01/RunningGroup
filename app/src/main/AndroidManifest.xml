@@ -13,28 +13,28 @@
         android:theme="@style/AppTheme"
         android:requestLegacyExternalStorage="true">
         <!--安卓读写问题-->
-        <activity android:name=".viewAndController.ChangePassword"></activity>
-        <activity android:name=".viewAndController.TestActivity"></activity>
-        <activity android:name=".viewAndController.Login">
+        <activity android:name=".viewAndController.ChangePassword" android:launchMode="singleTask"></activity>
+        <activity android:name=".viewAndController.TestActivity" android:launchMode="singleTask"></activity>
+        <activity android:name=".viewAndController.Login" android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".viewAndController.Register" />
-        <activity android:name=".viewAndController.MainInterface" />
-        <activity android:name=".viewAndController.FriendMessage" />
-        <activity android:name=".viewAndController.GroupMessage" />
-        <activity android:name=".viewAndController.GroupBuild" />
-        <activity android:name=".viewAndController.GroupIntroduct" />
-        <activity android:name=".viewAndController.Manage" />
+        <activity android:name=".viewAndController.Register" android:launchMode="singleTask"/>
+        <activity android:name=".viewAndController.MainInterface" android:launchMode="singleTask"/>
+        <activity android:name=".viewAndController.FriendMessage" android:launchMode="singleTask"/>
+        <activity android:name=".viewAndController.GroupMessage" android:launchMode="singleTask"/>
+        <activity android:name=".viewAndController.GroupBuild" android:launchMode="singleTask"/>
+        <activity android:name=".viewAndController.GroupIntroduct" android:launchMode="singleTask"/>
+        <activity android:name=".viewAndController.Manage" android:launchMode="singleTask"/>
 
-        <activity android:name=".viewAndController.Write"></activity>
-        <activity android:name=".viewAndController.MemberManage"></activity>
-        <activity android:name=".viewAndController.WriteTask"></activity>
-        <activity android:name=".viewAndController.CardPersonal"></activity>
-        <activity android:name=".viewAndController.PersonalSetting"></activity>
+        <activity android:name=".viewAndController.Write" android:launchMode="singleTask"></activity>
+        <activity android:name=".viewAndController.MemberManage" android:launchMode="singleTask"></activity>
+        <activity android:name=".viewAndController.WriteTask" android:launchMode="singleTask"></activity>
+        <activity android:name=".viewAndController.CardPersonal" android:launchMode="singleTask"></activity>
+        <activity android:name=".viewAndController.PersonalSetting" android:launchMode="singleTask"></activity>
 
     </application>
 

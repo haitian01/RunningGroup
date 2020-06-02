@@ -10,6 +10,7 @@ import com.example.runninggroup.viewAndController.helper.GroupTaskHelper;
 import com.example.runninggroup.viewAndController.helper.PersonalCardHelper;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class DaoAct {
@@ -39,7 +40,8 @@ public class DaoAct {
         if(list == null){
             return new ArrayList<PersonalCardHelper>();
         }
-       return list;
+        Collections.reverse(list);
+        return list;
     }
 
 

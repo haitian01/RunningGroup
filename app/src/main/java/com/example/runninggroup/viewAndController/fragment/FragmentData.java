@@ -24,6 +24,7 @@ public class FragmentData extends Fragment {
     Object[] scoreData;
     Object[] months;
     Object[] runData;
+    String username;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,7 +45,7 @@ public class FragmentData extends Fragment {
                     @Override
                     public void run() {
                         GetData getData = new GetData();
-                        getData.username = getActivity().getIntent().getStringExtra("username");
+                        getData.username = username;
                         runData = getData.getRunData();
                     }
                 });
@@ -67,7 +68,7 @@ public class FragmentData extends Fragment {
                     @Override
                     public void run() {
                         GetData getData = new GetData();
-                        getData.username = getActivity().getIntent().getStringExtra("username");
+                        getData.username = username;
                         months = getData.getGroudMonth();
                         scoreData = getData.getGroudScore();
                     }
@@ -85,6 +86,7 @@ public class FragmentData extends Fragment {
     }
 
     public void initView(){
+        username = getActivity().getIntent().getStringExtra("username");
         barChart = view.findViewById(R.id.chart01);
         lineChart = view.findViewById(R.id.chart02);
 

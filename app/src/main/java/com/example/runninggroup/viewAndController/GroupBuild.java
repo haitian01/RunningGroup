@@ -50,7 +50,7 @@ public class GroupBuild extends AppCompatActivity implements View.OnClickListene
                                 public void run() {
                                     Toast.makeText(GroupBuild.this,"创建成功！",Toast.LENGTH_SHORT).show();
                                     Intent intent = new Intent(GroupBuild.this, MainInterface.class);
-                                    intent.putExtra("jump",3);
+                                    intent.putExtra("id",3);
                                     intent.putExtra("username",username);
                                     startActivity(intent);
                                 }

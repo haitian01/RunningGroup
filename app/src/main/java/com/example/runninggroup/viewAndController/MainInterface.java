@@ -64,6 +64,9 @@ public class MainInterface extends AppCompatActivity implements View.OnClickList
     String username;
     Dialog mDialog;
     int id;
+    MyPagerAdapter myPagerAdapter;
+    ArrayList<Fragment> fragmentList;
+    ArrayList<String> list_Title;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -71,6 +74,19 @@ public class MainInterface extends AppCompatActivity implements View.OnClickList
         setContentView(R.layout.activity_maininterface);
         initView();
         initEvent();
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        id = intent.getIntExtra("id",0);
+        fragmentList = new ArrayList<>();
+        fragmentList.add(new FragmentData());
+        fragmentList.add(new FragmentCard());
+        fragmentList.add(new FragmentFriends());
+        fragmentList.add(new FragmentGroup());
+        mViewPager.setAdapter(myPagerAdapter);
+        mViewPager.setCurrentItem(id);
     }
 
     @Override
@@ -98,8 +114,8 @@ public class MainInterface extends AppCompatActivity implements View.OnClickList
         personalHead = findViewById(R.id.personalImage);
         usernameText = findViewById(R.id.text_userName);
 
-        ArrayList<Fragment> fragmentList = new ArrayList<>();
-        ArrayList<String> list_Title = new ArrayList<>();
+        fragmentList = new ArrayList<>();
+        list_Title = new ArrayList<>();
         fragmentList.add(new FragmentData());
         fragmentList.add(new FragmentCard());
         fragmentList.add(new FragmentFriends());
@@ -109,7 +125,8 @@ public class MainInterface extends AppCompatActivity implements View.OnClickList
         list_Title.add("好友");
         list_Title.add("跑团");
         usernameText.setText(username);
-        mViewPager.setAdapter(new MyPagerAdapter(getSupportFragmentManager(), fragmentList,list_Title));
+        myPagerAdapter = new MyPagerAdapter(getSupportFragmentManager(), fragmentList, list_Title);
+        mViewPager.setAdapter(myPagerAdapter);
         mTabLayout.setupWithViewPager(mViewPager);//此方法就是让tablayout和ViewPager联动
         mViewPager.setCurrentItem(id);
         //大图

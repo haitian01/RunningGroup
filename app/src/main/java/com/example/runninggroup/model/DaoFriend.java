@@ -10,6 +10,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.example.runninggroup.viewAndController.helper.MomentHelper;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class DaoFriend {
@@ -22,6 +23,7 @@ public class DaoFriend {
         String json =  PostRequest.postRequest("http://39.97.66.19:8080/friend/getDynamic","username="+username);
         List<DynamicHelper> list = JSONObject.parseArray(json,DynamicHelper.class);
         if(list != null){
+            Collections.reverse(list);
             return list;
         }else {
             return new ArrayList<DynamicHelper>();

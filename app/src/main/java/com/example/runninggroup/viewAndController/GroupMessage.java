@@ -50,6 +50,8 @@ public class GroupMessage extends AppCompatActivity implements View.OnClickListe
     Drawable mDrawable;
     int admin;
     int id;
+    ArrayList<Fragment> fragmentList;
+    ArrayList<String> list_Title;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,6 +61,26 @@ public class GroupMessage extends AppCompatActivity implements View.OnClickListe
 
     }
 
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        id = intent.getIntExtra("id",0);
+        username = intent.getStringExtra("username");
+
+        FragmentGroupTask fragmentGroupTask = new FragmentGroupTask();
+        FragmentGroupMember fragmentGroupMember = new FragmentGroupMember();
+        Bundle budle=new Bundle();
+        budle.putString("group",group);
+        fragmentGroupTask.setArguments(budle);
+        fragmentGroupMember.setArguments(budle);
+
+        fragmentList = new ArrayList<>();
+        fragmentList.add(fragmentGroupMember);
+        fragmentList.add(fragmentGroupTask);
+        mViewPager.setAdapter(new MyPagerAdapter(getSupportFragmentManager(), fragmentList,list_Title));
+        mViewPager.setCurrentItem(id);
+
+    }
 
     private void initView() {
         username = getIntent().getStringExtra("username");
@@ -75,8 +97,8 @@ public class GroupMessage extends AppCompatActivity implements View.OnClickListe
 
         mViewPager = findViewById(R.id.groupmessage_viewPager);
         mTabLayout = findViewById(R.id.groupmessage_tabLayout);
-        ArrayList<Fragment> fragmentList = new ArrayList<>();
-        ArrayList<String> list_Title = new ArrayList<>();
+        fragmentList = new ArrayList<>();
+        list_Title = new ArrayList<>();
 
 
         //访问服务器

@@ -15,6 +15,7 @@ import com.example.runninggroup.viewAndController.helper.MemberManageHelper;
 
 import java.text.DateFormatSymbols;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class DaoGroup {
@@ -41,6 +42,7 @@ public class DaoGroup {
         String json =  PostRequest.postRequest("http://39.97.66.19:8080/group/findAllTask","groupName="+groupName);
         List<GroupTaskHelper> list = JSONObject.parseArray(json,GroupTaskHelper.class);
         if(list != null){
+            Collections.reverse(list);
             return list;
         }
         return new ArrayList<GroupTaskHelper>();
@@ -72,6 +74,7 @@ public class DaoGroup {
         String json =  PostRequest.postRequest("http://39.97.66.19:8080/group/getGroupCall","groupName="+groupName);
         List<GroupCallHelper> list = JSONObject.parseArray(json,GroupCallHelper.class);
         if(list != null){
+            Collections.reverse(list);
             return list;
         }
         return new ArrayList<GroupCallHelper>();
