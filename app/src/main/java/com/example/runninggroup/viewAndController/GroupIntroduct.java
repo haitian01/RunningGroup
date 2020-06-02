@@ -93,19 +93,13 @@ public class GroupIntroduct extends AppCompatActivity {
                                             numText.setText(number+"");
                                         }
                                     });
-                                    Looper.prepare();
-                                    Toast.makeText(GroupIntroduct.this,"成功！",Toast.LENGTH_SHORT).show();
-                                    Looper.loop();
+                                    makeToast("成功！");
 
                                 }else {
-                                    Looper.prepare();
-                                    Toast.makeText(GroupIntroduct.this,"失败！",Toast.LENGTH_SHORT).show();
-                                    Looper.loop();
+                                    makeToast("失败");
                                 }
                             }else {
-                                Looper.prepare();
-                                Toast.makeText(GroupIntroduct.this,"失败！\n您已经加入过跑团",Toast.LENGTH_SHORT).show();
-                                Looper.loop();
+                               makeToast("失败！\n您已经加入过跑团");
                             }
                         }
                     }).start();
@@ -123,13 +117,9 @@ public class GroupIntroduct extends AppCompatActivity {
                                         numText.setText(number+"");
                                     }
                                 });
-                                Looper.prepare();
-                                Toast.makeText(GroupIntroduct.this,"成功",Toast.LENGTH_SHORT).show();
-                                Looper.loop();
+                                makeToast("成功！");
                             }else {
-                                Looper.prepare();
-                                Toast.makeText(GroupIntroduct.this,"失败",Toast.LENGTH_SHORT).show();
-                                Looper.loop();
+                                makeToast("失败");
                             }
                         }
                     }).start();
@@ -164,5 +154,13 @@ public class GroupIntroduct extends AppCompatActivity {
                 }
             }
         }).start();
+    }
+    private void makeToast(String msg){
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(GroupIntroduct.this, msg, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

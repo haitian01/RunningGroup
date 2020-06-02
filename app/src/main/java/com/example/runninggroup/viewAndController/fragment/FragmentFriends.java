@@ -37,7 +37,6 @@ public class FragmentFriends extends Fragment {
     public ListView mListView,mListView1;
     public List<FriendsHelper> list;
     public List<MomentHelper> list1;
-    public FriendsAdapter mAdapter;
     public TextView applicationTextView,friendTextView;
     public View view;
     private RelativeLayout mRelativeLayout;
@@ -50,13 +49,7 @@ public class FragmentFriends extends Fragment {
             @Override
             public void run() {
                 list = DaoUser.getFriends(username);
-                for (FriendsHelper friendsHelper : list) {
-                    Log.v("friend",friendsHelper.toString());
-                }
                 list1 = DaoFriend.queryMomentList(username);
-                for (MomentHelper momentHelper : list1) {
-                    Log.v("moment",momentHelper.toString());
-                }
             }
         });
         t.start();
@@ -126,6 +119,7 @@ public class FragmentFriends extends Fragment {
                                         }
                                     });
                                 }
+
                             }
                         })
                         .setNegativeButton("拒绝", new DialogInterface.OnClickListener() {
@@ -155,6 +149,7 @@ public class FragmentFriends extends Fragment {
                                         }
                                     });
                                 }
+
                             }
                         }).create();
                 builder.show();
@@ -178,6 +173,6 @@ public class FragmentFriends extends Fragment {
         if(list.size() == 0){
             friendTextView.setVisibility(View.GONE);
         }
-        if (list1.size() == 0 && list.size() == 0){mRelativeLayout.setVisibility(View.VISIBLE);}
+        if (list1.size() == 0 && list.size() == 1){mRelativeLayout.setVisibility(View.VISIBLE);}
     }
 }

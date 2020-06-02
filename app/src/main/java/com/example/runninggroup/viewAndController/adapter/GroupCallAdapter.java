@@ -21,16 +21,20 @@ public class GroupCallAdapter extends BaseAdapter {
     public LayoutInflater mInflater;
     public List<GroupCallHelper> mList;
     HashMap<Integer, Drawable> mDrawable;
+    HashMap<Integer, Drawable> mDrawable_img;
     public GroupCallAdapter(LayoutInflater inflater, List<GroupCallHelper> list) {
         mInflater = inflater;
         mList = list;
         mDrawable = new HashMap<>(list.size());
+        mDrawable_img = new HashMap<>(list.size());
         new Thread(new Runnable() {
             @Override
             public void run() {
                 for(int i=0;i<list.size();i++){
                     Drawable drawable =  DaoUser.getImg(DaoUser.getCallImgName(mList.get(i).getCallName(),mList.get(i).getCallTime()));
+                    Drawable drawable_img =  DaoUser.getImg(DaoUser.getUserHeadImgName(mList.get(i).getCallName()));
                     if(drawable != null) mDrawable.put(i,drawable);
+                    if(drawable_img != null) mDrawable_img.put(i,drawable_img);
                 }
 
             }
@@ -57,6 +61,7 @@ public class GroupCallAdapter extends BaseAdapter {
         //ViewHolder内部类
         class ViewHolder{
             public ImageView img;
+            public ImageView task_img;
             public TextView callName;
             public TextView callMsg;
             public TextView callTime;
@@ -67,7 +72,8 @@ public class GroupCallAdapter extends BaseAdapter {
         if (convertView==null){
             convertView=mInflater.inflate(R.layout.helper_grouptask,null);
             viewHolder=new ViewHolder();
-            viewHolder.img=convertView.findViewById(R.id.task_img);
+            viewHolder.img=convertView.findViewById(R.id.img);
+            viewHolder.task_img=convertView.findViewById(R.id.task_img);
             viewHolder.callName=convertView.findViewById(R.id.release_name);
             viewHolder.callMsg=convertView.findViewById(R.id.task_msg);
             viewHolder.callTime=convertView.findViewById(R.id.task_time);
@@ -83,6 +89,10 @@ public class GroupCallAdapter extends BaseAdapter {
                     Drawable drawable =  DaoUser.getImg(DaoUser.getCallImgName(mList.get(position).getCallName(),mList.get(position).getCallTime()));
                     if(drawable != null) mDrawable.put(position,drawable);
                 }
+                if(mDrawable_img.get(position) == null){
+                    Drawable drawable_img =  DaoUser.getImg(DaoUser.getUserHeadImgName(mList.get(position).getCallName()));
+                    if(drawable_img != null) mDrawable_img.put(position,drawable_img);
+                }
 
 
             }
@@ -93,7 +103,8 @@ public class GroupCallAdapter extends BaseAdapter {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        viewHolder.img.setImageDrawable(mDrawable.get(position));
+        if(mDrawable_img.get(position) != null) viewHolder.img.setImageDrawable(mDrawable_img.get(position));
+        viewHolder.task_img.setImageDrawable(mDrawable.get(position));
 
         //赋值
         viewHolder.callName.setText(mList.get(position).getCallName());

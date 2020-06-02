@@ -62,7 +62,7 @@ public class DaoFriend {
     //查询好友关系
     public static boolean queryFriend(String username,String friendName){
         String result =  PostRequest.postRequest("http://39.97.66.19:8080/friend/queryFriend","username="+username+"&friendName="+friendName);
-        if(result == "SUCCESS"){
+        if("SUCCESS".equals(result)){
             return true;
         }
         return false;
@@ -76,6 +76,8 @@ public class DaoFriend {
         }
         return false;
     }
+
+
 
 
 }

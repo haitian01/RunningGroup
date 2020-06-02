@@ -1,44 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent"
     android:orientation="vertical">
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:id="@+id/linearlayout1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true">
         <EditText
+            android:id="@+id/group_search"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:hint="输入跑团名称快速搜索"
-            android:layout_marginLeft="35dp"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="取消"
-            android:textSize="15dp"/>
+            />
+        <Button
+            android:id="@+id/search"
+            android:layout_width="50dp"
+            android:layout_height="30dp"
+            android:text="搜索"
+            android:textSize="15dp"
+            android:background="#fff"/>
     </LinearLayout>
+
     <TextView
+        android:id="@+id/mygroup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="我的跑团"
-        android:textSize="15dp"/>
+        android:textSize="15dp"
+        android:layout_below="@id/linearlayout1"/>
     <ImageView
         android:id="@+id/img"
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:src="@mipmap/rungroup"
+        android:layout_below="@id/mygroup"
         />
 
 
 
     <TextView
+        android:id="@+id/hotgroup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="热门跑团"
-        android:textSize="15dp"/>
+        android:textSize="15dp"
+        android:layout_below="@id/img"/>
     <ListView
         android:id="@+id/listView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></ListView>
+        android:layout_height="match_parent"
+        android:layout_below="@id/hotgroup"></ListView>
+    <ListView
+        android:id="@+id/search_result"
+        android:layout_width="300dp"
+        android:layout_height="500dp"
+        android:layout_below="@id/linearlayout1"
+        android:layout_centerHorizontal="true"
+        android:background="#eee"
+        android:visibility="gone">
 
-</LinearLayout>
+    </ListView>
+
+</RelativeLayout>

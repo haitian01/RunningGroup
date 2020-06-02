@@ -22,6 +22,7 @@
             android:adjustViewBounds="true"
             android:layout_toRightOf="@id/img"
             android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
             android:layout_below="@+id/task_msg"
             android:src="@mipmap/defaultpic"/>
         <TextView

@@ -179,29 +179,14 @@ public class MainInterface extends AppCompatActivity implements View.OnClickList
                                     @Override
                                     public void run() {
                                         if(DaoFriend.queryFriend(username,friend_name.getText().toString())){
-                                            runOnUiThread(new Runnable() {
-                                                @Override
-                                                public void run() {
-                                                    Toast.makeText(MainInterface.this,"你们已经是好友啦！",Toast.LENGTH_SHORT).show();
-                                                }
-                                            });
+                                           makeToast("你们已经是好友啦");
                                         }else {
 
                                             String result = DaoFriend.insertMoment(username,friend_name.getText().toString(),content.getText().toString());
                                             if("SUCCESS".equals(result)){
-                                                runOnUiThread(new Runnable() {
-                                                    @Override
-                                                    public void run() {
-                                                        Toast.makeText(MainInterface.this,"请求发送成功",Toast.LENGTH_SHORT).show();
-                                                    }
-                                                });
+                                               makeToast("请求发送成功！");
                                             }else {
-                                                runOnUiThread(new Runnable() {
-                                                    @Override
-                                                    public void run() {
-                                                        Toast.makeText(MainInterface.this,"请求发送失败",Toast.LENGTH_SHORT).show();
-                                                    }
-                                                });
+                                                makeToast("请求发送失败");
                                             }
                                         }
 
@@ -305,6 +290,14 @@ public class MainInterface extends AppCompatActivity implements View.OnClickList
         //imageView设置图片
         iv.setImageDrawable(DaoUser.getImg(DaoUser.getUserHeadImgName(username)));
         return iv;
+    }
+    private void makeToast(String msg){
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(MainInterface.this, msg, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
 

@@ -15,24 +15,13 @@ import com.example.runninggroup.viewAndController.helper.GroupHelper;
 import java.util.HashMap;
 import java.util.List;
 
-public class GroupAdapter extends BaseAdapter {
+public class SearchGroupAdapter extends BaseAdapter {
     public LayoutInflater mInflater;
     public List<GroupHelper> mList;
-    HashMap<Integer,Drawable> mDrawable;
-    public GroupAdapter(LayoutInflater inflater, List<GroupHelper> list) {
+    public SearchGroupAdapter(LayoutInflater inflater, List<GroupHelper> list) {
         mInflater = inflater;
         mList = list;
-        mDrawable = new HashMap<>(list.size());
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                for(int i=0;i<list.size();i++){
-                    Drawable drawable = DaoUser.getImg(DaoUser.getGroupHeadImgName(mList.get(i).getGroupName()));
-                    if(drawable!=null) mDrawable.put(i,drawable);
-                }
 
-            }
-        }).start();
     }
 
     @Override
@@ -54,7 +43,6 @@ public class GroupAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         //ViewHolder内部类
         class ViewHolder{
-            public ImageView img;
             public TextView name;
             public TextView num;
             public TextView slogan;
@@ -63,9 +51,8 @@ public class GroupAdapter extends BaseAdapter {
         //判断converView是否为空
         ViewHolder viewHolder;
         if (convertView==null){
-            convertView=mInflater.inflate(R.layout.helper_groupshelper,null);
+            convertView=mInflater.inflate(R.layout.helper_groupsearch,null);
             viewHolder=new ViewHolder();
-            viewHolder.img=convertView.findViewById(R.id.img);
             viewHolder.name=convertView.findViewById(R.id.name);
             viewHolder.num=convertView.findViewById(R.id.num);
             viewHolder.slogan=convertView.findViewById(R.id.slogan);
@@ -76,25 +63,6 @@ public class GroupAdapter extends BaseAdapter {
         }
 
         //赋值
-        Thread t = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                if(mDrawable.get(position) == null){
-                    Drawable drawable =  DaoUser.getImg(DaoUser.getGroupHeadImgName(mList.get(position).getGroupName()));
-                    if(drawable != null) mDrawable.put(position,drawable);
-                }
-
-
-            }
-        });
-        t.start();
-        try {
-            t.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        if(mDrawable.get(position) != null){viewHolder.img.setImageDrawable(mDrawable.get(position));}
-        else {viewHolder.img.setImageResource(R.mipmap.defaultpic);}
         viewHolder.name.setText(mList.get(position).getGroupName());
         viewHolder.num.setText(mList.get(position).getNumbers()+"");
         viewHolder.slogan.setText(mList.get(position).getSlogan());

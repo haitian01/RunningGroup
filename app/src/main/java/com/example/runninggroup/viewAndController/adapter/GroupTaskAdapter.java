@@ -113,7 +113,6 @@ public class GroupTaskAdapter extends BaseAdapter {
             e.printStackTrace();
         }
         if(mDrawable_img.get(position) != null){viewHolder.img.setImageDrawable(mDrawable_img.get(position));}
-        else {viewHolder.img.setImageResource(R.mipmap.defaultpic);}
         viewHolder.task_img.setImageDrawable(mDrawable_task_img.get(position));
         viewHolder.release_name.setText(mList.get(position).getRelease_name());
         viewHolder.task_time.setText(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(mList.get(position).getTask_time()));
