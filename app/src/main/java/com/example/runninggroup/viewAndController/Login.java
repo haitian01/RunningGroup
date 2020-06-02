@@ -52,8 +52,6 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         mButton1=findViewById(R.id.register);
         mButton2=findViewById(R.id.login);
         mButton3=findViewById(R.id.forgetPassword);
-        mEditText1.setText("tom");
-        mEditText2.setText("123");
 
         mEditText2.setTransformationMethod(PasswordTransformationMethod.getInstance());
     }

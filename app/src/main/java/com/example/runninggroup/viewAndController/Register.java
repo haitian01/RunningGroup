@@ -11,24 +11,42 @@ import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.runninggroup.R;
 import com.example.runninggroup.model.DaoUser;
+import com.example.runninggroup.util.PermisionUtil;
 
 public class Register extends AppCompatActivity implements View.OnClickListener {
     private EditText mEditText1,mEditText2,mEditText3;
     private Button mButton1,mButton2;
     private RadioGroup mRadioGroup;
     private String sex = "女";
+    private static final int REQUEST_EXTERNAL_STORAGE = 1;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+        PermisionUtil.verifyStoragePermissions(this);
         initView();
         initEvent();
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode){
+            case REQUEST_EXTERNAL_STORAGE :
+                for (int grantResult : grantResults) {
+                    if(grantResult == -1){
+                        System.exit(0);
+                    }
+                }
+                break;
+        }
+    }
+
     private void initView() {
         mEditText1=findViewById(R.id.username);
         mEditText2=findViewById(R.id.password);

@@ -94,6 +94,10 @@ public class GroupIntroduct extends AppCompatActivity {
                                         }
                                     });
                                     makeToast("成功！");
+                                    Intent intent = new Intent(GroupIntroduct.this,MainInterface.class);
+                                    intent.putExtra("username",username);
+                                    intent.putExtra("id",3);
+                                    startActivity(intent);
 
                                 }else {
                                     makeToast("失败");
@@ -118,6 +122,10 @@ public class GroupIntroduct extends AppCompatActivity {
                                     }
                                 });
                                 makeToast("成功！");
+                                Intent intent = new Intent(GroupIntroduct.this,MainInterface.class);
+                                intent.putExtra("username",username);
+                                intent.putExtra("id",3);
+                                startActivity(intent);
                             }else {
                                 makeToast("失败");
                             }

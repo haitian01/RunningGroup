@@ -91,10 +91,14 @@ public class DaoUser {
         }
 
         return ImgGet.getImg(imgName);
-
-
-
    }
+   //修改密码
+    public static boolean changePassword(String username,String password){  
+        String result = PostRequest.postRequest("http://39.97.66.19:8080/user/changePassword","username="+username+"&password="+password);
+        if("SUCCESS".equals(result)){return true;}
+        return false;
+
+    }
     //获取用户头像的imgName
     public static String getUserHeadImgName(String username){
         return "user_"+username+"_head";
@@ -119,5 +123,6 @@ public class DaoUser {
     public static String getCardImgName(String username,long begin_time){
         return "call_"+username+"_"+begin_time;
     }
+
 
 }

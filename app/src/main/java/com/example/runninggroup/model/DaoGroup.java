@@ -112,6 +112,15 @@ public class DaoGroup {
         if("SUCCESS".equals(result)) return true;
         return false;
     }
+    //修改口号
+    public static boolean changeSlogan(String groupName,String slogan){
+        String result =  PostRequest.postRequest("http://39.97.66.19:8080/group/changeSlogan","groupName="+groupName+"&slogan="+slogan);
+        if (result == null) return false;
+        if("SUCCESS".equals(result)) return true;
+        return false;
+    }
+
+
 
 
 
