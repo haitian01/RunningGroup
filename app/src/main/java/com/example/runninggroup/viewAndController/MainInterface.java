@@ -87,6 +87,24 @@ public class MainInterface extends AppCompatActivity implements View.OnClickList
         fragmentList.add(new FragmentGroup());
         mViewPager.setAdapter(myPagerAdapter);
         mViewPager.setCurrentItem(id);
+
+        //设置头像
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                final Drawable drawable = DaoUser.getImg(DaoUser.getUserHeadImgName(username));
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if(drawable != null) {
+                            personalHead.setImageDrawable(drawable);
+                        }else {
+                            personalHead.setImageResource(R.mipmap.defaultpic);
+                        }
+                    }
+                });
+            }
+        }).start();
     }
 
     @Override
@@ -252,7 +270,6 @@ public class MainInterface extends AppCompatActivity implements View.OnClickList
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-//                        final Drawable drawable = DaoUser.getImg(DaoUser.getUserHeadImgName(username));
                         final Drawable drawable = DaoUser.getImg(DaoUser.getUserHeadImgName(username));
                         runOnUiThread(new Runnable() {
                             @Override

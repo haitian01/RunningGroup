@@ -215,7 +215,7 @@ public class CardPersonal extends AppCompatActivity {
                                 mFile = new File(path);
                                 ImgUpload.uploadFile(mFile,DaoUser.getCardImgName(username,beginTime));
                             }catch (Exception e){
-                                makeToast("图片发表失败");
+                                makeToast("图片未发表");
                             }
                             if(DaoAct.insertAct(username,beginTime,endTime,length,score,type)){
                                 runOnUiThread(new Runnable() {

@@ -28,6 +28,8 @@ import com.example.runninggroup.util.BitmapUtil;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 
 public class PersonalSetting extends AppCompatActivity {
     String username;
@@ -57,8 +59,9 @@ public class PersonalSetting extends AppCompatActivity {
                                 Log.v("本机路径：",img_src);
                                 ContentResolver cr = getContentResolver();
                                 try {
-
-                                    Bitmap bitmap = BitmapFactory.decodeStream(cr.openInputStream(uri));
+                                    InputStream inputStream = cr.openInputStream(uri);
+                                    Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+                                    inputStream.close();
                                     /* 将Bitmap设定到ImageView */
                                     runOnUiThread(new Runnable() {
                                         @Override
@@ -83,6 +86,10 @@ public class PersonalSetting extends AppCompatActivity {
                                                                         @Override
                                                                         public void run() {
                                                                             Toast.makeText(PersonalSetting.this, result, Toast.LENGTH_SHORT).show();
+                                                                            Intent intent = new Intent(PersonalSetting.this,MainInterface.class);
+                                                                            intent.putExtra("username",username);
+                                                                            intent.putExtra("id",0);
+                                                                            startActivity(intent);
                                                                         }
                                                                     });
                                                                 }
@@ -115,6 +122,8 @@ public class PersonalSetting extends AppCompatActivity {
 
                                 } catch (FileNotFoundException e) {
                                     Log.e("Exception", e.getMessage(), e);
+                                } catch (IOException e) {
+                                    e.printStackTrace();
                                 }
 
                             }

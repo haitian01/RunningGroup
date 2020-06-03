@@ -185,8 +185,11 @@ public class BitmapUtil {
             e.printStackTrace();
         }finally {
             try {
-                fos.flush();
-                fos.close();
+                if(fos != null){
+                    fos.flush();
+                    fos.close();
+                }
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
