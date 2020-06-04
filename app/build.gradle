@@ -32,17 +32,16 @@ android {
 dependencies {
     implementation 'com.github.abel533:ECharts:3.0.0.2'
     implementation 'com.google.code.gson:gson:2.8.1'
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     implementation 'com.android.support:design:25.2.0'
-    implementation files('libs\\ActionBarSherlock-master.zip')
-    implementation files('libs\\SlidingMenu-master.zip')
     implementation 'com.alibaba:fastjson:1.2.49'
     implementation 'com.alibaba:fastjson:1.1.70.android'
     implementation 'androidx.navigation:navigation-fragment:2.2.2'
     implementation 'androidx.navigation:navigation-ui:2.2.2'
+    implementation files('libs/BaiduLBS_Android.jar')
 }
