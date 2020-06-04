@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:gravity="center"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     >
+    <com.baidu.mapapi.map.MapView
+        android:id="@+id/map"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:clickable="true" />
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -13,11 +17,64 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:orientation="vertical">
-            <com.baidu.mapapi.map.MapView
-                android:id="@+id/map"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:clickable="true" />
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="50dp"
+                >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="起始位置："
+                    android:textSize="18dp"/>
+                <TextView
+                    android:id="@+id/start_position"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="北京市北京邮电大学"
+                    />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginLeft="50dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="终止位置："
+                    android:textSize="18dp"/>
+                <TextView
+                    android:id="@+id/stop_position"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="河北省沧州市"
+                    android:textSize="15dp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginLeft="50dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="跑步长度："
+                    android:textSize="18dp"/>
+                <TextView
+                    android:id="@+id/length"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="1500" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="m" />
+            </LinearLayout>
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -25,7 +82,7 @@
                 android:layout_marginRight="50dp"
                 android:layout_marginTop="30dp"
                 android:text="选择跑步种类："
-                android:textSize="24sp"/>
+                android:textSize="18dp"/>
             <Spinner
                 android:id="@+id/act_type"
                 android:layout_width="match_parent"
@@ -33,6 +90,7 @@
                 android:layout_marginLeft="50dp"
                 android:layout_marginRight="50dp"
                 android:gravity="center"
+                android:entries="@array/act_type"
                 >
             </Spinner>
             <TextView
@@ -50,6 +108,17 @@
                 android:layout_height="100dp"
                 android:layout_marginLeft="-100dp"
                 android:src="@mipmap/dynamic"/>
+            <Button
+                android:id="@+id/start_run"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="开始计时"/>
+            <Button
+                android:id="@+id/stop_run"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="停止计时"/>
+
             <Button
                 android:id="@+id/card_personal"
                 android:layout_width="match_parent"
