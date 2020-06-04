@@ -94,6 +94,16 @@
                 android:hint="例：1500"
                 >
             </EditText>
+            <EditText
+                android:id="@+id/begin_place"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:hint="出发地点"/>
+            <EditText
+                android:id="@+id/end_place"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:hint="目的地点"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

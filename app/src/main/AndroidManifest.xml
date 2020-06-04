@@ -35,7 +35,7 @@
         <activity android:name=".viewAndController.WriteTask" android:launchMode="singleTask"></activity>
         <activity android:name=".viewAndController.CardPersonal" android:launchMode="singleTask"></activity>
         <activity android:name=".viewAndController.PersonalSetting" android:launchMode="singleTask"></activity>
-        <activity android:name=".viewAndController.TimerCard"></activity>
+        <activity android:name=".viewAndController.TimerCard" android:launchMode="singleInstance"></activity>
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
             android:value="KUsPba6rysrCLDeOdsraGvswyH1xA9dN" />

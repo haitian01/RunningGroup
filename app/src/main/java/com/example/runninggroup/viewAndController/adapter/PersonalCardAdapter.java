@@ -67,6 +67,8 @@ public class PersonalCardAdapter extends BaseAdapter {
             public TextView act_time;
             public TextView act_length;
             public TextView act_score;
+            public TextView act_path;
+
 
         }
         //判断converView是否为空
@@ -80,6 +82,8 @@ public class PersonalCardAdapter extends BaseAdapter {
             viewHolder.act_time=convertView.findViewById(R.id.act_time);
             viewHolder.act_length=convertView.findViewById(R.id.act_length);
             viewHolder.act_score=convertView.findViewById(R.id.act_score);
+            viewHolder.act_path=convertView.findViewById(R.id.act_path);
+
             convertView.setTag(viewHolder);
         }else {
             viewHolder= (ViewHolder) convertView.getTag();
@@ -107,6 +111,7 @@ public class PersonalCardAdapter extends BaseAdapter {
         viewHolder.act_length.setText(mList.get(position).getLength()+"");
         viewHolder.act_time.setText(CharacterUtil.getTimeLength(mList.get(position).getBegin_time(),mList.get(position).getEnd_time()));
         viewHolder.act_score.setText(mList.get(position).getScore()+"");
+        viewHolder.act_path.setText(mList.get(position).getBegin_place()+"—>"+mList.get(position).getEnd_place());
 
 
         ;

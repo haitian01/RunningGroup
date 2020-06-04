@@ -51,7 +51,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="河北省沧州市"
-                    android:textSize="15dp"/>
+                    />
             </LinearLayout>
 
             <LinearLayout
@@ -68,11 +68,27 @@
                     android:id="@+id/length"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:hint="1500" />
+                    android:hint="0.0" />
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="m" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginLeft="50dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="跑步时间："
+                    android:textSize="18dp"/>
+                <TextView
+                    android:id="@+id/act_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="00:00:00" />
             </LinearLayout>
 
             <TextView
@@ -118,6 +134,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="停止计时"/>
+            <Button
+                android:id="@+id/time_return"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="后台计时"/>
 
             <Button
                 android:id="@+id/card_personal"
