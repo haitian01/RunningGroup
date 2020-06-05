@@ -88,7 +88,11 @@ public class FragmentData extends Fragment {
     public void initView(){
         username = getActivity().getIntent().getStringExtra("username");
         barChart = view.findViewById(R.id.chart01);
+        barChart.getSettings().setUseWideViewPort(true);
+        barChart.getSettings().setLoadWithOverviewMode(true);
         lineChart = view.findViewById(R.id.chart02);
+        lineChart.getSettings().setUseWideViewPort(true);
+        lineChart.getSettings().setLoadWithOverviewMode(true);
 
     }
 
