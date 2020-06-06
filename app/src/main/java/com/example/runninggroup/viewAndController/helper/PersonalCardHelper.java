@@ -10,6 +10,9 @@ public class PersonalCardHelper {
     long length;
     double score;
     String act_type;
+    String begin_place;
+    String end_place;
+
 
     public PersonalCardHelper() {
     }
@@ -68,6 +71,22 @@ public class PersonalCardHelper {
 
     public void setAct_type(String act_type) {
         this.act_type = act_type;
+    }
+
+    public String getBegin_place() {
+        return begin_place;
+    }
+
+    public void setBegin_place(String begin_place) {
+        this.begin_place = begin_place;
+    }
+
+    public String getEnd_place() {
+        return end_place;
+    }
+
+    public void setEnd_place(String end_place) {
+        this.end_place = end_place;
     }
 
     @Override
