@@ -136,13 +136,14 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/rightSetting"
-        android:layout_width="210dp"
+        android:layout_width="180dp"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_marginTop="50dp"
         android:background="@color/white"
         android:visibility="invisible"
         tools:ignore="MissingConstraints">
+
         <ListView
             android:id="@+id/rightList"
             android:layout_width="match_parent"

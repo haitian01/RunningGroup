@@ -12,13 +12,13 @@
         android:textColor="@color/black" />
     <Button
         android:id="@+id/writetask_release"
-        android:layout_width="70dp"
+        android:layout_width="35dp"
         android:layout_height="35dp"
         android:layout_alignParentRight="true"
-        android:layout_marginRight="10dp"
-        android:background="@drawable/button_shape"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/fabu"
         android:layout_marginTop="10dp"
-        android:text="发布"/>
+        style="?android:attr/borderlessButtonStyle"/>
     <EditText
         android:id="@+id/writetask_msg"
         android:layout_width="match_parent"

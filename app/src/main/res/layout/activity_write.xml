@@ -12,17 +12,17 @@
         android:textColor="@color/black" />
     <Button
         android:id="@+id/write_release"
-        android:layout_width="70dp"
+        android:layout_width="35dp"
         android:layout_height="35dp"
         android:layout_alignParentRight="true"
-        android:layout_marginRight="10dp"
-        android:background="@drawable/button_shape"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/fabu"
         android:layout_marginTop="10dp"
-        android:text="发表"/>
+        style="?android:attr/borderlessButtonStyle"/>
     <EditText
         android:id="@+id/write_msg"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="200dp"
         android:layout_below="@+id/write_release"
         android:layout_marginTop="15dp"
         android:gravity="start"
@@ -34,8 +34,9 @@
         android:layout_width="120dp"
         android:layout_height="120dp"
         android:layout_below="@+id/write_msg"
-        android:layout_marginTop="15dp"
-        android:layout_marginLeft="15dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginLeft="25dp"
+
         android:src="@mipmap/dynamic"/>
 
 </RelativeLayout>

@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -163,9 +164,23 @@ public class TimerCard extends AppCompatActivity implements View.OnClickListener
 
     private void initvent() {
         mButton.setOnClickListener(this);
+
         startBtn.setOnClickListener(this);
+        Drawable sbtn = getResources().getDrawable(R.drawable.kaishi);
+        sbtn.setBounds(16,0,100,100);
+        startBtn.setCompoundDrawables(sbtn,null,null,null);
+
         stopBtn.setOnClickListener(this);
+        Drawable pbtn = getResources().getDrawable(R.drawable.jieshu);
+        pbtn.setBounds(20,0,100,100);
+        stopBtn.setCompoundDrawables(pbtn,null,null,null);
+
         returnBtn.setOnClickListener(this);
+        Drawable rbtn = getResources().getDrawable(R.drawable.houtaituichufanhuichu);
+        rbtn.setBounds(30,0,110,100);
+        returnBtn.setCompoundDrawables(rbtn,null,null,null);
+
+
         mImageView.setOnClickListener(this);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
