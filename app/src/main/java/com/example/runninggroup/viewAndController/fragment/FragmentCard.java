@@ -84,7 +84,7 @@ public class FragmentCard extends Fragment implements View.OnClickListener {
         switch (v.getId()){
             case R.id.btn:
 
-                final String[] items3 = new String[]{"计时打卡", "手动输入与截图"};//创建item
+                final String[] items3 = new String[]{"定位计时打卡", "手动输入与截图"};//创建item
                 AlertDialog alertDialog3 = new AlertDialog.Builder(getActivity())
                         .setTitle("选择您的打卡方式")
                         .setIcon(R.drawable.paobu)
