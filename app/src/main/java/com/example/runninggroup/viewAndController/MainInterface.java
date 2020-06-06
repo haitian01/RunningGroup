@@ -205,7 +205,7 @@ public class MainInterface extends AppCompatActivity implements View.OnClickList
                         final View view1=getLayoutInflater().inflate(R.layout.helper_addfriend,null);
                         alertDialog3.setView(view1)
                         .setTitle("添加好友")
-                        .setIcon(R.mipmap.ic_launcher).setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                        .setIcon(R.drawable.add_account).setPositiveButton("确定", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 final EditText friend_name = view1.findViewById(R.id.friend_name);
