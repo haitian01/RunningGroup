@@ -16,6 +16,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.runninggroup.R;
 import com.example.runninggroup.viewAndController.CardPersonal;
+import com.example.runninggroup.viewAndController.TimerCard;
 
 import java.util.Random;
 
@@ -83,7 +84,7 @@ public class FragmentCard extends Fragment implements View.OnClickListener {
         switch (v.getId()){
             case R.id.btn:
 
-                final String[] items3 = new String[]{"手环", "手动输入与截图"};//创建item
+                final String[] items3 = new String[]{"计时打卡", "手动输入与截图"};//创建item
                 AlertDialog alertDialog3 = new AlertDialog.Builder(getActivity())
                         .setTitle("选择您的打卡方式")
                         .setIcon(R.mipmap.ic_launcher)
@@ -91,6 +92,12 @@ public class FragmentCard extends Fragment implements View.OnClickListener {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                switch (i){
+                                   case 0:
+                                       Intent intent1 = new Intent(getActivity(), TimerCard.class);
+                                       intent1.putExtra("username",username);
+                                       startActivity(intent1);
+
+                                       break;
                                    case 1:
                                        Intent intent = new Intent(getActivity(), CardPersonal.class);
                                        intent.putExtra("username",username);

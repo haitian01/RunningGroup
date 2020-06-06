@@ -30,4 +30,9 @@
         <item>更换密码</item>
         <item>更换性别</item>
     </string-array>
+    <string-array name="act_type">
+        <item>常规跑步</item>
+        <item>全马/半马</item>
+        <item>校比赛</item>
+    </string-array>
 </resources>

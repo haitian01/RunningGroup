@@ -24,7 +24,7 @@ public class EchartOptionUtil {
         option.xAxis(categorxAxis);
 
         Line line = new Line();
-        line.smooth(false).name("跑团参与度").data(yAxis).itemStyle().normal().lineStyle().shadowColor("rgba(0,255,255,0.4)");
+        line.smooth(false).name("跑团月积分").data(yAxis).itemStyle().normal().lineStyle().shadowColor("rgba(0,255,255,0.4)");
         option.series(line);
         return option;
     }
@@ -44,7 +44,7 @@ public class EchartOptionUtil {
         option.xAxis(categorxAxis);
 
         Bar bar = new Bar();
-        bar.name("跑步时长").data(yAxis).itemStyle().normal().barBorderColor("rgba(84, 255, 129, 0)");
+        bar.name("跑步日里程").data(yAxis).itemStyle().normal().barBorderColor("rgba(84, 255, 129, 0)");
         //Pie.smooth(false).name("销量").data(yAxis).itemStyle().normal().lineStyle().shadowColor("rgba(0,0,0,0.4)");
         option.series(bar);
         return option;

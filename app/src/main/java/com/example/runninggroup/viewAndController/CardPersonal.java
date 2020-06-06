@@ -51,7 +51,7 @@ public class CardPersonal extends AppCompatActivity {
     private Button mBtn_cardperson;
     private TimePicker startTimePicker,endTimePicker;
     private DatePicker mDatePicker;
-    private EditText mEditText;
+    private EditText mEditText,beginEdt,endEdt;
     private Spinner mSpinner;
     private String[] act_type={"常规跑步","全马/半马","校比赛"};
     private double score = 0;
@@ -134,6 +134,15 @@ public class CardPersonal extends AppCompatActivity {
 
     private void initView() {
         username = getIntent().getStringExtra("username");
+        //性别
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                sex = DaoUser.getSex(username);
+            }
+        }).start();
+        beginEdt = findViewById(R.id.begin_place);
+        endEdt = findViewById(R.id.end_place);
         mImageView = findViewById(R.id.img);
         mBtn_cardperson = findViewById(R.id.card_personal);
         startTimePicker = findViewById(R.id.start_time);
@@ -167,19 +176,8 @@ public class CardPersonal extends AppCompatActivity {
                 //开始和结束时间（字符串）
                 mBeginTime = mDatePicker.getYear() + "-" + appendZero(mDatePicker.getMonth()+1) + "-" + appendZero(mDatePicker.getDayOfMonth()) + " " + appendZero(startTimePicker.getHour()) + ":" + appendZero(startTimePicker.getMinute());
                 mEndTime = mDatePicker.getYear() + "-" + appendZero(mDatePicker.getMonth()+1) + "-" + appendZero(mDatePicker.getDayOfMonth()) + " " + appendZero(endTimePicker.getHour()) + ":" + appendZero(endTimePicker.getMinute());
-                //性别
-                Thread t = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        sex = DaoUser.getSex(username);
-                    }
-                });
-                t.start();
-                try {
-                    t.join();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+
+
                 //开始和结束时间（时间戳）
                 try {
                     beginTime = new SimpleDateFormat("yyyy-MM-dd HH:mm").parse(mBeginTime).getTime();
@@ -217,7 +215,7 @@ public class CardPersonal extends AppCompatActivity {
                             }catch (Exception e){
                                 makeToast("图片未发表");
                             }
-                            if(DaoAct.insertAct(username,beginTime,endTime,length,score,type)){
+                            if(DaoAct.insertAct(username,beginTime,endTime,length,score,type,beginEdt.getText().toString(),endEdt.getText().toString())){
                                 runOnUiThread(new Runnable() {
                                     @SuppressLint("ResourceType")
                                     @Override
