@@ -10,6 +10,15 @@ public class User {
     private int score;
     private Drawable pic;
     private String sex;
+    private String mail;
+
+    public String getMail() {
+        return mail;
+    }
+
+    public void setMail(String mail) {
+        this.mail = mail;
+    }
 
     public int getId() {
         return id;

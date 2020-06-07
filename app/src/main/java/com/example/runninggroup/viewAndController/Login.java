@@ -23,6 +23,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.runninggroup.R;
 import com.example.runninggroup.model.DaoUser;
 import com.example.runninggroup.request.PostRequest;
+import com.example.runninggroup.util.MailSend;
 import com.example.runninggroup.viewAndController.TimeAndData.GetTime;
 
 import java.io.FileOutputStream;
@@ -144,21 +145,28 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                 break;
             case R.id.forgetPassword:
                 AlertDialog.Builder builder = new AlertDialog.Builder(Login.this);
-                View view = getLayoutInflater().inflate(R.layout.helper_slogan,null);
-                EditText editText = view.findViewById(R.id.write_slogan);
-                TextView textView = view.findViewById(R.id.mytitle);
-                textView.setVisibility(View.GONE);
-                editText.setHint("魔镜啊魔镜，这个世界上谁最漂亮...");
+                View view = getLayoutInflater().inflate(R.layout.helper_forgetpassword,null);
+                EditText userEdt = view.findViewById(R.id.username);
+                EditText mailEdt = view.findViewById(R.id.mail);
                 builder.setView(view)
                         .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                String result = editText.getText().toString();
-                                if("刘宇".equals(result)){
-                                    Toast.makeText(Login.this, "请及时取得联系，修改密码！", Toast.LENGTH_SHORT).show();
-                                }else {
-                                    Toast.makeText(Login.this, "输入错误，你的账号已被注销", Toast.LENGTH_LONG).show();
-                                }
+                                String user = userEdt.getText().toString();
+                                String mail = mailEdt.getText().toString();
+                                new Thread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        String pwd = DaoUser.getPassword(user,mail);
+                                        if("".equals(pwd)){
+                                            makeToast("用户名或邮箱错误");
+                                        }else {
+                                            MailSend.sendMssage("北邮跑团密码找回","请妥善保管您的密码："+pwd,mail);
+                                            makeToast("密码已发送至邮箱");
+                                        }
+                                    }
+                                }).start();
+
 
                             }
                         })
@@ -174,6 +182,14 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
 
         }
 
+    }
+    private void makeToast(String msg){
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(Login.this, msg, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }
 
