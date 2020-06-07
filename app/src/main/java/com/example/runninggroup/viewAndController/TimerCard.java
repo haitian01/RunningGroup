@@ -12,6 +12,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -63,7 +64,7 @@ public class TimerCard extends AppCompatActivity implements View.OnClickListener
     private BaiduMap baiduMap;
     private boolean firstLocation;
     private MyLocationConfiguration config;
-    Button mButton,startBtn,stopBtn,returnBtn;
+    Button mButton,startBtn,stopBtn;
     TextView startText,stopText,lengthText,timeText;
     ImageView mImageView;
     //纬度
@@ -162,6 +163,19 @@ public class TimerCard extends AppCompatActivity implements View.OnClickListener
 
     }
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            Intent intent = new Intent(TimerCard.this,MainInterface.class);
+            intent.putExtra("id",1);
+            intent.putExtra("username",username);
+            startActivity(intent);
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
     private void initvent() {
         mButton.setOnClickListener(this);
 
@@ -175,10 +189,8 @@ public class TimerCard extends AppCompatActivity implements View.OnClickListener
         pbtn.setBounds(20,0,100,100);
         stopBtn.setCompoundDrawables(pbtn,null,null,null);
 
-        returnBtn.setOnClickListener(this);
         Drawable rbtn = getResources().getDrawable(R.drawable.houtaituichufanhuichu);
         rbtn.setBounds(30,0,110,100);
-        returnBtn.setCompoundDrawables(rbtn,null,null,null);
 
 
         mImageView.setOnClickListener(this);
@@ -209,7 +221,6 @@ public class TimerCard extends AppCompatActivity implements View.OnClickListener
         mButton = findViewById(R.id.card_personal);
         startBtn = findViewById(R.id.start_run);
         startText = findViewById(R.id.start_position);
-        returnBtn = findViewById(R.id.time_return);
         stopText = findViewById(R.id.stop_position);
         lengthText = findViewById(R.id.length);
         timeText = findViewById(R.id.act_time);
@@ -394,11 +405,7 @@ public class TimerCard extends AppCompatActivity implements View.OnClickListener
                 }
 
                 break;
-            case R.id.time_return:
-                Intent intent = new Intent(TimerCard.this,MainInterface.class);
-                intent.putExtra("username",username);
-                startActivity(intent);
-                break;
+
             case R.id.img:
                 AlertDialog.Builder builder = new AlertDialog.Builder(TimerCard.this);
                 builder.setTitle("请选择头像：");
