@@ -232,7 +232,7 @@ public class MainInterface extends AppCompatActivity implements View.OnClickList
                         }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                Toast.makeText(MainInterface.this,"点击1",Toast.LENGTH_SHORT).show();
+                                Toast.makeText(MainInterface.this,"期待您拥有更值得拥有的跑友",Toast.LENGTH_SHORT).show();
                             }
                         }).create();
 
