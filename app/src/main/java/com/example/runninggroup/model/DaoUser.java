@@ -3,6 +3,7 @@ package com.example.runninggroup.model;
 import android.graphics.drawable.Drawable;
 import android.os.Environment;
 
+import com.alibaba.fastjson.JSONArray;
 import com.example.runninggroup.request.ImgGet;
 import com.example.runninggroup.request.PostRequest;
 import com.example.runninggroup.util.CharacterUtil;
@@ -31,8 +32,8 @@ public class DaoUser {
         if (result == null) return "ERROR";
         return result;
     }
-    public static String register(String username,String password,String sex){
-        String result =  PostRequest.postRequest("http://39.97.66.19:8080/user/register","username="+username+"&password="+password+"&sex="+sex);
+    public static String register(String username,String password,String sex,String mail){
+        String result =  PostRequest.postRequest("http://39.97.66.19:8080/user/register","username="+username+"&password="+password+"&sex="+sex+"&mail="+mail);
         if (result == null) return "ERROR";
         return result;
     }
@@ -93,11 +94,15 @@ public class DaoUser {
         return ImgGet.getImg(imgName);
    }
    //修改密码
-    public static boolean changePassword(String username,String password){  
+    public static boolean changePassword(String username,String password){
         String result = PostRequest.postRequest("http://39.97.66.19:8080/user/changePassword","username="+username+"&password="+password);
         if("SUCCESS".equals(result)){return true;}
         return false;
-
+    }
+    //忘记密码
+    public static String getPassword(String username,String mail){
+        String result = PostRequest.postRequest("http://39.97.66.19:8080/user/getPassword","username="+username+"&mail="+mail);
+        return result;
     }
     //获取用户头像的imgName
     public static String getUserHeadImgName(String username){

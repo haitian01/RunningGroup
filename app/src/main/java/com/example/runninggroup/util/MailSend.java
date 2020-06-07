@@ -18,7 +18,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 public class MailSend {
-    public static boolean sendMssage(String msg,String mail){
+    public static boolean sendMssage(String title,String msg,String mail){
 
         try {
             Properties prop = new Properties();
@@ -54,9 +54,9 @@ public class MailSend {
             //指定收件人
             message.setRecipient(Message.RecipientType.TO,new InternetAddress(mail));
             //邮件标题
-            message.setSubject("北邮跑团账号注册");
+            message.setSubject(title);
             //邮件正文
-            message.setContent(msg, "text/html;character=UTF-8");
+            message.setContent(msg,  "text/html;charset=gbk");
             //5.发邮件
             transport.sendMessage(message,message.getAllRecipients());
 
@@ -78,11 +78,6 @@ public class MailSend {
         }
     }
 
-    public static void main(String[] args) {
-        for(int i=0;i<10;i++){
-            System.out.println(sendMssage(i+"","3448562305@qq.com"));
-        }
 
-    }
 
 }
