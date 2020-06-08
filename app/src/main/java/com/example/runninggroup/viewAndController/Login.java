@@ -94,41 +94,6 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
         mEditText2.setTransformationMethod(PasswordTransformationMethod.getInstance());
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        //读取
-        SharedPreferences sp = getSharedPreferences("user", Context.MODE_PRIVATE);
-        username = sp.getString("username", null);
-        password = sp.getString("password",null);
-
-
-
-        //
-        mEditText1=findViewById(R.id.username);
-        mEditText2=findViewById(R.id.password);
-        mButton1=findViewById(R.id.register);
-        mButton2=findViewById(R.id.login);
-        mButton3=findViewById(R.id.forgetPassword);
-        if(username != null){
-            mEditText1.setText(username);
-        }
-        if(password != null){
-            mEditText2.setText(password);
-        }
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                String load = DaoUser.isLoad(username, password);
-                if("SUCCESS".equals(load)){
-                    Intent intent = new Intent(Login.this,MainInterface.class);
-                    intent.putExtra("username",mEditText1.getText().toString());
-                    startActivity(intent);
-                }
-            }
-        }).start();
-        mEditText2.setTransformationMethod(PasswordTransformationMethod.getInstance());
-    }
 
     private void initEvent() {
         mButton1.setOnClickListener(this);
