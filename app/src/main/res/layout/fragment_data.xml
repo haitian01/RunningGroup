@@ -5,30 +5,49 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/white"
     tools:context="com.example.runninggroup.viewAndController.MainInterface">
 
     <TextView
         android:id="@+id/data_running"
-        android:text="七日跑步数据"
+        android:text="本周跑步数据"
         android:textSize="20dp"
         android:fontFamily="sans-serif-black"
         android:layout_width="match_parent"
+        android:layout_marginTop="25dp"
         android:gravity="center"
-        android:layout_height="100dp">
+        android:layout_height="60dp">
 
     </TextView>
 
-    <com.example.runninggroup.viewAndController.EchartView
+    <com.example.runninggroup.viewAndController.Echart.EchartView
         android:id="@+id/chart01"
+        android:layout_marginTop="5dp"
+        android:layout_gravity="center"
         android:layout_width="match_parent"
-        android:layout_height="200dp">
-    </com.example.runninggroup.viewAndController.EchartView>
+        android:layout_height="190dp">
+    </com.example.runninggroup.viewAndController.Echart.EchartView>
 
-    <com.example.runninggroup.viewAndController.EchartView
-        android:id="@+id/chart02"
+    <TextView
+        android:id="@+id/data_time"
+        android:text="近五月跑团参与程度"
+        android:textSize="20dp"
+        android:fontFamily="sans-serif-black"
         android:layout_width="match_parent"
-        android:layout_marginTop="50dp"
-        android:layout_height="200dp"></com.example.runninggroup.viewAndController.EchartView>
+        android:layout_marginTop="5dp"
+        android:gravity="center"
+        android:layout_height="60dp">
+
+    </TextView>
+
+    <com.example.runninggroup.viewAndController.Echart.EchartView2
+        android:id="@+id/chart02"
+        android:layout_gravity="center"
+        android:layout_width="300dp"
+        android:layout_marginTop="5dp"
+        android:layout_height="195dp">
+
+    </com.example.runninggroup.viewAndController.Echart.EchartView2>
 
 
 </LinearLayout>

@@ -20,7 +20,14 @@
             android:layout_toRightOf="@+id/run"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="20dp"
-            android:text="999km"/>
+            android:text="999"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/runNum"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="20dp"
+            android:text="m"/>
         <ImageView
             android:id="@+id/img"
             android:layout_width="100dp"
@@ -50,8 +57,24 @@
             android:text="北邮跑团"/>
 
     </RelativeLayout>
-    <ListView
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/manage_tbl"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"></ListView>
+        android:layout_height="wrap_content"></com.google.android.material.tabs.TabLayout>
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/manage_vpg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </androidx.viewpager.widget.ViewPager>
+    <ListView
+        android:id="@+id/friend_menu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:entries="@array/friend_menu"
+        >
+
+    </ListView>
+
 
 </LinearLayout>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="personset">
+        <item>账号设置 \u3000 \u3000 \u3000 \u3000 \u3000 ></item>
+        <item>隐私设置 \u3000 \u3000 \u3000 \u3000 \u3000 ></item>
+        <item>通用设置 \u3000 \u3000 \u3000 \u3000 \u3000 ></item>
+        <item>联系客服 \u3000 \u3000 \u3000 \u3000 \u3000 ></item>
+    </string-array>
+    <string-array name="addicon">
+        <item>添加好友 \u3000  +</item>
+        <item>发表动态 \u3000  ></item>
+    </string-array>
+    <string-array name="friendmanage">
+        <item>删除好友</item>
+    </string-array>
+    <string-array name="groupmanage">
+        <item>任务发布 \u3000 \u3000 \u3000 \u3000 \u3000 \u3000 </item>
+        <item>招募发布 \u3000 \u3000 \u3000 \u3000 \u3000 \u3000 </item>
+        <item>权限管理 \u3000 \u3000 \u3000 \u3000 \u3000 \u3000 </item>
+        <item>解散跑团 \u3000 \u3000 \u3000 \u3000 \u3000 \u3000 </item>
+        <item>更换头像 \u3000 \u3000 \u3000 \u3000 \u3000 \u3000 </item>
+        <item>编辑口号 \u3000 \u3000 \u3000 \u3000 \u3000 \u3000 </item>
+    </string-array>
+    <string-array name="friend_menu">
+        <item>好友管理 \u3000 \u3000 \u3000 \u3000 \u3000 ></item>
+    </string-array>
+    <string-array name="personalsetting">
+        <item>更换头像</item>
+        <item>更换昵称</item>
+        <item>更换密码</item>
+        <item>更换性别</item>
+    </string-array>
+    <string-array name="act_type">
+        <item>常规跑步</item>
+        <item>全马/半马</item>
+        <item>校比赛</item>
+    </string-array>
+</resources>

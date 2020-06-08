@@ -1,46 +1,28 @@
 package com.example.runninggroup.viewAndController.helper;
 
+import android.graphics.drawable.Drawable;
+
 public class FriendsHelper {
-    private int pic;
+    private Drawable pic;
     private String username;
     private String groupName;
     private long length;
     private int score;
     public FriendsHelper(){}
 
-    public FriendsHelper(int pic, String name, String group, long length, int score) {
+    public FriendsHelper(Drawable pic, String username, String groupName, long length, int score) {
         this.pic = pic;
-        this.username = name;
-        this.groupName = group;
-        this.length = length;
-        this.score = score;
-    }
-
-    public FriendsHelper(String username, String groupName, long length, int score) {
         this.username = username;
         this.groupName = groupName;
         this.length = length;
         this.score = score;
     }
 
-    public FriendsHelper(String username, long length, int score) {
-        this.username = username;
-        this.length = length;
-        this.score = score;
-    }
-
-    public FriendsHelper(int pic, String username, long length, int score) {
-        this.pic = pic;
-        this.username = username;
-        this.length = length;
-        this.score = score;
-    }
-
-    public int getPic() {
+    public Drawable getPic() {
         return pic;
     }
 
-    public void setPic(int pic) {
+    public void setPic(Drawable pic) {
         this.pic = pic;
     }
 

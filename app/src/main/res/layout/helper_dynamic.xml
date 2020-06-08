@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp">
+        <ImageView
+            android:id="@+id/dynamic_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:maxHeight="150dp"
+            android:maxWidth="150dp"
+            android:adjustViewBounds="true"
+            android:layout_below="@+id/dynamic_msg"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="20dp"
+            />
+        <TextView
+            android:id="@+id/dynamic_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:text="2020-05-19 10:34"/>
+        <TextView
+            android:id="@+id/dynamic_msg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:layout_marginRight="40dp"
+            android:layout_marginLeft="20dp"
+            android:paddingRight="0dp"
+            android:textColor="#000"
+            android:text="人生本是一本书，自己是作者，别人是读者。有些人的故事跌宕起伏，充满传奇色彩；有些人的故事平淡无奇，但他懂得用优美的句子来装饰；而有些人把自己的书，记成了一本流水账，记成了一本枯燥的万年历。"
+            />
+    </RelativeLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0.1dp"
+        android:background="@color/black"/>
+
+
+</LinearLayout>

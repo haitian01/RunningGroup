@@ -2,30 +2,29 @@ package com.example.runninggroup.viewAndController.fragment;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.runninggroup.R;
+import com.example.runninggroup.viewAndController.CardPersonal;
+import com.example.runninggroup.viewAndController.TimerCard;
 
 import java.util.Random;
-
-import static androidx.core.os.LocaleListCompat.create;
 
 public class FragmentCard extends Fragment implements View.OnClickListener {
     Button mButton;
     View view;
     ImageView imageView;
+    String username;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +42,7 @@ public class FragmentCard extends Fragment implements View.OnClickListener {
     }
 
     private void initView() {
+        username = getActivity().getIntent().getStringExtra("username");
         mButton = view.findViewById(R.id.btn);
     }
     private void initEvent(){
@@ -84,14 +84,26 @@ public class FragmentCard extends Fragment implements View.OnClickListener {
         switch (v.getId()){
             case R.id.btn:
 
-                final String[] items3 = new String[]{"手环", "手动输入与截图"};//创建item
+                final String[] items3 = new String[]{"定位计时打卡", "手动输入与截图"};//创建item
                 AlertDialog alertDialog3 = new AlertDialog.Builder(getActivity())
                         .setTitle("选择您的打卡方式")
-                        .setIcon(R.mipmap.ic_launcher)
+                        .setIcon(R.drawable.paobu)
                         .setItems(items3, new DialogInterface.OnClickListener() {//添加列表
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                Toast.makeText(getActivity(), "点的是：" + items3[i], Toast.LENGTH_SHORT).show();
+                               switch (i){
+                                   case 0:
+                                       Intent intent1 = new Intent(getActivity(), TimerCard.class);
+                                       intent1.putExtra("username",username);
+                                       startActivity(intent1);
+
+                                       break;
+                                   case 1:
+                                       Intent intent = new Intent(getActivity(), CardPersonal.class);
+                                       intent.putExtra("username",username);
+                                       startActivity(intent);
+                                       break;
+                               }
                             }
                         })
                         .create();

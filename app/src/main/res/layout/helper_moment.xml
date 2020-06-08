@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp">
+        <ImageView
+            android:id="@+id/application_img"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:src="@mipmap/defaultpic"/>
+        <TextView
+            android:id="@+id/application_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_toRightOf="@id/application_img"
+            android:layout_marginLeft="10dp"
+            android:text="张三"
+            android:textColor="@color/blue"/>
+        <TextView
+            android:id="@+id/application_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/application_name"
+            android:layout_toRightOf="@+id/application_img"
+            android:layout_marginLeft="10dp"
+            android:text="春眠不觉晓，处处闻啼鸟,夜来风雨声，花落知多少,春眠不觉晓，处处闻啼鸟,夜来风雨声，花落知多少,"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:layout_marginRight="50dp"
+            />
+        <TextView
+            android:id="@+id/application_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginRight="10dp"
+            android:textSize="10dp"
+            android:layout_marginTop="5dp"
+            android:text="2020-05-19 10:34"/>
+    </RelativeLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0.1dp"
+        android:background="@color/black"/>
+
+
+</LinearLayout>

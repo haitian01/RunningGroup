@@ -1,5 +1,7 @@
 package com.example.runninggroup.viewAndController.adapter;
 
+import android.app.Activity;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,18 +9,34 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.example.runninggroup.model.DaoUser;
 import com.example.runninggroup.viewAndController.helper.FriendsHelper;
 import com.example.runninggroup.R;
 
+import java.util.HashMap;
 import java.util.List;
 
 public class FriendsAdapter extends BaseAdapter {
     public LayoutInflater mInflater;
     public List<FriendsHelper> mList;
+    HashMap<Integer,Drawable> mDrawable;
 
     public FriendsAdapter(LayoutInflater inflater, List<FriendsHelper> list) {
+
         mInflater = inflater;
         mList = list;
+        mDrawable = new HashMap<>(list.size());
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                for(int i=0;i<list.size();i++){
+                    Drawable drawable = DaoUser.getImg(DaoUser.getUserHeadImgName(mList.get(i).getUsername()));
+                    if(drawable!=null) mDrawable.put(i,drawable);
+                }
+
+            }
+        }).start();
     }
 
     @Override
@@ -62,11 +80,30 @@ public class FriendsAdapter extends BaseAdapter {
         }
 
         //赋值
-        viewHolder.img.setImageResource(mList.get(position).getPic());
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if(mDrawable.get(position) == null){
+                    Drawable drawable =  DaoUser.getImg(DaoUser.getUserHeadImgName(mList.get(position).getUsername()));
+                    if(drawable != null) mDrawable.put(position,drawable);
+                }
+
+
+            }
+        });
+        t.start();
+        try {
+            t.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        if(mDrawable.get(position) != null){viewHolder.img.setImageDrawable(mDrawable.get(position));}
+        else {viewHolder.img.setImageResource(R.mipmap.defaultpic);}
         viewHolder.name.setText(mList.get(position).getUsername());
         viewHolder.group.setText(mList.get(position).getGroupName());
         viewHolder.length.setText(mList.get(position).getLength()+"");
         viewHolder.score.setText(mList.get(position).getScore()+"");
+
 
 
 

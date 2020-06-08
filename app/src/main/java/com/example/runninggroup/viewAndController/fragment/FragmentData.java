@@ -12,14 +12,19 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.runninggroup.R;
-import com.example.runninggroup.viewAndController.EchartOptionUtil;
-import com.example.runninggroup.viewAndController.EchartView;
-import com.github.abel533.echarts.Chart;
+import com.example.runninggroup.viewAndController.Echart.EchartOptionUtil;
+import com.example.runninggroup.viewAndController.Echart.EchartView;
+import com.example.runninggroup.viewAndController.Echart.EchartView2;
+import com.example.runninggroup.viewAndController.TimeAndData.GetData;
 
 public class FragmentData extends Fragment {
     View view;
     private EchartView barChart;
-    private EchartView lineChart;
+    private EchartView2 lineChart;
+    Object[] scoreData;
+    Object[] months;
+    Object[] runData;
+    String username;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,7 +40,22 @@ public class FragmentData extends Fragment {
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
                 //最好在h5页面加载完毕后再加载数据，防止html的标签还未加载完成，不能正常显示
-                refreshBarChart();
+
+                Thread t = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        GetData getData = new GetData();
+                        getData.username = username;
+                        runData = getData.getRunData();
+                    }
+                });
+                t.start();
+                try {
+                    t.join();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                refreshBarChart(runData);
             }
         });
 
@@ -44,33 +64,51 @@ public class FragmentData extends Fragment {
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
                 //最好在h5页面加载完毕后再加载数据，防止html的标签还未加载完成，不能正常显示
-                refreshLinkChart();
+                Thread t = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        GetData getData = new GetData();
+                        getData.username = username;
+                        months = getData.getGroudMonth();
+                        scoreData = getData.getGroudScore();
+                    }
+                });
+                t.start();
+                try {
+                    t.join();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                refreshLinkChart(months, scoreData);
             }
         });
         return view;
     }
 
     public void initView(){
+        username = getActivity().getIntent().getStringExtra("username");
         barChart = view.findViewById(R.id.chart01);
+        barChart.getSettings().setUseWideViewPort(true);
+        barChart.getSettings().setLoadWithOverviewMode(true);
         lineChart = view.findViewById(R.id.chart02);
+        lineChart.getSettings().setUseWideViewPort(true);
+        lineChart.getSettings().setLoadWithOverviewMode(true);
+
     }
 
-    private void refreshBarChart(){
+
+
+    //先写在这
+    private void refreshBarChart(Object[] runData){
         Object[] x = new Object[]{
                 "Mon", "Tue", "Wed", "Thu", "Fri", "Sta", "Sun"
         };
-        Object[] y = new Object[]{
-                820, 932, 901, 934, 1290, 600, 300
-        };
+        Object[] y =  runData;
         barChart.refreshEchartsWithOption(EchartOptionUtil.getBarChartOptions(x, y));
     }
-    private void refreshLinkChart(){
-        Object[] x = new Object[]{
-                "Mon", "Tue", "Wed", "Thu", "Fri"
-        };
-        Object[] y = new Object[]{
-                820, 932, 901, 934, 1290
-        };
-        barChart.refreshEchartsWithOption(EchartOptionUtil.getLineChartOptions(x, y));
+    private void refreshLinkChart(Object[] Month, Object[] groudData){
+        Object[] x = Month;
+        Object[] y =  groudData;
+        lineChart.refreshEchartsWithOption(EchartOptionUtil.getLineChartOptions(x, y));
     }
 }

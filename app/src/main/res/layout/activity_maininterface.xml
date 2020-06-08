@@ -1,13 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/white">
     <RelativeLayout
+        android:id="@+id/maininterface_rela"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="#eee">
+        android:background="#eee"
+        tools:ignore="MissingConstraints">
+        <Button
+            android:id="@+id/sideSetting"
+            android:layout_width="75dp"
+            android:layout_height="match_parent"
+            android:background="#eee"
+            android:text="@string/RUN"
+            style="?android:attr/borderlessButtonStyle"
+            />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -16,19 +28,133 @@
             android:layout_centerInParent="true"
             android:textColor="@android:color/background_dark"
             />
+        <Button
+            android:id="@+id/rightSightSetting"
+            android:layout_width="75dp"
+            android:layout_height="match_parent"
+            android:background="#eee"
+            android:layout_alignParentRight="true"
+            android:text="@string/add"
+            android:textSize="20dp"
+            style="?android:attr/borderlessButtonStyle"
+            />
     </RelativeLayout>
+
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
-        android:layout_height="570dp"
-        android:layout_above="@+id/tabLayout"></androidx.viewpager.widget.ViewPager>
+        android:layout_height="wrap_content"
+        android:layout_below="@id/maininterface_rela"
+        android:layout_above="@+id/tabLayout"
+        tools:ignore="MissingConstraints">
+
+    </androidx.viewpager.widget.ViewPager>
+
+    <LinearLayout
+        android:id="@+id/ll_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/black"
+        android:alpha="0.5"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:orientation="horizontal">
+    </LinearLayout>
+
+
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:tabTextColor="@android:color/darker_gray"
         app:tabSelectedTextColor="@android:color/background_dark"
-        ></com.google.android.material.tabs.TabLayout>
+       android:layout_alignParentBottom="true"
+        android:layout_marginBottom="10dp"
+        tools:ignore="MissingConstraints">
+    </com.google.android.material.tabs.TabLayout>
 
-    
-</LinearLayout>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/personalSetting"
+        android:layout_width="260dp"
+        android:layout_height="match_parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="@color/white"
+        android:visibility="invisible"
+        tools:ignore="MissingConstraints">
+
+        <ImageView
+            android:id="@+id/personalImage"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="50dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+        </ImageView>
+
+        <TextView
+            android:id="@+id/text_userName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="UserName"
+            android:textColor="@color/black"
+            android:textSize="18dp"
+            app:layout_constraintStart_toEndOf="@+id/personalImage"
+            app:layout_constraintTop_toTopOf="@+id/personalImage"
+            android:layout_marginStart="30dp"
+            >
+        </TextView>
+        <ListView
+            android:id="@+id/personalListView"
+            android:layout_width="match_parent"
+            android:layout_height="500dp"
+            android:entries="@array/personset"
+            app:layout_constraintTop_toTopOf="@+id/personalImage"
+            android:layout_marginTop="80dp"
+            >
+
+        </ListView>
+        <Button
+            android:id="@+id/button_quit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="退出登录"
+            android:background="@drawable/btn_style2"
+            android:textColor="@color/softyellow"
+            android:fontFamily="sans-serif-thin"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="600dp"
+            android:layout_marginStart="40dp"
+            android:layout_marginEnd="40dp"
+            >
+        </Button>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/rightSetting"
+        android:layout_width="180dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="50dp"
+        android:background="@color/white"
+        android:visibility="invisible"
+        tools:ignore="MissingConstraints">
+
+        <ListView
+            android:id="@+id/rightList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:entries="@array/addicon">
+
+        </ListView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</RelativeLayout>
+

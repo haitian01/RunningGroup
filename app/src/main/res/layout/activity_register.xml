@@ -2,16 +2,61 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent"
     android:background="@color/white">
-
-    <ImageView
-        android:id="@+id/runningIcon"
+    <EditText
+        android:id="@+id/mail"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:background="@drawable/running_icon"
+        android:layout_height="wrap_content"
+        android:hint="请输入邮箱"
+        android:textSize="15dp"
+        android:layout_alignTop="@id/test"
         android:layout_marginLeft="50dp"
         android:layout_marginRight="50dp"
-        android:layout_alignTop="@+id/password"
-        android:layout_marginTop="-300dp"/>
+        android:layout_marginTop="-100dp"
+       />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="邮箱："
+        android:textSize="25dp"
+        android:layout_marginLeft="0dp"
+        android:layout_alignTop="@id/mail"
+        android:layout_marginTop="-35dp"
+        android:layout_alignLeft="@id/password"
+        android:fontFamily="sans-serif-black"/>
+    <Button
+        android:id="@+id/send"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="发送"
+        android:layout_alignTop="@id/mail"
+        android:layout_marginTop="-10dp"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="50dp"
+        />
+    <EditText
+        android:id="@+id/test"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:digits="@string/filterUser"
+        android:layout_alignTop="@+id/username"
+        android:hint="请输入验证码"
+        android:textSize="15dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
+        android:layout_marginTop="-100dp"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="验证码："
+        android:textSize="25dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="-35dp"
+        android:layout_alignTop="@id/test"
+        android:layout_alignLeft="@id/password"
+        android:fontFamily="sans-serif-black"/>
+
+
     <EditText
         android:id="@+id/username"
         android:layout_width="match_parent"
@@ -20,6 +65,7 @@
         android:layout_marginLeft="50dp"
         android:layout_marginRight="50dp"
         android:textSize="15dp"
+        android:digits="@string/filterUser"
         android:layout_alignTop="@+id/password"
         android:layout_marginTop="-100dp"
         />
@@ -27,6 +73,7 @@
         android:id="@+id/password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:digits="@string/filterUser"
         android:hint="请输入您的密码"
         android:textSize="15dp"
         android:layout_marginLeft="50dp"
@@ -40,6 +87,7 @@
         android:layout_marginLeft="50dp"
         android:layout_marginRight="50dp"
         android:textSize="15dp"
+        android:digits="@string/filterUser"
         android:layout_alignTop="@+id/password"
         android:layout_marginTop="100dp"/>
 
@@ -75,6 +123,63 @@
         android:layout_alignLeft="@id/repeatPassword"
         android:layout_alignTop="@id/repeatPassword"
         android:fontFamily="sans-serif-black"/>
+    <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/tab"
+        android:layout_below="@+id/repeatPassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        >
+        <TableRow
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_marginTop="20dp">
+            <RadioGroup
+                android:id="@+id/rg"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="center_horizontal"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/repeatPassword">
+                <RadioButton
+                    android:id="@+id/male"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:text="男" />
+                <RadioButton
+                    android:id="@+id/femle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:text="女"/>
+            </RadioGroup>
+
+        </TableRow>
+    </TableLayout>
+    <!--<RadioGroup-->
+        <!--android:id="@+id/rg"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:orientation="horizontal"-->
+        <!--android:layout_gravity="center_horizontal"-->
+        <!--android:layout_centerHorizontal="true"-->
+        <!--android:layout_below="@id/repeatPassword">-->
+        <!--<RadioButton-->
+            <!--android:id="@+id/male"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:checked="true"-->
+            <!--android:text="男" />-->
+        <!--<RadioButton-->
+            <!--android:id="@+id/femle"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:checked="true"-->
+            <!--android:text="女"/>-->
+    <!--</RadioGroup>-->
+
 
     <Button
         android:id="@+id/register"
@@ -86,5 +191,5 @@
         android:background="@drawable/btn_style1"
         android:layout_alignBottom="@id/password"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="-200dp"/>
+        android:layout_marginBottom="-230dp"/>
 </RelativeLayout>

@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    >
+    <com.baidu.mapapi.map.MapView
+        android:id="@+id/map"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:clickable="true" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="24dp"
+                >
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="起始位置："
+                    android:textSize="24dp"
+                    android:fontFamily="sans-serif-black"/>
+                <TextView
+                    android:id="@+id/start_position"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="8dp"
+                    android:hint="……"
+                    />
+            </LinearLayout>
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="24dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="终止位置："
+                    android:textSize="24dp"
+                    android:fontFamily="sans-serif-black"/>
+                <TextView
+                    android:id="@+id/stop_position"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="8dp"
+                    android:hint="……"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="24dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="跑步长度："
+                    android:textSize="24dp"
+                    android:fontFamily="sans-serif-black"/>
+                <TextView
+                    android:id="@+id/length"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="0.0" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="m" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="24dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="跑步时间："
+                    android:textSize="24dp"
+                    android:fontFamily="sans-serif-black"/>
+                <TextView
+                    android:id="@+id/act_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="00:00:00" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="38dp"
+                android:layout_marginRight="50dp"
+                android:layout_marginTop="30dp"
+                android:text="请选择本次跑步种类："
+                android:fontFamily="sans-serif-black"
+                android:textSize="24dp"/>
+            <Spinner
+                android:id="@+id/act_type"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginLeft="50dp"
+                android:layout_marginRight="50dp"
+                android:layout_marginTop="15dp"
+                android:gravity="center"
+                android:entries="@array/act_type"
+                >
+            </Spinner>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="38dp"
+                android:layout_marginRight="50dp"
+                android:layout_marginTop="30dp"
+                android:text="上传图片："
+                android:textSize="24dp"
+                android:fontFamily="sans-serif-black">
+            </TextView>
+            <ImageView
+                android:id="@+id/img"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginTop="25dp"
+                android:layout_marginLeft="0dp"
+                android:src="@mipmap/dynamic"/>
+            <Button
+                android:layout_marginTop="30dp"
+                android:id="@+id/start_run"
+                android:layout_width="140dp"
+                android:layout_height="35dp"
+                android:layout_weight="2"
+                android:drawableLeft="@drawable/kaishi"
+                android:background="@drawable/btn_style8"
+                android:text="  开始计时"
+                style="?android:attr/borderlessButtonStyle"/>
+            <Button
+                android:id="@+id/stop_run"
+                android:layout_width="140dp"
+                android:layout_height="35dp"
+                android:layout_weight="2"
+                android:layout_marginTop="12dp"
+                android:drawableLeft="@drawable/jieshu"
+                android:text="  停止计时"
+                android:background="@drawable/btn_style8"
+                style="?android:attr/borderlessButtonStyle"/>
+
+            <Button
+                android:id="@+id/card_personal"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:layout_marginLeft="50dp"
+                android:layout_marginTop="50dp"
+                android:layout_marginBottom="20dp"
+                android:layout_marginRight="50dp"
+                android:background="@drawable/btn_style5"
+                android:text="完成打卡"
+                android:textColor="@color/softwhite"
+                android:textSize="30dp">
+            </Button>
+
+        </LinearLayout>
+    </ScrollView>
+
+
+
+
+
+
+</LinearLayout>

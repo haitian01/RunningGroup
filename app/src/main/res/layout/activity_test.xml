@@ -20,14 +20,14 @@
 
     </TextView>
 
-    <com.example.runninggroup.viewAndController.EchartView
+    <com.example.runninggroup.viewAndController.Echart.EchartView
         android:id="@+id/chart01"
         android:layout_width="match_parent"
         android:layout_height="400dp"
         tools:ignore="MissingConstraints"
         app:layout_constraintBottom_toBottomOf="parent">
 
-    </com.example.runninggroup.viewAndController.EchartView>
+    </com.example.runninggroup.viewAndController.Echart.EchartView>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

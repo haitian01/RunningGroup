@@ -1,15 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent"
-    android:orientation="vertical">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+    <RelativeLayout
+        android:id="@+id/nofriend"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="暂无好友..."
+            android:textSize="25dp"
+            android:layout_above="@+id/man"/>
+        <ImageView
+            android:id="@+id/man"
+            android:layout_width="match_parent"
+            android:layout_centerInParent="true"
+            android:layout_height="200dp"
+            android:src="@mipmap/nofriend"
+            android:visibility="visible"/>
+    </RelativeLayout>
+
+
+
     <TextView
+        android:id="@+id/application"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="申请消息"
+        android:textSize="15dp"/>
+    <ListView
+        android:id="@+id/applicationListView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/application"></ListView>
+    <TextView
+        android:id="@+id/friend"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="我的跑友"
-        android:textSize="15dp"/>
+        android:textSize="15dp"
+        android:layout_below="@id/applicationListView"/>
     <ListView
         android:id="@+id/listView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"></ListView>
+        android:layout_height="match_parent"
+        android:layout_below="@id/friend"
+        ></ListView>
 
-</LinearLayout>
+
+
+</RelativeLayout>
