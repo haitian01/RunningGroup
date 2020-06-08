@@ -44,7 +44,7 @@ public class GroupBuild extends AppCompatActivity implements View.OnClickListene
                     @Override
                     public void run() {
                         username = getIntent().getStringExtra("username");
-                        if("SUCCESS".equals(DaoGroup.addGroup(groupNameEdt.getText().toString(),username,null,sloganEdt.getText().toString()))){
+                        if("SUCCESS".equals(DaoGroup.addGroup(groupNameEdt.getText().toString(),username,sloganEdt.getText().toString()))){
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {

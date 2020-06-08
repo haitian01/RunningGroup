@@ -224,15 +224,21 @@ public class GroupMessage extends AppCompatActivity implements View.OnClickListe
                                         mButton.setText("加入");
                                         int number = Integer.parseInt(numText.getText().toString())-1;
                                         numText.setText(number+"");
+                                        Toast.makeText(GroupMessage.this,"成功",Toast.LENGTH_SHORT).show();
                                     }
                                 });
-                                Looper.prepare();
-                                Toast.makeText(GroupMessage.this,"成功",Toast.LENGTH_SHORT).show();
-                                Looper.loop();
+                                Intent intent = new Intent(GroupMessage.this,MainInterface.class);
+                                intent.putExtra("username",username);
+                                intent.putExtra("id",3);
+                                startActivity(intent);
+
                             }else {
-                                Looper.prepare();
-                                Toast.makeText(GroupMessage.this,"失败",Toast.LENGTH_SHORT).show();
-                                Looper.loop();
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Toast.makeText(GroupMessage.this,"失败",Toast.LENGTH_SHORT).show();
+                                    }
+                                });
                             }
                         }
                     }).start();

@@ -62,7 +62,7 @@ public class DaoGroup {
         return code;
     }
     //创建跑团
-    public static String addGroup(String groupName,String leaderName,byte[] logo,String slogan){
+    public static String addGroup(String groupName,String leaderName,String slogan){
         String code =  PostRequest.postRequest("http://39.97.66.19:8080/group/addGroup","groupName="+groupName+"&leaderName="+leaderName+"&slogan="+slogan);
         if (code == null) return "ERROR";
         return code;

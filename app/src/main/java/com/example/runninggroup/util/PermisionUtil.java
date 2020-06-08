@@ -13,7 +13,9 @@ public class PermisionUtil {
     private static String[] PERMISSIONS_STORAGE = {//这里只加入了读写和相机权限，还可以加入其他权限
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
-            Manifest.permission.CAMERA
+            Manifest.permission.CAMERA,
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.READ_PHONE_STATE
     };
 
     /**

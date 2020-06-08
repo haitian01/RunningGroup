@@ -36,7 +36,7 @@ public class MailSend {
             Session session = Session.getDefaultInstance(prop, new Authenticator() {
                 @Override
                 protected PasswordAuthentication getPasswordAuthentication() {
-                    return new PasswordAuthentication("1449931670@qq.com","qjbnhohbalqljahf");
+                    return new PasswordAuthentication("1449931670@qq.com","vhrjcfcravqbhdja");
                 }
             });
 //            session.setDebug(true);
@@ -45,7 +45,7 @@ public class MailSend {
             Transport transport = session.getTransport();
 
             //3.使用邮箱的用户名和授权码连接邮件服务器
-            transport.connect("1449931670@qq.com","qjbnhohbalqljahf");
+            transport.connect("1449931670@qq.com","vhrjcfcravqbhdja");
 
             //4.创建邮件
             MimeMessage message = new MimeMessage(session);

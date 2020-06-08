@@ -104,6 +104,7 @@ public class GroupCallAdapter extends BaseAdapter {
             e.printStackTrace();
         }
         if(mDrawable_img.get(position) != null) viewHolder.img.setImageDrawable(mDrawable_img.get(position));
+        else viewHolder.img.setImageResource(R.mipmap.defaultpic);
         viewHolder.task_img.setImageDrawable(mDrawable.get(position));
 
         //赋值
