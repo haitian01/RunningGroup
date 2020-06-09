@@ -24,7 +24,8 @@
         android:id="@+id/chart01"
         android:layout_marginTop="5dp"
         android:layout_gravity="center"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
+        
         android:layout_height="190dp">
     </com.example.runninggroup.viewAndController.Echart.EchartView>
 
