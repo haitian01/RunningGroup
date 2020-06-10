@@ -28,6 +28,7 @@ public class FragmentData extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
     }
 
     @Nullable
@@ -35,6 +36,7 @@ public class FragmentData extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_data,container,false);
         initView();
+
         barChart.setWebViewClient(new WebViewClient(){
             @Override
             public void onPageFinished(WebView view, String url) {
