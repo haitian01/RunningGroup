@@ -3,6 +3,8 @@ package com.example.runninggroup.request;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
 
+import com.example.runninggroup.util.ConstantUtil;
+
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.File;
@@ -68,8 +70,7 @@ public class ImgUpload {
         String twoHyphens = "--";
         String boundary = "---------------------------823928434";
         try {
-//            URL url = new URL("http://39.97.66.19:8080/user/uploadImg");
-            URL url = new URL("http://192.168.0.104:8080/run/user/uploadImg");
+            URL url = new URL(ConstantUtil.URL + ConstantUtil.UPLOAD);
             HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
             httpURLConnection.setDoInput(true);
             httpURLConnection.setDoOutput(true);

@@ -11,7 +11,7 @@
         android:layout_alignTop="@+id/password"
         android:layout_marginTop="-300dp"/>
     <EditText
-        android:id="@+id/username"
+        android:id="@+id/registerNum"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="50dp"
@@ -32,8 +32,8 @@
         android:text="账号:"
         android:textSize="25dp"
         android:fontFamily="sans-serif-black"
-        android:layout_alignLeft="@id/username"
-        android:layout_alignTop="@id/username"
+        android:layout_alignLeft="@id/registerNum"
+        android:layout_alignTop="@id/registerNum"
         android:layout_marginTop="-25dp"
         android:layout_marginLeft="2dp"/>
     <TextView

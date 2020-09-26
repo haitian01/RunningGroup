@@ -39,6 +39,8 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.runninggroup.R;
+import com.example.runninggroup.cache.UserCache;
+import com.example.runninggroup.controller.UserController;
 import com.example.runninggroup.model.DaoFriend;
 import com.example.runninggroup.model.DaoUser;
 import com.example.runninggroup.viewAndController.adapter.MyPagerAdapter;
@@ -53,7 +55,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 
-public class MainInterface extends AppCompatActivity implements View.OnClickListener {
+public class MainInterface extends AppCompatActivity implements View.OnClickListener, UserController.UserControllerInterface {
     private ViewPager mViewPager;
     private TabLayout mTabLayout;
     private Button mBtn_sideSetting,mBtn_rightSideSetting;
@@ -63,19 +65,44 @@ public class MainInterface extends AppCompatActivity implements View.OnClickList
     private ListView mListView,mRightList;
     private ImageView personalHead,bigPersonalHead;
     private TextView usernameText;
-    String username;
     Dialog mDialog;
     int id;
     MyPagerAdapter myPagerAdapter;
     ArrayList<Fragment> fragmentList;
     ArrayList<String> list_Title;
-
+    String username = UserCache.user.getUsername();
+    UserController mUserController = new UserController(this);
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maininterface);
         initView();
         initEvent();
+    }
+    //获得头像之后的回调
+    @Override
+    public void getHeadImg(Drawable drawable) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (drawable != null) {
+                    personalHead.setImageDrawable(drawable);
+                    Toast.makeText(MainInterface.this, "头像获取成功", Toast.LENGTH_SHORT).show();
+                }else {
+                    personalHead.setImageResource(R.mipmap.defaultpic);
+                    Toast.makeText(MainInterface.this, "头像获取失败", Toast.LENGTH_SHORT).show();
+                }
+                //大图
+                bigPersonalHead = getImageView(drawable);
+                mDialog.setContentView(bigPersonalHead);
+                bigPersonalHead.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mDialog.dismiss();
+                    }
+                });
+            }
+        });
     }
 
     @Override
@@ -91,23 +118,10 @@ public class MainInterface extends AppCompatActivity implements View.OnClickList
         mViewPager.setCurrentItem(id);
 
         //设置头像
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                final Drawable drawable = DaoUser.getImg(DaoUser.getUserHeadImgName(username));
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        if(drawable != null) {
-                            personalHead.setImageDrawable(drawable);
-                        }else {
-                            personalHead.setImageResource(R.mipmap.defaultpic);
-                        }
-                    }
-                });
-            }
-        }).start();
+        mUserController.getHeadImg();
+
     }
+
 
 
     @Override
@@ -131,7 +145,6 @@ public class MainInterface extends AppCompatActivity implements View.OnClickList
 
 
     private void initView() {
-        username = getIntent().getStringExtra("username");
         id = getIntent().getIntExtra("id",0);
         mViewPager = findViewById(R.id.viewPager);
         mTabLayout = findViewById(R.id.tabLayout);
@@ -156,17 +169,14 @@ public class MainInterface extends AppCompatActivity implements View.OnClickList
         list_Title.add("打卡");
         list_Title.add("好友");
         list_Title.add("跑团");
-        usernameText.setText(username);
+        usernameText.setText(UserCache.user.getUsername());
         myPagerAdapter = new MyPagerAdapter(getSupportFragmentManager(), fragmentList, list_Title);
         mViewPager.setAdapter(myPagerAdapter);
         mTabLayout.setupWithViewPager(mViewPager);//此方法就是让tablayout和ViewPager联动
         mViewPager.setCurrentItem(id);
         //大图
         mDialog = new Dialog(MainInterface.this, R.style.Theme_AppCompat_Light_Dialog_Alert);
-        bigPersonalHead = getImageView();
-        mDialog.setContentView(bigPersonalHead);
-
-
+        mUserController.getHeadImg();
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -189,7 +199,6 @@ public class MainInterface extends AppCompatActivity implements View.OnClickList
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (id == 0){
                     Intent intent = new Intent(MainInterface.this, PersonalSetting.class);
-                    intent.putExtra("username",username);
                     startActivity(intent);
                 }else if (id == 1){
                     Toast.makeText(MainInterface.this, "该功能暂未上线", Toast.LENGTH_SHORT).show();
@@ -261,12 +270,7 @@ public class MainInterface extends AppCompatActivity implements View.OnClickList
                 }
             }
         });
-        bigPersonalHead.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mDialog.dismiss();
-            }
-        });
+
 
 
 
@@ -281,22 +285,7 @@ public class MainInterface extends AppCompatActivity implements View.OnClickList
                 mPesonalSetting.setVisibility(View.VISIBLE);
                 mLineraLayout.setVisibility(View.VISIBLE);
                 //设置头像
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        final Drawable drawable = DaoUser.getImg(DaoUser.getUserHeadImgName(username));
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                if(drawable != null) {
-                                    personalHead.setImageDrawable(drawable);
-                                }else {
-                                    personalHead.setImageResource(R.mipmap.defaultpic);
-                                }
-                            }
-                        });
-                    }
-                }).start();
+
 
                 break;
             case R.id.button_quit:
@@ -334,14 +323,16 @@ public class MainInterface extends AppCompatActivity implements View.OnClickList
         }
     }
     //动态图片
-    private ImageView getImageView(){
+    private ImageView getImageView(Drawable drawable){
         ImageView iv = new ImageView(MainInterface.this);
         //宽高
         iv.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         //设置Padding
         iv.setPadding(20,20,20,20);
         //imageView设置图片
-        iv.setImageDrawable(DaoUser.getImg(DaoUser.getUserHeadImgName(username)));
+        if (drawable != null)
+        iv.setImageDrawable(drawable);
+        else iv.setImageResource(R.mipmap.defaultpic);
         return iv;
     }
     private void makeToast(String msg){

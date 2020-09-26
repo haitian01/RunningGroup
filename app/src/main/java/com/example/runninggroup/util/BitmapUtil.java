@@ -179,9 +179,11 @@ public class BitmapUtil {
         try {
             fos = new FileOutputStream(f);
             bitmap.compress(Bitmap.CompressFormat.JPEG, 50, fos);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        }
+//        catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        }
+        catch (IOException e) {
             e.printStackTrace();
         }finally {
             try {

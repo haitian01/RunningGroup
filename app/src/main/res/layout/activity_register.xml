@@ -3,7 +3,7 @@
     android:layout_width="match_parent" android:layout_height="match_parent"
     android:background="@color/white">
     <EditText
-        android:id="@+id/mail"
+        android:id="@+id/registerNum"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="请输入邮箱"
@@ -19,7 +19,7 @@
         android:text="邮箱："
         android:textSize="25dp"
         android:layout_marginLeft="0dp"
-        android:layout_alignTop="@id/mail"
+        android:layout_alignTop="@id/registerNum"
         android:layout_marginTop="-35dp"
         android:layout_alignLeft="@id/password"
         android:fontFamily="sans-serif-black"/>
@@ -28,7 +28,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="发送"
-        android:layout_alignTop="@id/mail"
+        android:layout_alignTop="@id/registerNum"
         android:layout_marginTop="-10dp"
         android:layout_alignParentRight="true"
         android:layout_marginRight="50dp"
@@ -65,7 +65,6 @@
         android:layout_marginLeft="50dp"
         android:layout_marginRight="50dp"
         android:textSize="15dp"
-        android:digits="@string/filterUser"
         android:layout_alignTop="@+id/password"
         android:layout_marginTop="-100dp"
         />
@@ -98,7 +97,7 @@
         android:layout_alignTop="@id/username"
         android:layout_marginLeft="0dp"
         android:layout_marginTop="-35dp"
-        android:text="账号："
+        android:text="昵称："
         android:textSize="25dp"
         android:fontFamily="sans-serif-black"
         />

@@ -32,6 +32,7 @@ public class DaoUser {
         if (result == null) return "ERROR";
         return result;
     }
+
     public static String register(String username,String password,String sex,String mail){
         String result =  PostRequest.postRequest("http://39.97.66.19:8080/user/register","username="+username+"&password="+password+"&sex="+sex+"&mail="+mail);
         if (result == null) return "ERROR";

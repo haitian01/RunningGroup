@@ -16,21 +16,24 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.runninggroup.R;
+import com.example.runninggroup.controller.UserController;
 import com.example.runninggroup.model.DaoUser;
+import com.example.runninggroup.pojo.User;
 import com.example.runninggroup.util.MailSend;
 import com.example.runninggroup.util.PermisionUtil;
 
 import java.util.Random;
 import java.util.UUID;
 
-public class Register extends AppCompatActivity implements View.OnClickListener {
-    private EditText mEditText1,mEditText2,mEditText3,mailText,testText;
+public class Register extends AppCompatActivity implements View.OnClickListener, UserController.UserControllerInterface {
+    private EditText mEditText1,mEditText2,mEditText3,registerNumText,testText;
     private Button mButton1,mButton2,sendBtn;
     private RadioGroup mRadioGroup;
     private String sex = "女";
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
     private String testNum;
-    private String mailNum;
+    private String registerNum;
+    private UserController mUserController = new UserController(this);
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,7 +60,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
         mEditText1=findViewById(R.id.username);
         mEditText2=findViewById(R.id.password);
         mEditText3 = findViewById(R.id.repeatPassword);
-        mailText = findViewById(R.id.mail);
+        registerNumText = findViewById(R.id.registerNum);
         testText = findViewById(R.id.test);
         mButton1=findViewById(R.id.register);
         sendBtn = findViewById(R.id.send);
@@ -89,32 +92,14 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.register:
-                if(testText.getText().toString().equals(testNum) && mailText.getText().toString().equals(mailNum)){
+                if(testText.getText().toString().equals(testNum) && registerNumText.getText().toString().equals(registerNum)){
                     if(mEditText1.getText().toString().equals("") || mEditText2.getText().toString().equals("") || mEditText3.getText().toString().equals("")){
                         Toast.makeText(Register.this,"输入不完整",Toast.LENGTH_SHORT).show();
                     }else {
                         if(! mEditText2.getText().toString().equals(mEditText3.getText().toString())){
                             Toast.makeText(Register.this,"两次密码不一致",Toast.LENGTH_SHORT).show();
                         }else {
-                            new Thread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    if("SUCCESS".equals(DaoUser.register(mEditText1.getText().toString(),mEditText2.getText().toString(),sex,mailNum))){
-                                        Intent intent = new Intent(Register.this,Login.class);
-                                        startActivity(intent);
-                                        Looper.prepare();
-                                        Toast.makeText(Register.this,"注册成功",Toast.LENGTH_SHORT).show();
-                                        Looper.loop();
-
-                                    }else {
-                                        Looper.prepare();
-                                        Toast.makeText(Register.this,"注册失败",Toast.LENGTH_SHORT).show();
-                                        Looper.loop();
-                                    }
-
-
-                                }
-                            }).start();
+                            mUserController.register(registerNum ,mEditText2.getText().toString(), sex, mEditText1.getText().toString());
                         }
                     }
                 }else {
@@ -134,8 +119,8 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
                             }
                         });
                         testNum = getRandom();
-                        mailNum = mailText.getText().toString();
-                        MailSend.sendMssage("北邮跑团账号注册","欢迎您的加入："+testNum,mailText.getText().toString());
+                        registerNum = registerNumText.getText().toString();
+                        MailSend.sendMssage("北邮跑团账号注册","欢迎您的加入："+testNum,registerNumText.getText().toString());
 
                         for(int i=60;i>0;i--){
                             final int j = i;
@@ -181,4 +166,15 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
         return stringBuffer.toString();
     }
 
+
+    @Override
+    public void registerBack(boolean res) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (res) Toast.makeText(Register.this, "注册成功", Toast.LENGTH_SHORT).show();
+                else Toast.makeText(Register.this, "用户名已存在或网络超时", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 }

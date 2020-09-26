@@ -1,30 +1,16 @@
 package com.example.runninggroup.request;
 
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.DrawableContainer;
-import android.util.Log;
-
-import com.example.runninggroup.util.ConstantUtil;
-
 import java.io.BufferedReader;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class ImgGet {
-//    private static String urls = "http://39.97.66.19:8080/user/getImg";
-    private static String urls = ConstantUtil.URL + ConstantUtil.GET_IMG;
-    public static Drawable getImg(String imgName) {
+public class JsonPostRequest {
+    public static String postRequest(String urls,String params) {
         try {
-            String params = "imgName="+imgName;
             // 1. 获取访问地址URL
             URL url = new URL(urls);
             // 2. 创建HttpURLConnection对象
@@ -45,7 +31,7 @@ public class ImgGet {
             connection.setInstanceFollowRedirects(true);
             // 设置使用标准编码格式编码参数的名-值对
             connection.setRequestProperty("Content-Type",
-                    "application/x-www-form-urlencoded");
+                    "application/json");
             // 连接(有问题)
 //            connection.connect();
             /* 4. 处理输入输出 */
@@ -55,12 +41,18 @@ public class ImgGet {
             out.flush();
             out.close();
             // 从连接中读取响应信息
-            InputStream inputStream = connection.getInputStream();
             String msg = "";
             int code = connection.getResponseCode();
             if (code == 200) {
-               return loadImageFromNetwork(inputStream);
+                BufferedReader reader = new BufferedReader(
+                        new InputStreamReader(connection.getInputStream()));
+                String line;
 
+                while ((line = reader.readLine()) != null) {
+                    msg += line;
+                }
+                reader.close();
+                return msg;
             }
             // 5. 断开连接
             connection.disconnect();
@@ -75,15 +67,5 @@ public class ImgGet {
         return null;
 
     }
-    private static Drawable loadImageFromNetwork(InputStream inputStream) {
 
-        Drawable drawable = Drawable.createFromStream(inputStream, null);
-        try {
-            inputStream.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return drawable;
-
-    }
 }

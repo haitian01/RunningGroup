@@ -37,6 +37,7 @@ public class MailSend {
                 @Override
                 protected PasswordAuthentication getPasswordAuthentication() {
                     return new PasswordAuthentication("1449931670@qq.com","vhrjcfcravqbhdja");
+//                    qjbnhohbalqljahf
                 }
             });
 //            session.setDebug(true);
