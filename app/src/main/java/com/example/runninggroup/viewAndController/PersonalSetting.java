@@ -12,6 +12,7 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -28,6 +29,8 @@ import com.example.runninggroup.model.DaoUser;
 import com.example.runninggroup.request.ImgUpload;
 import com.example.runninggroup.util.BitmapUtil;
 import com.example.runninggroup.util.ImgNameUtil;
+import com.example.runninggroup.util.MailSend;
+import com.example.runninggroup.util.StringUtil;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -44,6 +47,10 @@ public class PersonalSetting extends AppCompatActivity implements UserController
     File file;
     Uri mImageUri;
     UserController mUserController = new UserController(this);
+    final int CHANGE_HEAD = 0;
+    final int CHANGE_NAME = 1;
+    final int CHANGE_PWD = 2;
+    final int CHANGE_SEX = 3;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,7 +69,7 @@ public class PersonalSetting extends AppCompatActivity implements UserController
                     String sdCardDir = getExternalCacheDir().toString();
                     File appDir = new File(sdCardDir, "/GuanGuan/");
                     if (!appDir.exists()) appDir.mkdir();
-                    file = new File(appDir, ImgNameUtil.getUserHeadImgName(UserCache.user.getId())+".jpg");
+                    file = new File(appDir, ImgNameUtil.getUserHeadImgName(UserCache.user.getId()) + ".jpg");
                     //新建裁剪图片存放的uri
                     mImageUri = Uri.fromFile(file);
                     startPhotoZoom(uri);
@@ -91,6 +98,38 @@ public class PersonalSetting extends AppCompatActivity implements UserController
                 }else {
                     Toast.makeText(PersonalSetting.this, "更换失败", Toast.LENGTH_SHORT).show();
                 }
+            }
+        });
+    }
+
+    @Override
+    public void changeNameBack(boolean res) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (res) {
+                    Toast.makeText(PersonalSetting.this, "修改成功", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(PersonalSetting.this, MainInterface.class);
+                    startActivity(intent);
+                }
+                else Toast.makeText(PersonalSetting.this, "修改失败", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+
+
+    @Override
+    public void changeSexBack(boolean res) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (res) {
+                    Toast.makeText(PersonalSetting.this, "修改成功", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(PersonalSetting.this, MainInterface.class);
+                    startActivity(intent);
+                }
+                else Toast.makeText(PersonalSetting.this, "修改失败", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -133,7 +172,7 @@ public class PersonalSetting extends AppCompatActivity implements UserController
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 switch (position){
-                    case 0:
+                    case CHANGE_HEAD:
                         AlertDialog.Builder builder = new AlertDialog.Builder(PersonalSetting.this);
                         builder.setTitle("请选择头像：");
                         builder.setMessage("可以通过相机或者相册选取头像。");
@@ -148,28 +187,40 @@ public class PersonalSetting extends AppCompatActivity implements UserController
                         builder.create();
                         builder.show();
                         break;
-                    case 1:
+                    case CHANGE_NAME:
+                        AlertDialog.Builder builder2 = new AlertDialog.Builder(PersonalSetting.this);
+                        View view2 = getLayoutInflater().inflate(R.layout.helper_changename,null);
+                        EditText newNameEdt = view2.findViewById(R.id.newName);
+                        builder2.setView(view2)
+                                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        String newName = newNameEdt.getText().toString();
+                                        if (StringUtil.isStringNull(newName))
+                                            Toast.makeText(PersonalSetting.this, "昵称不能为空", Toast.LENGTH_SHORT).show();
+                                        else mUserController.changeName(newName);
+
+                                    }
+                                })
+                                .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+
+                                    }
+                                }).create().show();
+
                         break;
-                    case 2:
+                    case CHANGE_PWD:
                         Intent intent = new Intent(PersonalSetting.this,ChangePassword.class);
-                        intent.putExtra("username",username);
                         startActivity(intent);
                         break;
-                    case 3:
+                    case CHANGE_SEX:
                         AlertDialog.Builder builder1 = new AlertDialog.Builder(PersonalSetting.this);
                         builder1.setMessage("确定要更改性别吗？")
                                 .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-                                        new Thread(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                if (DaoUser.changeSex(username)) {
-                                                    makeToast("修改成功！");
-                                                }
-                                                else makeToast("修改失败！");
-                                            }
-                                        }).start();
+                                        mUserController.changeSex();
                                     }
                                 })
                                 .setNegativeButton("取消", new DialogInterface.OnClickListener() {

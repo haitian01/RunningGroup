@@ -11,7 +11,7 @@ public class FileDao {
     //上传文件/图片
     public static boolean upload (File file, String imgName) {
         String res = ImgUpload.uploadFileNative(file, imgName);
-        if ("suceed".equals(res)) return true;
+        if ("succeed".equals(res)) return true;
         return false;
     }
 

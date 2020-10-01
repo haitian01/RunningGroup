@@ -78,6 +78,55 @@ public class UserController {
         }).start();
     }
 
+    //修改昵称
+    public void changeName (String newName) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                User user = new User();
+                user.setId(UserCache.user.getId());
+                user.setUsername(newName);
+                if (UserDao.updateUser(user)) {
+                    UserCache.user.setUsername(newName);
+                    mUserControllerInterface.changeNameBack(true);
+                }else mUserControllerInterface.changeNameBack(false);
+
+            }
+        }).start();
+    }
+    //修改昵称
+    public void changeSex () {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                User user = new User();
+                user.setId(UserCache.user.getId());
+                user.setSex(UserCache.user.getSex() == 1 ? 2 : 1);
+                if (UserDao.updateUser(user)) {
+                    UserCache.user.setSex(UserCache.user.getSex() == 1 ? 2 : 1);
+                    mUserControllerInterface.changeSexBack(true);
+                }else mUserControllerInterface.changeSexBack(false);
+
+            }
+        }).start();
+    }
+    //修改密码
+    public void changePwd (String newPwd) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                User user = new User();
+                user.setId(UserCache.user.getId());
+                user.setPassword(newPwd);
+                if (UserDao.updateUser(user)) {
+                    UserCache.user.setPassword(newPwd);
+                    mUserControllerInterface.changePwdBack(true);
+                }else mUserControllerInterface.changePwdBack(false);
+
+            }
+        }).start();
+    }
+
 
 
     public interface UserControllerInterface {
@@ -90,5 +139,11 @@ public class UserController {
         default void changeHeadImgBack (boolean res){}
         //获得头像
         default void getHeadImg (Drawable drawable) {}
+        //修改昵称
+        default void changeNameBack (boolean res) {}
+        //修改性别
+        default void changeSexBack (boolean res) {}
+        //修改密码
+        default void changePwdBack(boolean res) {};
     }
 }

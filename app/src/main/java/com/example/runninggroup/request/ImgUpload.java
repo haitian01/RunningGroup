@@ -82,13 +82,14 @@ public class ImgUpload {
             OutputStream outputStream = httpURLConnection.getOutputStream();
             DataOutputStream dos = new DataOutputStream(outputStream);
             dos.writeBytes(twoHyphens + boundary + end);
-            dos.writeBytes("Content-Disposition: form-data; name=\"file2\"; filename="+imgName+".jpg" + end);
+            dos.writeBytes("Content-Disposition: form-data; name=\"file1\"; filename="+imgName + end);
             dos.writeBytes(end);
             byte[] bytes = new byte[1024];
             InputStream inputStream = new FileInputStream(file);
             while (inputStream.read(bytes) != -1) {
                 dos.write(bytes);
             }
+            inputStream.close();
             dos.writeBytes(end);
             dos.writeBytes(twoHyphens + boundary + twoHyphens + end);
             dos.flush();

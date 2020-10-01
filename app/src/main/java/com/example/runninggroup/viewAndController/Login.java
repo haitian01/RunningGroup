@@ -87,9 +87,9 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Us
         if(password != null){
             mEditText2.setText(password);
         }
-        if (registerNum != null && password != null) {
-            mUserController.isLoad(registerNum, password);
-        }
+//        if (registerNum != null && password != null) {
+//            mUserController.isLoad(registerNum, password);
+//        }
         mEditText2.setTransformationMethod(PasswordTransformationMethod.getInstance());
     }
 

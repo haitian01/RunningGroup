@@ -119,6 +119,7 @@ public class MainInterface extends AppCompatActivity implements View.OnClickList
 
         //设置头像
         mUserController.getHeadImg();
+        usernameText.setText(UserCache.user.getUsername());
 
     }
 
