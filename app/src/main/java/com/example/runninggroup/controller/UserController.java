@@ -70,11 +70,11 @@ public class UserController {
     }
 
     //获得头像
-    public void getHeadImg () {
+    public void getHeadImg (String imgName) {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                Drawable drawable = FileDao.getImg(Cache.user.getHeadImg());
+                Drawable drawable = FileDao.getImg(imgName);
                 mUserControllerInterface.getHeadImg(drawable);
             }
         }).start();

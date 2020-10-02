@@ -49,7 +49,7 @@ import java.util.ArrayList;
 public class MainInterface extends AppCompatActivity implements View.OnClickListener, UserController.UserControllerInterface {
     private ViewPager mViewPager;
     private TabLayout mTabLayout;
-    private Button mBtn_rightSideSetting;
+    private ImageView mImg_rightSideSetting;
     private ImageView mImg_sideSetting;
     private Button mBtn_exit;
     private ConstraintLayout mPesonalSetting,mRightSetting;
@@ -112,7 +112,7 @@ public class MainInterface extends AppCompatActivity implements View.OnClickList
         mViewPager.setCurrentItem(id);
 
         //设置头像
-        mUserController.getHeadImg();
+        mUserController.getHeadImg(Cache.user.getHeadImg());
         usernameIn.setText(Cache.user.getUsername());
         usernameOut.setText(Cache.user.getUsername());
 
@@ -145,7 +145,7 @@ public class MainInterface extends AppCompatActivity implements View.OnClickList
         mViewPager = findViewById(R.id.viewPager);
         mImg_sideSetting = findViewById(R.id.sideSetting);
         mBtn_exit = findViewById(R.id.button_quit);
-        mBtn_rightSideSetting = findViewById(R.id.rightSightSetting);
+        mImg_rightSideSetting = findViewById(R.id.rightSightSetting);
         mPesonalSetting = findViewById(R.id.personalSetting);
         mRightSetting = findViewById(R.id.rightSetting);
         mLineraLayout = findViewById(R.id.ll_container);
@@ -175,7 +175,7 @@ public class MainInterface extends AppCompatActivity implements View.OnClickList
         mViewPager.setCurrentItem(id);
         //大图
         mDialog = new Dialog(MainInterface.this, R.style.Theme_AppCompat_Light_Dialog_Alert);
-        mUserController.getHeadImg();
+        mUserController.getHeadImg(Cache.user.getHeadImg());
     }
 
     public void setDrawableTop () {
@@ -202,7 +202,7 @@ public class MainInterface extends AppCompatActivity implements View.OnClickList
     private void initEvent() {
         mImg_sideSetting.setOnClickListener(this);
         mBtn_exit.setOnClickListener(this);
-        mBtn_rightSideSetting.setOnClickListener(this);
+        mImg_rightSideSetting.setOnClickListener(this);
         personalHead.setOnClickListener(this);
         mLineraLayout.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -272,47 +272,49 @@ public class MainInterface extends AppCompatActivity implements View.OnClickList
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 switch(position){
                     case 0:
-                        android.app.AlertDialog.Builder alertDialog3 = new android.app.AlertDialog.Builder(MainInterface.this);
-                        final View view1=getLayoutInflater().inflate(R.layout.helper_addfriend,null);
-                        alertDialog3.setView(view1)
-                        .setTitle("添加好友")
-                        .setIcon(R.drawable.add_account).setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                final EditText friend_name = view1.findViewById(R.id.friend_name);
-                                final EditText content = view1.findViewById(R.id.content);
-                                new Thread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        if(DaoFriend.queryFriend(username,friend_name.getText().toString())){
-                                           makeToast("你们已经是好友啦");
-                                        }else {
-
-                                            String result = DaoFriend.insertMoment(username,friend_name.getText().toString(),content.getText().toString());
-                                            if("SUCCESS".equals(result)){
-                                               makeToast("请求发送成功！");
-                                            }else {
-                                                makeToast("请求发送失败");
-                                            }
-                                        }
-
-                                    }
-                                }).start();
-
-                            }
-                        }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                Toast.makeText(MainInterface.this,"期待您拥有更值得拥有的跑友",Toast.LENGTH_SHORT).show();
-                            }
-                        }).create();
-
-
-                        alertDialog3.show();
+                            Intent intent = new Intent(MainInterface.this, SearchActivity.class);
+                            startActivity(intent);
+//                        android.app.AlertDialog.Builder alertDialog3 = new android.app.AlertDialog.Builder(MainInterface.this);
+//                        final View view1=getLayoutInflater().inflate(R.layout.helper_addfriend,null);
+//                        alertDialog3.setView(view1)
+//                        .setTitle("添加好友")
+//                        .setIcon(R.drawable.add_account).setPositiveButton("确定", new DialogInterface.OnClickListener() {
+//                            @Override
+//                            public void onClick(DialogInterface dialog, int which) {
+//                                final EditText friend_name = view1.findViewById(R.id.friend_name);
+//                                final EditText content = view1.findViewById(R.id.content);
+//                                new Thread(new Runnable() {
+//                                    @Override
+//                                    public void run() {
+//                                        if(DaoFriend.queryFriend(username,friend_name.getText().toString())){
+//                                           makeToast("你们已经是好友啦");
+//                                        }else {
+//
+//                                            String result = DaoFriend.insertMoment(username,friend_name.getText().toString(),content.getText().toString());
+//                                            if("SUCCESS".equals(result)){
+//                                               makeToast("请求发送成功！");
+//                                            }else {
+//                                                makeToast("请求发送失败");
+//                                            }
+//                                        }
+//
+//                                    }
+//                                }).start();
+//
+//                            }
+//                        }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
+//                            @Override
+//                            public void onClick(DialogInterface dialog, int which) {
+//                                Toast.makeText(MainInterface.this,"期待您拥有更值得拥有的跑友",Toast.LENGTH_SHORT).show();
+//                            }
+//                        }).create();
+//
+//
+//                        alertDialog3.show();
 
                         break;
                     case 1:
-                        Intent intent = new Intent(MainInterface.this,Write.class);
+                        intent = new Intent(MainInterface.this,Write.class);
                         intent.putExtra("username",username);
                         startActivity(intent);
                 }

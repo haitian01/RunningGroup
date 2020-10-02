@@ -41,15 +41,24 @@
             android:textColor="@color/white"
             />
 
-        <Button
+        <!--<Button-->
+            <!--android:id="@+id/rightSightSetting"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_alignParentRight="true"-->
+            <!--android:layout_alignParentBottom="true"-->
+            <!--android:text="@string/add"-->
+            <!--android:textSize="20dp"-->
+            <!--style="?android:attr/borderlessButtonStyle"-->
+            <!--/>-->
+        <ImageView
             android:id="@+id/rightSightSetting"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/img_add"
             android:layout_alignParentRight="true"
-            android:layout_alignParentBottom="true"
-            android:text="@string/add"
-            android:textSize="20dp"
-            style="?android:attr/borderlessButtonStyle"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="5dp"
             />
     </RelativeLayout>
 

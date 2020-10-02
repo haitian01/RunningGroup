@@ -9,4 +9,5 @@ import java.util.List;
 public class Cache {
     public static User user = new User();
     public static List<FriendRelation> friendRelationList = new ArrayList<>();
+    public static User friend = new User();
 }

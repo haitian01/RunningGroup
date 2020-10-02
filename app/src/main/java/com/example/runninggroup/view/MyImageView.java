@@ -89,7 +89,7 @@ public class MyImageView extends ImageView {
 		// 去锯齿
 		paint.setAntiAlias(true);
 		// 外圆颜色
-		paint.setColor(Color.BLACK);
+		paint.setColor(Color.WHITE);
 		// 设置paint的　style　为STROKE：空心
 		paint.setStyle(Paint.Style.STROKE);
 		// 设置paint的宽度

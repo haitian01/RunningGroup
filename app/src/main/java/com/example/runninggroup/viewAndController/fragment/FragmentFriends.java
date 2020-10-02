@@ -66,13 +66,11 @@ public class FragmentFriends extends Fragment implements FriendRelationControlle
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Bundle bundle = new Bundle();
-                bundle.putString("name",list.get(position).getAlias() == null ? list.get(position).getFriend().getUsername() : list.get(position).getAlias());
-                bundle.putString("group",list.get(position).getFriend().getTeam().getTeamName());
-                bundle.putString("length","123");
-                bundle.putString("username", Cache.user.getUsername());
+
+                Cache.friend = list.get(position).getFriend();
+
                 Intent intent = new Intent(getActivity(), FriendMessage.class);
-                intent.putExtras(bundle);
+                intent.putExtra("alias", list.get(position).getAlias());
                 startActivity(intent);
             }
         });

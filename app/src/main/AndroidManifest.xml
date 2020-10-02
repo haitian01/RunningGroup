@@ -120,6 +120,7 @@
         <activity
             android:name=".viewAndController.TimerCard"
             android:launchMode="singleInstance" />
+        <activity android:name=".viewAndController.SearchActivity"/>
 
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
