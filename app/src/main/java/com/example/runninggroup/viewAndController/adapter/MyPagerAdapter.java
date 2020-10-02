@@ -17,19 +17,19 @@ import java.util.ArrayList;
 
 public class MyPagerAdapter extends FragmentStatePagerAdapter {
     private ArrayList<Fragment> mFragments;
-    private ArrayList<String> mStringArrayList;
+//    private ArrayList<String> mStringArrayList;
 
     public MyPagerAdapter(@NonNull FragmentManager fm,ArrayList<Fragment> fragments ,ArrayList<String> strings) {
         super(fm);
         this.mFragments = fragments;
-        this.mStringArrayList = strings;
+//        this.mStringArrayList = strings;
     }
 
 
     public MyPagerAdapter(@NonNull FragmentManager fm, int behavior ,ArrayList<Fragment> fragments ,ArrayList<String> strings) {
         super(fm, behavior);
         this.mFragments = fragments;
-        this.mStringArrayList = strings;
+//        this.mStringArrayList = strings;
     }
 
     @NonNull
@@ -43,11 +43,11 @@ public class MyPagerAdapter extends FragmentStatePagerAdapter {
         return mFragments.size();
     }
 
-    @Nullable
-    @Override
-    public CharSequence getPageTitle(int position) {
-        return mStringArrayList.get(position);
-    }
+//    @Nullable
+//    @Override
+//    public CharSequence getPageTitle(int position) {
+//        return mStringArrayList.get(position);
+//    }
 
     @NonNull
     @Override

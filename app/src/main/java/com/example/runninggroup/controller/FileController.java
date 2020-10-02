@@ -2,15 +2,14 @@ package com.example.runninggroup.controller;
 
 import android.graphics.drawable.Drawable;
 
-import com.example.runninggroup.cache.UserCache;
+import com.example.runninggroup.cache.Cache;
 import com.example.runninggroup.dao.FileDao;
-import com.example.runninggroup.util.ImgNameUtil;
 
 import java.io.File;
 
 public class FileController {
     private FileControllerInterface mFileControllerInterface;
-    private String username = UserCache.user.getUsername();
+    private String username = Cache.user.getUsername();
     public FileController (FileControllerInterface fileControllerInterface) {
         mFileControllerInterface = fileControllerInterface;
     }

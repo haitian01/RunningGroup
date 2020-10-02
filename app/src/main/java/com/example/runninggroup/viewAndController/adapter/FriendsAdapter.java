@@ -10,7 +10,13 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.runninggroup.controller.UserController;
+import com.example.runninggroup.dao.FileDao;
+import com.example.runninggroup.dao.UserDao;
 import com.example.runninggroup.model.DaoUser;
+import com.example.runninggroup.pojo.FriendRelation;
 import com.example.runninggroup.viewAndController.helper.FriendsHelper;
 import com.example.runninggroup.R;
 
@@ -19,24 +25,13 @@ import java.util.List;
 
 public class FriendsAdapter extends BaseAdapter {
     public LayoutInflater mInflater;
-    public List<FriendsHelper> mList;
-    HashMap<Integer,Drawable> mDrawable;
-
-    public FriendsAdapter(LayoutInflater inflater, List<FriendsHelper> list) {
+    public List<FriendRelation> mList;
+    public Activity mActivity;
+    public FriendsAdapter(LayoutInflater inflater, List<FriendRelation> list, Activity activity) {
 
         mInflater = inflater;
         mList = list;
-        mDrawable = new HashMap<>(list.size());
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                for(int i=0;i<list.size();i++){
-                    Drawable drawable = DaoUser.getImg(DaoUser.getUserHeadImgName(mList.get(i).getUsername()));
-                    if(drawable!=null) mDrawable.put(i,drawable);
-                }
-
-            }
-        }).start();
+        mActivity = activity;
     }
 
     @Override
@@ -57,13 +52,7 @@ public class FriendsAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         //ViewHolder内部类
-        class ViewHolder{
-            public ImageView img;
-            public TextView name;
-            public TextView group;
-            public TextView length;
-            public TextView score;
-        }
+
         //判断converView是否为空
         ViewHolder viewHolder;
         if (convertView==null){
@@ -79,30 +68,11 @@ public class FriendsAdapter extends BaseAdapter {
             viewHolder= (ViewHolder) convertView.getTag();
         }
 
-        //赋值
-        Thread t = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                if(mDrawable.get(position) == null){
-                    Drawable drawable =  DaoUser.getImg(DaoUser.getUserHeadImgName(mList.get(position).getUsername()));
-                    if(drawable != null) mDrawable.put(position,drawable);
-                }
 
-
-            }
-        });
-        t.start();
-        try {
-            t.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        if(mDrawable.get(position) != null){viewHolder.img.setImageDrawable(mDrawable.get(position));}
-        else {viewHolder.img.setImageResource(R.mipmap.defaultpic);}
-        viewHolder.name.setText(mList.get(position).getUsername());
-        viewHolder.group.setText(mList.get(position).getGroupName());
-        viewHolder.length.setText(mList.get(position).getLength()+"");
-        viewHolder.score.setText(mList.get(position).getScore()+"");
+        viewHolder.img.setImageResource(R.mipmap.defaultpic);
+        setImg(viewHolder, mList.get(position).getFriend().getHeadImg());
+        viewHolder.name.setText(mList.get(position).getAlias() != null ? mList.get(position).getAlias() : mList.get(position).getFriend().getUsername());
+        viewHolder.group.setText(mList.get(position).getFriend().getTeam() == null ? "无" : mList.get(position).getFriend().getTeam().getTeamName());
 
 
 
@@ -113,4 +83,31 @@ public class FriendsAdapter extends BaseAdapter {
         return convertView;
 
     }
+
+    class ViewHolder{
+        public ImageView img;
+        public TextView name;
+        public TextView group;
+        public TextView length;
+        public TextView score;
+    }
+
+    public void setImg (ViewHolder viewHolder, String imgName) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Drawable drawable = FileDao.getImg(imgName);
+                mActivity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (drawable != null)
+                        viewHolder.img.setImageDrawable(drawable);
+                    }
+                });
+
+            }
+        }).start();
+    }
+
+
 }

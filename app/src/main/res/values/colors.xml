@@ -14,4 +14,13 @@
     <color name="endColor">#2DFCD3</color>
     <color name="whitegrey">#FAFAFA</color>
     <color name="softyellow">#FFC498</color>
+    <color name="top">#4dd0ff</color>
+
+
+    <!--//radiogroup选择器-->
+    <color name="transparent">#000000</color>
+    <color name="color_bg_selected">#e0301e</color>
+    <color name="color_bg_normal">#e7e7e8</color>
+    <color name="color_text_selected">#ffffff</color>
+    <color name="color_text_normal">#000000</color>
 </resources>

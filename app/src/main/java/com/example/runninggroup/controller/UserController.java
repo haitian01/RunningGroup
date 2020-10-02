@@ -2,12 +2,10 @@ package com.example.runninggroup.controller;
 
 import android.graphics.drawable.Drawable;
 
-import com.example.runninggroup.cache.UserCache;
+import com.example.runninggroup.cache.Cache;
 import com.example.runninggroup.dao.FileDao;
 import com.example.runninggroup.dao.UserDao;
-import com.example.runninggroup.model.DaoUser;
 import com.example.runninggroup.pojo.User;
-import com.example.runninggroup.request.ImgUpload;
 import com.example.runninggroup.util.ImgNameUtil;
 
 import java.io.File;
@@ -28,8 +26,12 @@ public class UserController {
                 user.setRegisterNum(registerNum);
                 user.setPassword(password);
                 List<User> users = UserDao.getUser(user);
-                if (users.size() == 0) mUserControllerInterface.isLoadBack(null);
-                else mUserControllerInterface.isLoadBack(users.get(0));
+                if (users == null) mUserControllerInterface.isLoadBack(null, "网络故障");
+                else if (users.size() == 0) {
+                    mUserControllerInterface.isLoadBack(null, "用户名或密码错误");
+                }else {
+                    mUserControllerInterface.isLoadBack(users.get(0), "登录成功");
+                }
             }
         }).start();
     }
@@ -49,7 +51,7 @@ public class UserController {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                int id = UserCache.user.getId();
+                int id = Cache.user.getId();
                 String imgName = ImgNameUtil.getUserHeadImgName(id);
 
                 User user = new User();
@@ -58,7 +60,7 @@ public class UserController {
                 boolean res1 = UserDao.updateUser(user);
                 boolean res2 = FileDao.upload(file, imgName);
                 if (res1 && res2) {
-                    UserCache.user.setHeadImg(imgName);
+                    Cache.user.setHeadImg(imgName);
                     mUserControllerInterface.changeHeadImgBack(true);
                 }else mUserControllerInterface.changeHeadImgBack(false);
             }
@@ -72,7 +74,7 @@ public class UserController {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                Drawable drawable = FileDao.getImg(UserCache.user.getHeadImg());
+                Drawable drawable = FileDao.getImg(Cache.user.getHeadImg());
                 mUserControllerInterface.getHeadImg(drawable);
             }
         }).start();
@@ -84,10 +86,10 @@ public class UserController {
             @Override
             public void run() {
                 User user = new User();
-                user.setId(UserCache.user.getId());
+                user.setId(Cache.user.getId());
                 user.setUsername(newName);
                 if (UserDao.updateUser(user)) {
-                    UserCache.user.setUsername(newName);
+                    Cache.user.setUsername(newName);
                     mUserControllerInterface.changeNameBack(true);
                 }else mUserControllerInterface.changeNameBack(false);
 
@@ -100,10 +102,10 @@ public class UserController {
             @Override
             public void run() {
                 User user = new User();
-                user.setId(UserCache.user.getId());
-                user.setSex(UserCache.user.getSex() == 1 ? 2 : 1);
+                user.setId(Cache.user.getId());
+                user.setSex(Cache.user.getSex() == 1 ? 2 : 1);
                 if (UserDao.updateUser(user)) {
-                    UserCache.user.setSex(UserCache.user.getSex() == 1 ? 2 : 1);
+                    Cache.user.setSex(Cache.user.getSex() == 1 ? 2 : 1);
                     mUserControllerInterface.changeSexBack(true);
                 }else mUserControllerInterface.changeSexBack(false);
 
@@ -116,10 +118,10 @@ public class UserController {
             @Override
             public void run() {
                 User user = new User();
-                user.setId(UserCache.user.getId());
+                user.setId(Cache.user.getId());
                 user.setPassword(newPwd);
                 if (UserDao.updateUser(user)) {
-                    UserCache.user.setPassword(newPwd);
+                    Cache.user.setPassword(newPwd);
                     mUserControllerInterface.changePwdBack(true);
                 }else mUserControllerInterface.changePwdBack(false);
 
@@ -131,7 +133,7 @@ public class UserController {
 
     public interface UserControllerInterface {
         //用户登录查询回调函数
-        default void isLoadBack (User user){}
+        default void isLoadBack (User user, String msg){}
         //注册用户
         default void registerBack (boolean res){}
 

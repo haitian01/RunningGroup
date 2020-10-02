@@ -2,32 +2,26 @@ package com.example.runninggroup.viewAndController;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.drawable.BitmapDrawable;
+import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.DrawableContainer;
 import android.os.Bundle;
-import android.provider.ContactsContract;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,10 +33,10 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.runninggroup.R;
-import com.example.runninggroup.cache.UserCache;
+import com.example.runninggroup.cache.Cache;
 import com.example.runninggroup.controller.UserController;
 import com.example.runninggroup.model.DaoFriend;
-import com.example.runninggroup.model.DaoUser;
+import com.example.runninggroup.util.StatusBarUtils;
 import com.example.runninggroup.viewAndController.adapter.MyPagerAdapter;
 import com.example.runninggroup.viewAndController.fragment.FragmentCard;
 import com.example.runninggroup.viewAndController.fragment.FragmentData;
@@ -50,27 +44,26 @@ import com.example.runninggroup.viewAndController.fragment.FragmentFriends;
 import com.example.runninggroup.viewAndController.fragment.FragmentGroup;
 import com.google.android.material.tabs.TabLayout;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
 import java.util.ArrayList;
 
 public class MainInterface extends AppCompatActivity implements View.OnClickListener, UserController.UserControllerInterface {
     private ViewPager mViewPager;
     private TabLayout mTabLayout;
-    private Button mBtn_sideSetting,mBtn_rightSideSetting;
+    private Button mBtn_rightSideSetting;
+    private ImageView mImg_sideSetting;
     private Button mBtn_exit;
     private ConstraintLayout mPesonalSetting,mRightSetting;
     private LinearLayout mLineraLayout;
     private ListView mListView,mRightList;
     private ImageView personalHead,bigPersonalHead;
-    private TextView usernameText;
+    private TextView usernameIn,usernameOut;
+    private RadioGroup mRadioGroup;
     Dialog mDialog;
     int id;
     MyPagerAdapter myPagerAdapter;
     ArrayList<Fragment> fragmentList;
     ArrayList<String> list_Title;
-    String username = UserCache.user.getUsername();
+    String username = Cache.user.getUsername();
     UserController mUserController = new UserController(this);
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -87,6 +80,7 @@ public class MainInterface extends AppCompatActivity implements View.OnClickList
             public void run() {
                 if (drawable != null) {
                     personalHead.setImageDrawable(drawable);
+                    mImg_sideSetting.setImageDrawable(drawable);
                     Toast.makeText(MainInterface.this, "头像获取成功", Toast.LENGTH_SHORT).show();
                 }else {
                     personalHead.setImageResource(R.mipmap.defaultpic);
@@ -119,7 +113,8 @@ public class MainInterface extends AppCompatActivity implements View.OnClickList
 
         //设置头像
         mUserController.getHeadImg();
-        usernameText.setText(UserCache.user.getUsername());
+        usernameIn.setText(Cache.user.getUsername());
+        usernameOut.setText(Cache.user.getUsername());
 
     }
 
@@ -148,8 +143,7 @@ public class MainInterface extends AppCompatActivity implements View.OnClickList
     private void initView() {
         id = getIntent().getIntExtra("id",0);
         mViewPager = findViewById(R.id.viewPager);
-        mTabLayout = findViewById(R.id.tabLayout);
-        mBtn_sideSetting = findViewById(R.id.sideSetting);
+        mImg_sideSetting = findViewById(R.id.sideSetting);
         mBtn_exit = findViewById(R.id.button_quit);
         mBtn_rightSideSetting = findViewById(R.id.rightSightSetting);
         mPesonalSetting = findViewById(R.id.personalSetting);
@@ -158,31 +152,55 @@ public class MainInterface extends AppCompatActivity implements View.OnClickList
         mListView = findViewById(R.id.personalListView);
         mRightList = findViewById(R.id.rightList);
         personalHead = findViewById(R.id.personalImage);
-        usernameText = findViewById(R.id.text_userName);
-
+        usernameOut = findViewById(R.id.username_out);
+        usernameIn = findViewById(R.id.username_in);
+        mRadioGroup = findViewById(R.id.tabs_rg);
         fragmentList = new ArrayList<>();
-        list_Title = new ArrayList<>();
+//        list_Title = new ArrayList<>();
         fragmentList.add(new FragmentData());
         fragmentList.add(new FragmentCard());
         fragmentList.add(new FragmentFriends());
         fragmentList.add(new FragmentGroup());
-        list_Title.add("数据");
-        list_Title.add("打卡");
-        list_Title.add("好友");
-        list_Title.add("跑团");
-        usernameText.setText(UserCache.user.getUsername());
+        StatusBarUtils.setWindowStatusBarColor(this, R.color.top);
+        setDrawableTop ();
+//        list_Title.add("数据");
+//        list_Title.add("打卡");
+//        list_Title.add("好友");
+//        list_Title.add("跑团");
+        usernameOut.setText(Cache.user.getUsername());
+        usernameIn.setText(Cache.user.getUsername());
         myPagerAdapter = new MyPagerAdapter(getSupportFragmentManager(), fragmentList, list_Title);
         mViewPager.setAdapter(myPagerAdapter);
-        mTabLayout.setupWithViewPager(mViewPager);//此方法就是让tablayout和ViewPager联动
+//        mTabLayout.setupWithViewPager(mViewPager);//此方法就是让tablayout和ViewPager联动
         mViewPager.setCurrentItem(id);
         //大图
         mDialog = new Dialog(MainInterface.this, R.style.Theme_AppCompat_Light_Dialog_Alert);
         mUserController.getHeadImg();
     }
 
+    public void setDrawableTop () {
+
+        RadioButton[] rbs = new RadioButton[4];
+        rbs[0] =  (RadioButton) findViewById(R.id.data_tab);
+        rbs[1] = (RadioButton)findViewById(R.id.card_tab) ;
+        rbs[2] = (RadioButton)findViewById(R.id.friend_tab);
+        rbs[3] = (RadioButton)findViewById(R.id.group_tab);
+        for (RadioButton rb : rbs) {
+            //给每个RadioButton加入drawable限制边距控制显示大小
+            Drawable[] drawables = rb.getCompoundDrawables();
+            //获取drawables
+            Rect rt = new Rect(0, 0, drawables[1].getMinimumWidth()*2/3, drawables[1].getMinimumHeight()*2/3);
+            //定义一个Rect边界
+            drawables[1].setBounds(rt);
+
+            //添加限制给控件
+            rb.setCompoundDrawables(null,drawables[1],null,null);
+        }
+    }
+
     @SuppressLint("ClickableViewAccessibility")
     private void initEvent() {
-        mBtn_sideSetting.setOnClickListener(this);
+        mImg_sideSetting.setOnClickListener(this);
         mBtn_exit.setOnClickListener(this);
         mBtn_rightSideSetting.setOnClickListener(this);
         personalHead.setOnClickListener(this);
@@ -193,6 +211,35 @@ public class MainInterface extends AppCompatActivity implements View.OnClickList
                 mRightSetting.setVisibility(View.INVISIBLE);
                 mLineraLayout.setVisibility(View.GONE);
                 return false;
+            }
+        });
+        mRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                for (int i = 0; i < group.getChildCount(); i++) {
+                    if (group.getChildAt(i).getId() == checkedId) {
+                        mViewPager.setCurrentItem(i);
+                        return;
+                    }
+                }
+            }
+        });
+        mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                RadioButton radioButton = (RadioButton) mRadioGroup.getChildAt(position);
+                radioButton.setChecked(true);
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
             }
         });
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

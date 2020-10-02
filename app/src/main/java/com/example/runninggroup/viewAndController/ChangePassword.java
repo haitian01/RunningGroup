@@ -10,9 +10,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.runninggroup.R;
-import com.example.runninggroup.cache.UserCache;
+import com.example.runninggroup.cache.Cache;
 import com.example.runninggroup.controller.UserController;
-import com.example.runninggroup.model.DaoUser;
 
 
 public class ChangePassword extends AppCompatActivity implements View.OnClickListener, UserController.UserControllerInterface {
@@ -69,7 +68,7 @@ public class ChangePassword extends AppCompatActivity implements View.OnClickLis
                 else {
                     if (! newPwd.equals(repeatPwd))
                         Toast.makeText(this, "两次密码不一致", Toast.LENGTH_SHORT).show();
-                    else if (! oldPwd.equals(UserCache.user.getPassword())){
+                    else if (! oldPwd.equals(Cache.user.getPassword())){
                         Toast.makeText(this, "原密码不正确", Toast.LENGTH_SHORT).show();
                     }else {
                         mUserController.changePwd(newPwd);
@@ -95,8 +94,8 @@ public class ChangePassword extends AppCompatActivity implements View.OnClickLis
             @Override
             public void run() {
                 if (res) {
-                    Toast.makeText(ChangePassword.this, "修改成功", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(ChangePassword.this, MainInterface.class);
+                    Toast.makeText(ChangePassword.this, "修改成功,请重新登录", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(ChangePassword.this, Login.class);
                     startActivity(intent);
                 }
                 else Toast.makeText(ChangePassword.this, "修改失败", Toast.LENGTH_SHORT).show();

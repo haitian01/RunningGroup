@@ -4,39 +4,26 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.AssetManager;
 import android.os.Bundle;
-import android.os.Looper;
 import android.os.StrictMode;
 import android.text.method.PasswordTransformationMethod;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.alibaba.fastjson.JSON;
 import com.example.runninggroup.R;
-import com.example.runninggroup.cache.UserCache;
+import com.example.runninggroup.cache.Cache;
 import com.example.runninggroup.controller.UserController;
 import com.example.runninggroup.model.DaoUser;
 import com.example.runninggroup.pojo.User;
-import com.example.runninggroup.request.PostRequest;
 
 import com.example.runninggroup.util.MailSend;
 import com.example.runninggroup.util.StringUtil;
-import com.example.runninggroup.viewAndController.TimeAndData.GetTime;
-
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.Properties;
 
 public class Login extends AppCompatActivity implements View.OnClickListener, UserController.UserControllerInterface {
     public static final String TAG = "MyActivityTest";
@@ -185,7 +172,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Us
     }
 
     @Override
-    public void isLoadBack(User user) {
+    public void isLoadBack(User user, String msg) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -196,14 +183,14 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Us
                     editor.putString("registerNum",mEditText1.getText().toString());
                     editor.putString("password", mEditText2.getText().toString());
                     editor.apply();
-                    UserCache.user = user;
+                    Cache.user = user;
                     Intent intent = new Intent(Login.this,MainInterface.class);
                     startActivity(intent);
 
 
                     Toast.makeText(Login.this, user.toString(), Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(Login.this, "用户名或密码错误", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Login.this, msg, Toast.LENGTH_SHORT).show();
                 }
             }
         });

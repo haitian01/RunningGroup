@@ -21,32 +21,30 @@
             android:src="@mipmap/nofriend"
             android:visibility="visible"/>
     </RelativeLayout>
-
-
-
-    <TextView
-        android:id="@+id/application"
+    <RelativeLayout
+        android:id="@+id/loadImg_out"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="申请消息"
-        android:textSize="15dp"/>
-    <ListView
-        android:id="@+id/applicationListView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/application"></ListView>
-    <TextView
-        android:id="@+id/friend"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="我的跑友"
-        android:textSize="15dp"
-        android:layout_below="@id/applicationListView"/>
+        android:layout_centerInParent="true"
+        android:visibility="invisible">
+        <ImageView
+            android:id="@+id/loadImg"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_centerInParent="true"
+            android:src="@drawable/liuyu_load"/>
+    </RelativeLayout>
+
+
+
+
+
+
+
     <ListView
         android:id="@+id/listView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/friend"
         ></ListView>
 
 

@@ -15,7 +15,7 @@ public class UserDao {
     //获得user集合
     public static List<User> getUser (User user) {
         String json = JsonPostRequest.postRequest(ConstantUtil.URL + ConstantUtil.GET_USER, JSON.toJSONString(user));
-        return json == null ? new ArrayList<User>() : JSONArray.parseArray(json, User.class);
+        return JSONArray.parseArray(json, User.class);
     }
     //添加user
     public static boolean addUser (User user) {

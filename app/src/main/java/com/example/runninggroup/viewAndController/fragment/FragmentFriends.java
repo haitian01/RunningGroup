@@ -9,8 +9,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -21,8 +24,11 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.runninggroup.R;
+import com.example.runninggroup.cache.Cache;
+import com.example.runninggroup.controller.FriendRelationController;
 import com.example.runninggroup.model.DaoFriend;
 import com.example.runninggroup.model.DaoUser;
+import com.example.runninggroup.pojo.FriendRelation;
 import com.example.runninggroup.viewAndController.FriendMessage;
 import com.example.runninggroup.viewAndController.Login;
 import com.example.runninggroup.viewAndController.adapter.FriendsAdapter;
@@ -33,31 +39,20 @@ import com.example.runninggroup.viewAndController.helper.MomentHelper;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FragmentFriends extends Fragment {
-    public ListView mListView,mListView1;
-    public List<FriendsHelper> list;
-    public List<MomentHelper> list1;
-    public TextView applicationTextView,friendTextView;
+public class FragmentFriends extends Fragment implements FriendRelationController.FriendRelationControllerInterface {
+    public ListView mListView;
+    public List<FriendRelation> list = new ArrayList<>();
     public View view;
-    private RelativeLayout mRelativeLayout;
+    private RelativeLayout mRelativeLayout, loadImg_out;
+    private FriendRelationController mFriendRelationController = new FriendRelationController(this);
+    private Animation animation;
+    private ImageView loadImg;
     String username;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         username = getActivity().getIntent().getStringExtra("username");
-        Thread t = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                list = DaoUser.getFriends(username);
-                list1 = DaoFriend.queryMomentList(username);
-            }
-        });
-        t.start();
-        try {
-            t.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+
 
 
         view =inflater.inflate(R.layout.fragment_friends,container,false);
@@ -72,107 +67,130 @@ public class FragmentFriends extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Bundle bundle = new Bundle();
-                bundle.putString("name",list.get(position).getUsername());
-                bundle.putString("group",list.get(position).getGroupName());
-                bundle.putString("length",list.get(position).getLength()+"");
-                bundle.putString("username",username);
+                bundle.putString("name",list.get(position).getAlias() == null ? list.get(position).getFriend().getUsername() : list.get(position).getAlias());
+                bundle.putString("group",list.get(position).getFriend().getTeam().getTeamName());
+                bundle.putString("length","123");
+                bundle.putString("username", Cache.user.getUsername());
                 Intent intent = new Intent(getActivity(), FriendMessage.class);
                 intent.putExtras(bundle);
                 startActivity(intent);
             }
         });
-        mListView1.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                final String from_name = list1.get(position).getFrom_name();
-                String content = list1.get(position).getContent();
-                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                        builder.setTitle("好友申请")
-                        .setMessage(from_name+"\n"+content)
-                        .setPositiveButton("同意", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                if("SUCCESS".equals(DaoFriend.addFriend(username,from_name))){
-                                    getActivity().runOnUiThread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            Toast.makeText(getContext(),"添加成功",Toast.LENGTH_SHORT).show();
-                                            list = DaoUser.getFriends(getActivity().getIntent().getStringExtra("username"));
-                                            list1 = DaoFriend.queryMomentList(getActivity().getIntent().getStringExtra("username"));
-                                            mListView.setAdapter(new FriendsAdapter(getLayoutInflater(),list));
-                                            mListView1.setAdapter(new MomentAdapter(getLayoutInflater(),list1));
-                                            if(list1.size() == 0){
-                                                applicationTextView.setVisibility(View.GONE);
-                                            }
-                                            if(list.size() == 0){
-                                                friendTextView.setVisibility(View.GONE);
-                                            }
-                                            if (list1.size() == 0 && list.size() == 0){mRelativeLayout.setVisibility(View.VISIBLE);}
-
-                                        }
-                                    });
-                                }else {
-                                    getActivity().runOnUiThread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            Toast.makeText(getContext(),"添加失败",Toast.LENGTH_SHORT).show();
-                                        }
-                                    });
-                                }
-
-                            }
-                        })
-                        .setNegativeButton("拒绝", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                if("SUCCESS".equals(DaoFriend.updateProcessed(username,from_name))){
-                                    getActivity().runOnUiThread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            Toast.makeText(getContext(),"已拒绝",Toast.LENGTH_SHORT).show();
-                                            list1 = DaoFriend.queryMomentList(getActivity().getIntent().getStringExtra("username"));
-                                            mListView1.setAdapter(new MomentAdapter(getLayoutInflater(),list1));
-                                            if(list1.size() == 0){
-                                                applicationTextView.setVisibility(View.GONE);
-                                            }
-                                            if(list.size() == 0){
-                                                friendTextView.setVisibility(View.GONE);
-                                            }
-                                            if (list1.size() == 0 && list.size() == 0){mRelativeLayout.setVisibility(View.VISIBLE);}
-                                        }
-                                    });
-                                }else {
-                                    getActivity().runOnUiThread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            Toast.makeText(getContext(),"网络异常",Toast.LENGTH_SHORT).show();
-                                        }
-                                    });
-                                }
-
-                            }
-                        }).create();
-                builder.show();
-            }
-        });
+//        mListView1.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                final String from_name = list1.get(position).getFrom_name();
+//                String content = list1.get(position).getContent();
+//                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+//                        builder.setTitle("好友申请")
+//                        .setMessage(from_name+"\n"+content)
+//                        .setPositiveButton("同意", new DialogInterface.OnClickListener() {
+//                            @Override
+//                            public void onClick(DialogInterface dialog, int which) {
+//                                if("SUCCESS".equals(DaoFriend.addFriend(username,from_name))){
+//                                    getActivity().runOnUiThread(new Runnable() {
+//                                        @Override
+//                                        public void run() {
+//                                            Toast.makeText(getContext(),"添加成功",Toast.LENGTH_SHORT).show();
+////                                            list = DaoUser.getFriends(getActivity().getIntent().getStringExtra("username"));
+//                                            list1 = DaoFriend.queryMomentList(getActivity().getIntent().getStringExtra("username"));
+//                                            mListView.setAdapter(new FriendsAdapter(getLayoutInflater(),list, getActivity()));
+//                                            mListView1.setAdapter(new MomentAdapter(getLayoutInflater(),list1));
+//                                            if(list1.size() == 0){
+//                                                applicationTextView.setVisibility(View.GONE);
+//                                            }
+//                                            if(list.size() == 0){
+//                                                friendTextView.setVisibility(View.GONE);
+//                                            }
+//                                            if (list1.size() == 0 && list.size() == 0){mRelativeLayout.setVisibility(View.VISIBLE);}
+//
+//                                        }
+//                                    });
+//                                }else {
+//                                    getActivity().runOnUiThread(new Runnable() {
+//                                        @Override
+//                                        public void run() {
+//                                            Toast.makeText(getContext(),"添加失败",Toast.LENGTH_SHORT).show();
+//                                        }
+//                                    });
+//                                }
+//
+//                            }
+//                        })
+//                        .setNegativeButton("拒绝", new DialogInterface.OnClickListener() {
+//                            @Override
+//                            public void onClick(DialogInterface dialog, int which) {
+//                                if("SUCCESS".equals(DaoFriend.updateProcessed(username,from_name))){
+//                                    getActivity().runOnUiThread(new Runnable() {
+//                                        @Override
+//                                        public void run() {
+//                                            Toast.makeText(getContext(),"已拒绝",Toast.LENGTH_SHORT).show();
+//                                            list1 = DaoFriend.queryMomentList(getActivity().getIntent().getStringExtra("username"));
+//                                            mListView1.setAdapter(new MomentAdapter(getLayoutInflater(),list1));
+//                                            if(list1.size() == 0){
+//                                                applicationTextView.setVisibility(View.GONE);
+//                                            }
+//                                            if(list.size() == 0){
+//                                                friendTextView.setVisibility(View.GONE);
+//                                            }
+//                                            if (list1.size() == 0 && list.size() == 0){mRelativeLayout.setVisibility(View.VISIBLE);}
+//                                        }
+//                                    });
+//                                }else {
+//                                    getActivity().runOnUiThread(new Runnable() {
+//                                        @Override
+//                                        public void run() {
+//                                            Toast.makeText(getContext(),"网络异常",Toast.LENGTH_SHORT).show();
+//                                        }
+//                                    });
+//                                }
+//
+//                            }
+//                        }).create();
+//                builder.show();
+//            }
+//        });
     }
 
     private void initView() {
-        applicationTextView = view.findViewById(R.id.application);
-        friendTextView = view.findViewById(R.id.friend);
+
         mRelativeLayout = view.findViewById(R.id.nofriend);
+        loadImg = view.findViewById(R.id.loadImg);
+        loadImg_out = view.findViewById(R.id.loadImg_out);
         //find
         mListView=view.findViewById(R.id.listView);
-        mListView1 = view.findViewById(R.id.applicationListView);
         //设置适配器
-        mListView.setAdapter(new FriendsAdapter(this.getLayoutInflater(),list));
-        mListView1.setAdapter(new MomentAdapter(getLayoutInflater(),list1));
-        if(list1.size() == 0){
-            applicationTextView.setVisibility(View.GONE);
-        }
-        if(list.size() == 0){
-            friendTextView.setVisibility(View.GONE);
-        }
-        if (list1.size() == 0 && list.size() == 1){mRelativeLayout.setVisibility(View.VISIBLE);}
+        mListView.setAdapter(new FriendsAdapter(this.getLayoutInflater(),list, getActivity()));
+
+
+
+        //动画效果
+        animation = AnimationUtils.loadAnimation(getActivity(), R.anim.tip);
+        animation.setDuration(500);
+        animation.setRepeatCount(8);//动画的反复次数
+        animation.setFillAfter(true);//设置为true，动画转化结束后被应用
+        loadImg.startAnimation(animation);//開始动画
+        loadImg_out.setVisibility(View.VISIBLE);
+        mFriendRelationController.getFriends();
+
+    }
+
+    @Override
+    public void getFriendsBack(List<FriendRelation> friendRelationList) {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                loadImg.clearAnimation();
+                loadImg_out.setVisibility(View.INVISIBLE);
+                if (friendRelationList == null) Toast.makeText(getActivity(), "网络故障", Toast.LENGTH_SHORT).show();
+                else  {
+                    list = friendRelationList;
+
+                    if (list.size() == 0){mRelativeLayout.setVisibility(View.VISIBLE);}
+                    mListView.setAdapter(new FriendsAdapter(getActivity().getLayoutInflater(),friendRelationList,getActivity()));
+                }
+            }
+        });
+
     }
 }

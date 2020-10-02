@@ -1,41 +1,28 @@
 package com.example.runninggroup.viewAndController;
 
-import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.loader.content.CursorLoader;
 
 import com.example.runninggroup.R;
-import com.example.runninggroup.cache.UserCache;
+import com.example.runninggroup.cache.Cache;
 import com.example.runninggroup.controller.UserController;
-import com.example.runninggroup.model.DaoUser;
-import com.example.runninggroup.request.ImgUpload;
-import com.example.runninggroup.util.BitmapUtil;
 import com.example.runninggroup.util.ImgNameUtil;
-import com.example.runninggroup.util.MailSend;
 import com.example.runninggroup.util.StringUtil;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
 
 public class PersonalSetting extends AppCompatActivity implements UserController.UserControllerInterface {
     String username;
@@ -69,7 +56,7 @@ public class PersonalSetting extends AppCompatActivity implements UserController
                     String sdCardDir = getExternalCacheDir().toString();
                     File appDir = new File(sdCardDir, "/GuanGuan/");
                     if (!appDir.exists()) appDir.mkdir();
-                    file = new File(appDir, ImgNameUtil.getUserHeadImgName(UserCache.user.getId()) + ".jpg");
+                    file = new File(appDir, ImgNameUtil.getUserHeadImgName(Cache.user.getId()) + ".jpg");
                     //新建裁剪图片存放的uri
                     mImageUri = Uri.fromFile(file);
                     startPhotoZoom(uri);
