@@ -102,31 +102,6 @@
         android:background="#dcdcdc"
         android:orientation="horizontal">
 
-        <!--<RadioButton-->
-            <!--android:id="@+id/data_tab"-->
-            <!--style="@style/Custom.TabRadioButton"-->
-            <!--android:drawableTop="@drawable/img_data"-->
-            <!--android:checked="true"-->
-            <!--android:text="数据" />-->
-
-        <!--<RadioButton-->
-            <!--android:id="@+id/card_tab"-->
-            <!--style="@style/Custom.TabRadioButton"-->
-            <!--android:drawableTop="@drawable/img_card"-->
-            <!--android:text="打卡" />-->
-
-        <!--<RadioButton-->
-            <!--android:id="@+id/friend_tab"-->
-            <!--style="@style/Custom.TabRadioButton"-->
-            <!--android:drawableTop="@drawable/img_friend"-->
-
-            <!--android:text="好友" />-->
-
-        <!--<RadioButton-->
-            <!--android:id="@+id/group_tab"-->
-            <!--style="@style/Custom.TabRadioButton"-->
-            <!--android:drawableTop="@drawable/img_group"-->
-            <!--android:text="跑团" />-->
         <RadioButton
             android:id="@+id/data_tab"
             style="@style/Custom.TabRadioButton"
