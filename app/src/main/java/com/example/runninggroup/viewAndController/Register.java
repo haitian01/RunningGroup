@@ -32,7 +32,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener,
     private String sex = "女";
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
     private String testNum;
-    private String registerNum;
+    private String mail;
     private UserController mUserController = new UserController(this);
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -92,14 +92,14 @@ public class Register extends AppCompatActivity implements View.OnClickListener,
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.register:
-                if(testText.getText().toString().equals(testNum) && registerNumText.getText().toString().equals(registerNum)){
+                if(testText.getText().toString().equals(testNum) && registerNumText.getText().toString().equals(mail)){
                     if(mEditText1.getText().toString().equals("") || mEditText2.getText().toString().equals("") || mEditText3.getText().toString().equals("")){
                         Toast.makeText(Register.this,"输入不完整",Toast.LENGTH_SHORT).show();
                     }else {
                         if(! mEditText2.getText().toString().equals(mEditText3.getText().toString())){
                             Toast.makeText(Register.this,"两次密码不一致",Toast.LENGTH_SHORT).show();
                         }else {
-                            mUserController.register(registerNum ,mEditText2.getText().toString(), sex, mEditText1.getText().toString());
+                            mUserController.register(mail ,mEditText2.getText().toString(), sex, mEditText1.getText().toString());
                         }
                     }
                 }else {
@@ -119,7 +119,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener,
                             }
                         });
                         testNum = getRandom();
-                        registerNum = registerNumText.getText().toString();
+                        mail = registerNumText.getText().toString();
                         MailSend.sendMssage("北邮跑团账号注册","欢迎您的加入："+testNum,registerNumText.getText().toString());
 
                         for(int i=60;i>0;i--){
@@ -168,12 +168,12 @@ public class Register extends AppCompatActivity implements View.OnClickListener,
 
 
     @Override
-    public void registerBack(boolean res) {
+    public void registerBack(boolean res, String registerNum) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                if (res) Toast.makeText(Register.this, "注册成功", Toast.LENGTH_SHORT).show();
-                else Toast.makeText(Register.this, "用户名已存在或网络超时", Toast.LENGTH_SHORT).show();
+                if (res) Toast.makeText(Register.this, "注册成功,账号为：" + registerNum, Toast.LENGTH_LONG).show();
+                else Toast.makeText(Register.this, registerNum, Toast.LENGTH_SHORT).show();
             }
         });
     }

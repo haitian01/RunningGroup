@@ -29,6 +29,7 @@ import com.example.runninggroup.controller.FriendRelationController;
 import com.example.runninggroup.model.DaoFriend;
 import com.example.runninggroup.model.DaoUser;
 import com.example.runninggroup.pojo.FriendRelation;
+import com.example.runninggroup.util.ConstantUtil;
 import com.example.runninggroup.viewAndController.FriendMessage;
 import com.example.runninggroup.viewAndController.Login;
 import com.example.runninggroup.viewAndController.adapter.FriendsAdapter;
@@ -71,6 +72,7 @@ public class FragmentFriends extends Fragment implements FriendRelationControlle
 
                 Intent intent = new Intent(getActivity(), FriendMessage.class);
                 intent.putExtra("alias", list.get(position).getAlias());
+                intent.putExtra("fromActivity", ConstantUtil.MAIN_INTERFACE);
                 startActivity(intent);
             }
         });

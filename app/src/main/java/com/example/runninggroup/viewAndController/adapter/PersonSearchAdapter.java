@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -22,7 +23,7 @@ public class PersonSearchAdapter extends BaseAdapter {
     }
     @Override
     public int getCount() {
-        return 4;
+        return 2;
     }
 
     @Override
@@ -45,38 +46,26 @@ public class PersonSearchAdapter extends BaseAdapter {
         }
         ViewHolder viewHolder1;
         switch (position) {
-            case 0:
 
-                convertView = mInflater.inflate(R.layout.helper_person_search, null);
-                viewHolder1 = new ViewHolder();
-                viewHolder1.rela = convertView.findViewById(R.id.rela);
-                viewHolder1.mImageView = convertView.findViewById(R.id.img);
-                viewHolder1.mImageView1 = convertView.findViewById(R.id.back);
-                viewHolder1.mTextView = convertView.findViewById(R.id.msg);
-                convertView.setTag(viewHolder1);
-                viewHolder1.mTextView.setText("邮箱/跑团");
-                viewHolder1.mImageView1.setVisibility(View.INVISIBLE);
-                viewHolder1.rela.setBackgroundColor(R.color.endColor);
-                break;
-            case 1:
+            case 0:
                 convertView = mInflater.inflate(R.layout.helper_person_search, null);
                 viewHolder1 = new ViewHolder();
                 viewHolder1.mImageView = convertView.findViewById(R.id.img);
                 viewHolder1.mTextView = convertView.findViewById(R.id.msg);
                 convertView.setTag(viewHolder1);
                 Team team = mUser.getTeam();
-                viewHolder1.mTextView.setText("添加有机联系人");
+                viewHolder1.mTextView.setText("添加手机联系人");
 
 
                 break;
 
-            case 2:
+            case 1:
                 convertView = mInflater.inflate(R.layout.helper_person_search, null);
                 viewHolder1 = new ViewHolder();
                 viewHolder1.mImageView = convertView.findViewById(R.id.img);
                 viewHolder1.mTextView = convertView.findViewById(R.id.msg);
                 convertView.setTag(viewHolder1);
-                viewHolder1.mTextView.setText("1扫一扫加好友");
+                viewHolder1.mTextView.setText("扫一扫加好友");
 
                 break;
 

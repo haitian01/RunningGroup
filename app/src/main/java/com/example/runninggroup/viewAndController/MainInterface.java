@@ -34,6 +34,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.example.runninggroup.R;
 import com.example.runninggroup.cache.Cache;
 import com.example.runninggroup.controller.UserController;
+import com.example.runninggroup.pojo.FriendApplication;
 import com.example.runninggroup.util.StatusBarUtils;
 import com.example.runninggroup.viewAndController.adapter.MyPagerAdapter;
 import com.example.runninggroup.viewAndController.fragment.FragmentCard;
@@ -110,6 +111,8 @@ public class MainInterface extends AppCompatActivity implements View.OnClickList
         mViewPager.setCurrentItem(id);
 
         //设置头像
+        personalHead.setImageResource(Cache.user.getSex() == 1 ? R.drawable.default_head_m : R.drawable.default_head_w);
+        bigPersonalHead.setImageResource(Cache.user.getSex() == 1 ? R.drawable.default_head_m : R.drawable.default_head_w);
         mUserController.getHeadImg(Cache.user.getHeadImg());
         usernameIn.setText(Cache.user.getUsername());
         usernameOut.setText(Cache.user.getUsername());
@@ -173,6 +176,8 @@ public class MainInterface extends AppCompatActivity implements View.OnClickList
         mViewPager.setCurrentItem(id);
         //大图
         mDialog = new Dialog(MainInterface.this, R.style.Theme_AppCompat_Light_Dialog_Alert);
+        personalHead.setImageResource(Cache.user.getSex() == 1 ? R.drawable.default_head_m : R.drawable.default_head_w);
+        bigPersonalHead = getImageView(getDrawable(Cache.user.getSex() == 1 ? R.drawable.default_head_m : R.drawable.default_head_w));
         mUserController.getHeadImg(Cache.user.getHeadImg());
     }
 
@@ -312,9 +317,14 @@ public class MainInterface extends AppCompatActivity implements View.OnClickList
 
                         break;
                     case 1:
-                        intent = new Intent(MainInterface.this,Write.class);
+                        intent = new Intent(MainInterface.this, Write.class);
                         intent.putExtra("username",username);
                         startActivity(intent);
+                        break;
+                    case 2:
+                        intent = new Intent(MainInterface.this, FriendApplicationActivity.class);
+                        startActivity(intent);
+                        break;
                 }
             }
         });

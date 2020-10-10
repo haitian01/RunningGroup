@@ -91,6 +91,7 @@
         android:layout_below="@+id/top"
         ></ListView>
     <Button
+        android:id="@+id/add_friend"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:text="加好友"
@@ -101,6 +102,7 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:background="@color/top"
+        android:visibility="invisible"
         android:textSize="15dp"
         />
 

@@ -20,6 +20,11 @@ public class ConstantUtil {
     public final static String UPDATE_FRIENDR_RELATION = "/friendRelation/updateFriendRelation";
     public final static String GET_FRIENDR_RELATION = "/friendRelation/getFriendRelation";
 
+    //申请表
+    public final static String ADD_FRIENDR_APPLICATION = "/friendApplication/addFriendApplication";
+    public final static String UPDATE_FRIENDR_APPLICATION = "/friendApplication/updateFriendApplication";
+    public final static String GET_FRIENDR_APPLICATION = "/friendApplication/getFriendApplication";
+
     //朋友圈controller
     public final static String ADD_FRIENDR_CIRCLE = "/friendCircle/addFriendCircle";
     public final static String UPDATE_FRIENDR_CIRCLE = "/friendCircle/updateFriendCircle";
@@ -43,6 +48,11 @@ public class ConstantUtil {
     //文件上传
     public final static String UPLOAD = "/file/upload";
     public final static String GET_IMG = "/file/getImg";
+
+
+    //界面常量
+    public static final int MAIN_INTERFACE = 0;
+    public static final int PERSON_SEARCH = 1;
 
 
 

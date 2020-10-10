@@ -5,7 +5,7 @@
     <RelativeLayout
         android:id="@+id/rela"
         android:layout_width="match_parent"
-        android:layout_height="50dp">
+        android:layout_height="60dp">
         <ImageView
             android:id="@+id/img"
             android:layout_width="25dp"
@@ -25,8 +25,8 @@
             android:text="女 3岁 | 北京邮电大学"/>
         <ImageView
             android:id="@+id/back"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
             android:src="@drawable/img_right"
             android:layout_alignParentRight="true"
             android:layout_marginRight="5dp"

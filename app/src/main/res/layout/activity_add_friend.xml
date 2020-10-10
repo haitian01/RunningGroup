@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#eee">
+    <RelativeLayout
+        android:id="@+id/top"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/top">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:text="添加好友"
+            android:layout_centerInParent="true"
+            android:textSize="16dp"/>
+        <TextView
+            android:id="@+id/send"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16dp"
+            android:textColor="@drawable/text_press_selector"
+            android:text="发送"
+            android:layout_centerVertical="true"
+            android:clickable="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp"/>
+        <TextView
+            android:id="@+id/cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16dp"
+            android:textColor="@drawable/text_press_selector"
+            android:clickable="true"
+            android:text="取消"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="20dp"
+
+            />
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/person_rela"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_below="@+id/top">
+        <com.example.runninggroup.view.MyImageView
+            android:id="@+id/pic"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginLeft="20dp"
+            android:src="@mipmap/defaultpic"/>
+        <TextView
+            android:id="@+id/username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:text="陌上"
+            android:layout_toRightOf="@+id/pic"
+            android:layout_marginTop="35dp"
+            android:layout_marginLeft="5dp"/>
+        <TextView
+            android:id="@+id/other"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/pic"
+            android:layout_marginTop="58dp"
+            android:text="18 河北沧州"
+            android:textColor="@color/greyWhite"
+            android:layout_marginLeft="7dp"/>
+
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/testMsg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/person_rela">
+        <TextView
+            android:id="@+id/test"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="请填写验证信息"
+            android:layout_marginLeft="20dp"
+            android:textColor="@color/greyWhite"/>
+        <EditText
+            android:id="@+id/msg"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:background="@color/white"
+            android:text="我是"
+            android:gravity="start"
+            android:paddingLeft="20dp"
+            android:layout_below="@+id/test"
+            android:paddingTop="10dp"
+            />
+    </RelativeLayout>
+
+
+
+
+
+
+</RelativeLayout>

@@ -18,11 +18,12 @@
         android:layout_toRightOf="@id/img"
         android:layout_centerVertical="true"
         android:layout_marginLeft="5dp"
+        android:textColor="#000"
         android:text="女 3岁 | 北京邮电大学"/>
     <ImageView
         android:id="@+id/back"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
+        android:layout_width="18dp"
+        android:layout_height="18dp"
         android:src="@drawable/img_right"
         android:layout_alignParentRight="true"
         android:layout_marginRight="5dp"

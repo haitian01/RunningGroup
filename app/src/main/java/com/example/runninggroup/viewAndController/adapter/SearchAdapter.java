@@ -58,7 +58,7 @@ public class SearchAdapter extends BaseAdapter {
                 viewHolder1.mTextView = convertView.findViewById(R.id.msg);
                 convertView.setTag(viewHolder1);
                 viewHolder1.mTextView.setText("找跑团：" + msg);
-                viewHolder1.mImageView.setImageResource(R.drawable.img_group);
+                viewHolder1.mImageView.setImageResource(R.drawable.img_friend);
 
                 break;
 

@@ -69,7 +69,7 @@ public class FriendsAdapter extends BaseAdapter {
         }
 
 
-        viewHolder.img.setImageResource(R.mipmap.defaultpic);
+        viewHolder.img.setImageResource(mList.get(position).getFriend().getSex() == 1 ? R.drawable.default_head_m : R.drawable.default_head_w);
         setImg(viewHolder, mList.get(position).getFriend().getHeadImg());
         viewHolder.name.setText(mList.get(position).getAlias() != null ? mList.get(position).getAlias() : mList.get(position).getFriend().getUsername());
         viewHolder.group.setText(mList.get(position).getFriend().getTeam() == null ? "无" : mList.get(position).getFriend().getTeam().getTeamName());

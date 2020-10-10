@@ -18,6 +18,8 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.runninggroup.R;
+import com.example.runninggroup.controller.UserController;
+import com.example.runninggroup.pojo.User;
 import com.example.runninggroup.util.StatusBarUtils;
 import com.example.runninggroup.util.StringUtil;
 import com.example.runninggroup.viewAndController.adapter.MyPagerAdapter;
@@ -28,7 +30,7 @@ import com.example.runninggroup.viewAndController.fragment.FragmentTeamSearch;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SearchActivity extends AppCompatActivity implements View.OnClickListener {
+public class SearchActivity extends AppCompatActivity implements View.OnClickListener, UserController.UserControllerInterface {
     RadioButton personBtn,teamBtn;
     RadioGroup tabGroup;
     ViewPager mViewPager;
@@ -59,6 +61,26 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
             }
         });
 
+
+        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                RadioButton btn = (RadioButton) tabGroup.getChildAt(position);
+                btn.setChecked(true);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
+
     }
 
     private void initView() {
@@ -80,4 +102,6 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
     public void onClick(View v) {
 
     }
+
+
 }

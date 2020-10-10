@@ -7,6 +7,7 @@ import com.example.runninggroup.dao.FileDao;
 import com.example.runninggroup.dao.UserDao;
 import com.example.runninggroup.pojo.User;
 import com.example.runninggroup.util.ImgNameUtil;
+import com.example.runninggroup.util.StringUtil;
 
 import java.io.File;
 import java.util.List;
@@ -35,15 +36,40 @@ public class UserController {
             }
         }).start();
     }
+    //查找用户
+    public void selectUser (String msg) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                User user = new User();
+                user.setUsername(msg);
+                List<User> users = UserDao.getUser(user);
+                if (users == null) mUserControllerInterface.selectUserBack(null);
+                else {
+                    mUserControllerInterface.selectUserBack(users);
+                }
+            }
+        }).start();
+    }
 
     //注册用户
-    public void register (String registerNum, String password, String sex, String username) {
+    public void register (String mail, String password, String sex, String username) {
         User user = new User();
-        user.setRegisterNum(registerNum);
+        user.setMail(mail);
         user.setPassword(password);
         user.setUsername(username);
         user.setSex(sex.equals("男") ? 1 : 2);
-        mUserControllerInterface.registerBack(UserDao.addUser(user));
+        for (int i = 0; i < 10; i++) {
+            String registerNum = StringUtil.getRegisterNum();
+            user.setRegisterNum(registerNum);
+            if (UserDao.addUser(user)) {
+                mUserControllerInterface.registerBack(true, registerNum);
+                return;
+            }
+
+        }
+        mUserControllerInterface.registerBack(false, "请稍后尝试");
+
 
     }
     //更换头像
@@ -134,8 +160,9 @@ public class UserController {
     public interface UserControllerInterface {
         //用户登录查询回调函数
         default void isLoadBack (User user, String msg){}
+        default void selectUserBack (List<User> users){}
         //注册用户
-        default void registerBack (boolean res){}
+        default void registerBack (boolean res, String registerNum){}
 
         //更换头像
         default void changeHeadImgBack (boolean res){}
