@@ -21,11 +21,11 @@ public class FriendApplicationController {
             @Override
             public void run() {
                 FriendApplication friendApplication = new FriendApplication();
-                friendApplication.setUser(Cache.friend);
+                friendApplication.setTo(Cache.friend);
                 friendApplication.setFrom(Cache.user);
                 friendApplication.setState(1);
                 friendApplication.setApplicationMsg(applicationMsg);
-                mFriendApplicationControllerInterface.sendFriendApplicationBack(FriendApplicationDao.addFriendApplication(friendApplication));
+                mFriendApplicationControllerInterface.sendFriendApplicationBack(FriendApplicationDao.startFriendApplication(friendApplication));
             }
         }).start();
     }
@@ -38,10 +38,6 @@ public class FriendApplicationController {
                 FriendApplication friendApplication = new FriendApplication();
                 friendApplication.setUser(Cache.user);
                 List<FriendApplication> friendApplicationList = FriendApplicationDao.getFriendApplication(friendApplication);
-                friendApplication = new FriendApplication();
-                friendApplication.setFrom(Cache.user);
-                List<FriendApplication> friendRelationList1 = FriendApplicationDao.getFriendApplication(friendApplication);
-                friendApplicationList.addAll(friendRelationList1);
                 mFriendApplicationControllerInterface.getApplicationBack(friendApplicationList);
             }
         }).start();

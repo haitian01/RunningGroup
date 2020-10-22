@@ -15,6 +15,7 @@ public class FriendApplication implements Serializable {
     private int id;
     private User user;
     private User from;
+    private User to;
     private int state;
     private String applicationMsg;
     private Timestamp createTime;

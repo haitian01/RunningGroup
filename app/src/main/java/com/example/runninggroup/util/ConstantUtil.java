@@ -24,6 +24,7 @@ public class ConstantUtil {
     public final static String ADD_FRIENDR_APPLICATION = "/friendApplication/addFriendApplication";
     public final static String UPDATE_FRIENDR_APPLICATION = "/friendApplication/updateFriendApplication";
     public final static String GET_FRIENDR_APPLICATION = "/friendApplication/getFriendApplication";
+    public final static String START_FRIENDR_APPLICATION = "/friendApplication/startFriendApplication";
 
     //朋友圈controller
     public final static String ADD_FRIENDR_CIRCLE = "/friendCircle/addFriendCircle";

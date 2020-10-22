@@ -49,8 +49,9 @@ public class FriendApplicationAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         int state = mList.get(position).getState();
-        User user = mList.get(position).getUser();
-        User friend = mList.get(position).getFrom();
+//        User user = mList.get(position).getUser();
+        User from = mList.get(position).getFrom();
+        User to = mList.get(position).getTo();
         String msg = mList.get(position).getApplicationMsg();
         convertView = mInflater.inflate(R.layout.helper_friend_application, null);
         viewHolder1 = new ViewHolder();
@@ -61,12 +62,12 @@ public class FriendApplicationAdapter extends BaseAdapter {
         viewHolder1.btn = convertView.findViewById(R.id.btn);
         convertView.setTag(viewHolder1);
         //自己申请的
-        if (friend.getId() == Cache.user.getId()) {
-            viewHolder1.mImageView.setImageResource(friend.getSex() == 1 ? R.drawable.default_head_m : R.drawable.default_head_w);
-            setImg(viewHolder1, user.getHeadImg());
+        if (from.getId() == Cache.user.getId()) {
+            viewHolder1.mImageView.setImageResource(to.getSex() == 1 ? R.drawable.default_head_m : R.drawable.default_head_w);
+            setImg(viewHolder1, to.getHeadImg());
             if (state == 1) {
                 //以发送申请，等待验证
-                viewHolder1.usernameText.setText(user.getUsername());
+                viewHolder1.usernameText.setText(to.getUsername());
                 viewHolder1.btn.setVisibility(View.INVISIBLE);
                 viewHolder1.stateText.setText("等待验证");
                 viewHolder1.msgText.setText("已发送验证信息");
@@ -74,14 +75,14 @@ public class FriendApplicationAdapter extends BaseAdapter {
 
             }else if (state == 2) {
                 //对方已同意
-                viewHolder1.usernameText.setText(user.getUsername());
+                viewHolder1.usernameText.setText(to.getUsername());
                 viewHolder1.btn.setVisibility(View.INVISIBLE);
                 viewHolder1.stateText.setText("对方已同意");
                 viewHolder1.msgText.setText("已发送验证信息");
 
             }else if (state == 3) {
                 //对方已拒绝
-                viewHolder1.usernameText.setText(user.getUsername());
+                viewHolder1.usernameText.setText(to.getUsername());
                 viewHolder1.btn.setVisibility(View.INVISIBLE);
                 viewHolder1.stateText.setText("对方已拒绝");
                 viewHolder1.msgText.setText("已发送验证信息");
@@ -89,19 +90,19 @@ public class FriendApplicationAdapter extends BaseAdapter {
             }
         }
         //别人申请的
-        if (user.getId() == Cache.user.getId()) {
-            viewHolder1.mImageView.setImageResource(user.getSex() == 1 ? R.drawable.default_head_m : R.drawable.default_head_w);
-            setImg(viewHolder1, friend.getHeadImg());
+        if (to.getId() == Cache.user.getId()) {
+            viewHolder1.mImageView.setImageResource(from.getSex() == 1 ? R.drawable.default_head_m : R.drawable.default_head_w);
+            setImg(viewHolder1, from.getHeadImg());
             if (state == 1) {
                 //有验证消息和同意按钮
-                viewHolder1.usernameText.setText(friend.getUsername());
+                viewHolder1.usernameText.setText(from.getUsername());
                 viewHolder1.btn.setVisibility(View.VISIBLE);
                 viewHolder1.stateText.setVisibility(View.INVISIBLE);
                 viewHolder1.msgText.setText("对方留言： " + msg);
 
             }else if (state == 2) {
                 //验证消息和已同意
-                viewHolder1.usernameText.setText(friend.getUsername());
+                viewHolder1.usernameText.setText(from.getUsername());
                 viewHolder1.btn.setVisibility(View.INVISIBLE);
                 viewHolder1.stateText.setVisibility(View.VISIBLE);
                 viewHolder1.stateText.setText("已同意");
@@ -109,7 +110,7 @@ public class FriendApplicationAdapter extends BaseAdapter {
 
             }else if (state == 3) {
                 //验证消息和已拒绝
-                viewHolder1.usernameText.setText(friend.getUsername());
+                viewHolder1.usernameText.setText(from.getUsername());
                 viewHolder1.btn.setVisibility(View.INVISIBLE);
                 viewHolder1.stateText.setVisibility(View.VISIBLE);
                 viewHolder1.stateText.setText("已拒绝");
