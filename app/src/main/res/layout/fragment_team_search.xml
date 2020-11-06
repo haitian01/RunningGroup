@@ -1,13 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
-    
 
-    <TextView
+
+    <RelativeLayout
+        android:id="@+id/head"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:layout_width="match_parent"
+        android:background="@drawable/edt_search_selector"
+        android:clickable="true"
+        android:layout_height="60dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="搜索群号/群名称"
+            android:layout_marginLeft="40dp"
+            android:textSize="18dp"
+            android:textColor="@color/greyWhite"
+
+            />
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginLeft="10dp"
+            android:layout_centerVertical="true"
+            android:src="@drawable/img_friend"/>
+    </RelativeLayout>
+    <ListView
+        android:id="@+id/groupList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:textSize="50dp"
-        android:text="跑团"/>
+        android:layout_below="@+id/head">
 
-</LinearLayout>
+    </ListView>
+
+</RelativeLayout>

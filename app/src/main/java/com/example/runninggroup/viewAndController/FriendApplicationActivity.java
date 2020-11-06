@@ -1,6 +1,8 @@
 package com.example.runninggroup.viewAndController;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -30,11 +32,13 @@ public class FriendApplicationActivity extends AppCompatActivity implements Frie
     }
 
     private void initEvent() {
+
+
     }
 
     private void initView() {
         applicationList = findViewById(R.id.application);
-        applicationList.setAdapter(new FriendApplicationAdapter(getLayoutInflater(), mFriendApplicationList, this));
+        applicationList.setAdapter(new FriendApplicationAdapter(getLayoutInflater(), mFriendApplicationList, this, this));
         mFriendApplicationController.getApplication();
     }
 
@@ -47,9 +51,24 @@ public class FriendApplicationActivity extends AppCompatActivity implements Frie
                     Toast.makeText(FriendApplicationActivity.this, "网络故障", Toast.LENGTH_SHORT).show();
                 else {
                     mFriendApplicationList = friendApplicationList;
-                    applicationList.setAdapter(new FriendApplicationAdapter(getLayoutInflater(), mFriendApplicationList, FriendApplicationActivity.this));
+                    applicationList.setAdapter(new FriendApplicationAdapter(getLayoutInflater(), mFriendApplicationList, FriendApplicationActivity.this, FriendApplicationActivity.this ));
                 }
 
+            }
+        });
+    }
+
+    @Override
+    public void agreeToRefuseBack(boolean res) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (res) {
+                    mFriendApplicationController.getApplication();
+                    Toast.makeText(FriendApplicationActivity.this, "success", Toast.LENGTH_SHORT).show();
+                }
+
+                else Toast.makeText(FriendApplicationActivity.this, "error", Toast.LENGTH_SHORT).show();
             }
         });
     }

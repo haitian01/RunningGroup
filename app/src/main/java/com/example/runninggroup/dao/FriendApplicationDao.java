@@ -32,5 +32,12 @@ public class FriendApplicationDao {
         return "succeed".equals(json);
     }
 
+    //同意/拒绝好友
+    public static boolean agreeToRefuse (FriendApplication friendApplication) {
+        String json = JsonPostRequest.postRequest(ConstantUtil.URL + ConstantUtil.AGREE_TO_REFUSE, JSON.toJSONString(friendApplication));
+        return "succeed".equals(json);
+
+    }
+
 
 }

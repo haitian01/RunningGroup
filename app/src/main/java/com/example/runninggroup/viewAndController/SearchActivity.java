@@ -1,5 +1,6 @@
 package com.example.runninggroup.viewAndController;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -48,7 +49,6 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         tabGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
-                Toast.makeText(SearchActivity.this, checkedId + "", Toast.LENGTH_SHORT).show();
                 if (group.getCheckedRadioButtonId() == R.id.team_tab) {
                     teamBtn.setBackground(getDrawable(R.drawable.btn_style10));
                     personBtn.setBackground(null);

@@ -35,6 +35,7 @@ import com.example.runninggroup.R;
 import com.example.runninggroup.cache.Cache;
 import com.example.runninggroup.controller.UserController;
 import com.example.runninggroup.pojo.FriendApplication;
+import com.example.runninggroup.pojo.User;
 import com.example.runninggroup.util.StatusBarUtils;
 import com.example.runninggroup.viewAndController.adapter.MyPagerAdapter;
 import com.example.runninggroup.viewAndController.fragment.FragmentCard;
@@ -44,6 +45,7 @@ import com.example.runninggroup.viewAndController.fragment.FragmentGroup;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainInterface extends AppCompatActivity implements View.OnClickListener, UserController.UserControllerInterface {
     private ViewPager mViewPager;
@@ -82,7 +84,8 @@ public class MainInterface extends AppCompatActivity implements View.OnClickList
                     mImg_sideSetting.setImageDrawable(drawable);
                     Toast.makeText(MainInterface.this, "头像获取成功", Toast.LENGTH_SHORT).show();
                 }else {
-                    personalHead.setImageResource(R.mipmap.defaultpic);
+                    personalHead.setImageResource(Cache.user.getSex() == 1 ? R.drawable.default_head_m : R.drawable.default_head_w);
+                    mImg_sideSetting.setImageResource(Cache.user.getSex() == 1 ? R.drawable.default_head_m : R.drawable.default_head_w);
                     Toast.makeText(MainInterface.this, "头像获取失败", Toast.LENGTH_SHORT).show();
                 }
                 //大图
@@ -163,7 +166,7 @@ public class MainInterface extends AppCompatActivity implements View.OnClickList
         fragmentList.add(new FragmentFriends());
         fragmentList.add(new FragmentGroup());
         StatusBarUtils.setWindowStatusBarColor(this, R.color.top);
-        setDrawableTop ();
+//        setDrawableTop ();
 //        list_Title.add("数据");
 //        list_Title.add("打卡");
 //        list_Title.add("好友");
@@ -316,14 +319,22 @@ public class MainInterface extends AppCompatActivity implements View.OnClickList
 //                        alertDialog3.show();
 
                         break;
+                    //发表动态
                     case 1:
                         intent = new Intent(MainInterface.this, Write.class);
                         intent.putExtra("username",username);
                         startActivity(intent);
                         break;
+                    //好友申请
                     case 2:
                         intent = new Intent(MainInterface.this, FriendApplicationActivity.class);
                         startActivity(intent);
+                        break;
+                    //我的跑团
+                    case 3:
+                        User user = new User();
+                        user.setId(Cache.user.getId());
+                        mUserController.selectUserByUser(user);
                         break;
                 }
             }
@@ -402,8 +413,37 @@ public class MainInterface extends AppCompatActivity implements View.OnClickList
         });
     }
 
-
-
-
-
+    @Override
+    public void selectUserByUserBack(List<User> users) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (users == null) Toast.makeText(MainInterface.this, "网络故障", Toast.LENGTH_SHORT).show();
+                else {
+                    Cache.user = users.get(0);
+                    if (Cache.user.getTeam() == null) {
+                        android.app.AlertDialog.Builder alertDialog3 = new android.app.AlertDialog.Builder(MainInterface.this);
+                        alertDialog3.setMessage("尚未加入跑团").setPositiveButton("去加入", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Intent intent = new Intent(MainInterface.this, SearchActivity.class);
+                                intent.putExtra("id", 1);
+                                startActivity(intent);
+                            }
+                        }).setNegativeButton("去创建", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Intent intent = new Intent(MainInterface.this, GroupBuild.class);
+                                startActivity(intent);
+                            }
+                        }).create().show();
+                    }else {
+                        Cache.team = Cache.user.getTeam();
+                        Intent intent1 = new Intent(MainInterface.this, TeamIntroduction.class);
+                        startActivity(intent1);
+                    }
+                }
+            }
+        });
+    }
 }

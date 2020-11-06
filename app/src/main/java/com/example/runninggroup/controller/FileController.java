@@ -38,7 +38,7 @@ public class FileController {
 
 
     public interface FileControllerInterface {
-        void uploadBack(boolean res);
-        void getImgBack(Drawable drawable);
+       default void uploadBack(boolean res){};
+       default void getImgBack(Drawable drawable){};
     }
 }

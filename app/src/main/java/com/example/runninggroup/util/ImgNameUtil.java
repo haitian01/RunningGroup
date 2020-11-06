@@ -6,8 +6,8 @@ public class ImgNameUtil {
         return "user_head_"+id;
     }
     //获取跑团的头像
-    public static String getGroupHeadImgName(String groupName){
-        return "group_"+ CharacterUtil.toUNICODE(groupName) +"_head";
+    public static String getGroupHeadImgName(int id){
+        return "team_head_" + id;
     }
     //获取好友某条动态的图片
     public static String getDynamicImgName(String username,long dynamic_time){

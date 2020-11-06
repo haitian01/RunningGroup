@@ -20,11 +20,17 @@ public class ConstantUtil {
     public final static String UPDATE_FRIENDR_RELATION = "/friendRelation/updateFriendRelation";
     public final static String GET_FRIENDR_RELATION = "/friendRelation/getFriendRelation";
 
-    //申请表
+    //好友申请表
     public final static String ADD_FRIENDR_APPLICATION = "/friendApplication/addFriendApplication";
     public final static String UPDATE_FRIENDR_APPLICATION = "/friendApplication/updateFriendApplication";
     public final static String GET_FRIENDR_APPLICATION = "/friendApplication/getFriendApplication";
     public final static String START_FRIENDR_APPLICATION = "/friendApplication/startFriendApplication";
+    public final static String AGREE_TO_REFUSE = "/friendApplication/agreeToRefuse";
+
+    //跑团申请表
+    public final static String ADD_TEAM_APPLICATION = "/teamApplication/addTeamApplication";
+    public final static String GET_TEAM_APPLICATION = "/teamApplication/getTeamApplication";
+    public final static String UPDATE_TEAM_APPLICATION = "/teamApplication/updateTeamApplication";
 
     //朋友圈controller
     public final static String ADD_FRIENDR_CIRCLE = "/friendCircle/addFriendCircle";
@@ -38,6 +44,7 @@ public class ConstantUtil {
 
     //跑团表controller
     public final static String ADD_TEAM = "/team/addTeam";
+    public final static String BUILD_TEAM = "/team/buildTeam";
     public final static String UPDATE_TEAM = "/team/updateTeam";
     public final static String GET_TEAM = "/team/getTeam";
 

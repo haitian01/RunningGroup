@@ -9,9 +9,11 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.runninggroup.R;
 import com.example.runninggroup.cache.Cache;
+import com.example.runninggroup.controller.FriendApplicationController;
 import com.example.runninggroup.dao.FileDao;
 import com.example.runninggroup.pojo.FriendApplication;
 import com.example.runninggroup.pojo.FriendRelation;
@@ -26,10 +28,12 @@ public class FriendApplicationAdapter extends BaseAdapter {
     List<FriendApplication> mList;
     private Activity mActivity;
     private ViewHolder viewHolder1;
-    public FriendApplicationAdapter(LayoutInflater inflater, List<FriendApplication> list, Activity activity) {
+    private FriendApplicationController mFriendApplicationController;
+    public FriendApplicationAdapter(LayoutInflater inflater, List<FriendApplication> list, Activity activity, FriendApplicationController.FriendApplicationControllerInterface friendApplicationControllerInterface) {
         mInflater = inflater;
         mList = list;
         mActivity = activity;
+        mFriendApplicationController =   new FriendApplicationController(friendApplicationControllerInterface);
     }
     @Override
     public int getCount() {
@@ -60,6 +64,30 @@ public class FriendApplicationAdapter extends BaseAdapter {
         viewHolder1.msgText = convertView.findViewById(R.id.msg);
         viewHolder1.stateText = convertView.findViewById(R.id.state);
         viewHolder1.btn = convertView.findViewById(R.id.btn);
+        viewHolder1.btn1 = convertView.findViewById(R.id.btn1);
+        //按钮事件
+        viewHolder1.btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                Toast.makeText(mActivity, "同意", Toast.LENGTH_SHORT).show();
+                FriendApplication friendApplication = new FriendApplication();
+                friendApplication.setFrom(from);
+                friendApplication.setTo(to);
+                friendApplication.setState(2);
+                mFriendApplicationController.agreeToRefuse(friendApplication);
+            }
+        });
+        viewHolder1.btn1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                Toast.makeText(mActivity, "拒绝", Toast.LENGTH_SHORT).show();
+                FriendApplication friendApplication = new FriendApplication();
+                friendApplication.setFrom(from);
+                friendApplication.setTo(to);
+                friendApplication.setState(3);
+                mFriendApplicationController.agreeToRefuse(friendApplication);
+            }
+        });
         convertView.setTag(viewHolder1);
         //自己申请的
         if (from.getId() == Cache.user.getId()) {
@@ -69,6 +97,7 @@ public class FriendApplicationAdapter extends BaseAdapter {
                 //以发送申请，等待验证
                 viewHolder1.usernameText.setText(to.getUsername());
                 viewHolder1.btn.setVisibility(View.INVISIBLE);
+                viewHolder1.btn1.setVisibility(View.INVISIBLE);
                 viewHolder1.stateText.setText("等待验证");
                 viewHolder1.msgText.setText("已发送验证信息");
 
@@ -77,6 +106,7 @@ public class FriendApplicationAdapter extends BaseAdapter {
                 //对方已同意
                 viewHolder1.usernameText.setText(to.getUsername());
                 viewHolder1.btn.setVisibility(View.INVISIBLE);
+                viewHolder1.btn1.setVisibility(View.INVISIBLE);
                 viewHolder1.stateText.setText("对方已同意");
                 viewHolder1.msgText.setText("已发送验证信息");
 
@@ -84,6 +114,7 @@ public class FriendApplicationAdapter extends BaseAdapter {
                 //对方已拒绝
                 viewHolder1.usernameText.setText(to.getUsername());
                 viewHolder1.btn.setVisibility(View.INVISIBLE);
+                viewHolder1.btn1.setVisibility(View.INVISIBLE);
                 viewHolder1.stateText.setText("对方已拒绝");
                 viewHolder1.msgText.setText("已发送验证信息");
 
@@ -97,6 +128,7 @@ public class FriendApplicationAdapter extends BaseAdapter {
                 //有验证消息和同意按钮
                 viewHolder1.usernameText.setText(from.getUsername());
                 viewHolder1.btn.setVisibility(View.VISIBLE);
+                viewHolder1.btn1.setVisibility(View.VISIBLE);
                 viewHolder1.stateText.setVisibility(View.INVISIBLE);
                 viewHolder1.msgText.setText("对方留言： " + msg);
 
@@ -104,6 +136,7 @@ public class FriendApplicationAdapter extends BaseAdapter {
                 //验证消息和已同意
                 viewHolder1.usernameText.setText(from.getUsername());
                 viewHolder1.btn.setVisibility(View.INVISIBLE);
+                viewHolder1.btn1.setVisibility(View.INVISIBLE);
                 viewHolder1.stateText.setVisibility(View.VISIBLE);
                 viewHolder1.stateText.setText("已同意");
                 viewHolder1.msgText.setText("对方留言： " + msg);
@@ -112,6 +145,7 @@ public class FriendApplicationAdapter extends BaseAdapter {
                 //验证消息和已拒绝
                 viewHolder1.usernameText.setText(from.getUsername());
                 viewHolder1.btn.setVisibility(View.INVISIBLE);
+                viewHolder1.btn1.setVisibility(View.INVISIBLE);
                 viewHolder1.stateText.setVisibility(View.VISIBLE);
                 viewHolder1.stateText.setText("已拒绝");
                 viewHolder1.msgText.setText("对方留言： " + msg);
@@ -124,7 +158,7 @@ public class FriendApplicationAdapter extends BaseAdapter {
     class ViewHolder {
         ImageView mImageView;
         TextView usernameText, msgText, stateText;
-        Button btn;
+        Button btn,btn1;
     }
 
     public void setImg (ViewHolder viewHolder, String imgName) {

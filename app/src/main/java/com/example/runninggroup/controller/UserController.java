@@ -1,6 +1,8 @@
 package com.example.runninggroup.controller;
 
 import android.graphics.drawable.Drawable;
+import android.net.IpSecManager;
+import android.widget.ImageView;
 
 import com.example.runninggroup.cache.Cache;
 import com.example.runninggroup.dao.FileDao;
@@ -51,6 +53,18 @@ public class UserController {
             }
         }).start();
     }
+    //查找用户
+    public void  selectUserByUser(User user) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                List<User> users = UserDao.getUser(user);
+                mUserControllerInterface.selectUserByUserBack(users);
+
+            }
+        }).start();
+    }
+
 
     //注册用户
     public void register (String mail, String password, String sex, String username) {
@@ -102,6 +116,23 @@ public class UserController {
             public void run() {
                 Drawable drawable = FileDao.getImg(imgName);
                 mUserControllerInterface.getHeadImg(drawable);
+            }
+        }).start();
+    }
+
+    //根据registerNum拿到drawable
+    public void getImgByRegisterNum (String registerNum) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                User user = new User();
+                user.setRegisterNum(registerNum);
+                List<User> userList = UserDao.getUser(user);
+                if (userList == null || userList.size() == 0) mUserControllerInterface.getImgByRegisterNumBack(null);
+                else {
+                    Drawable drawable = FileDao.getImg(ImgNameUtil.getUserHeadImgName(userList.get(0).getId()));
+                    mUserControllerInterface.getImgByRegisterNumBack(drawable);
+                }
             }
         }).start();
     }
@@ -161,6 +192,7 @@ public class UserController {
         //用户登录查询回调函数
         default void isLoadBack (User user, String msg){}
         default void selectUserBack (List<User> users){}
+        default void selectUserByUserBack (List<User> users){}
         //注册用户
         default void registerBack (boolean res, String registerNum){}
 
@@ -174,5 +206,6 @@ public class UserController {
         default void changeSexBack (boolean res) {}
         //修改密码
         default void changePwdBack(boolean res) {};
+        default void getImgByRegisterNumBack (Drawable drawable){}
     }
 }

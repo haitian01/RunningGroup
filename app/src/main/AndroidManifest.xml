@@ -137,6 +137,14 @@
             android:name="com.baidu.location.f"
             android:enabled="true"
             android:process=":remote" />
+        <activity android:name=".viewAndController.TeamIntroduction"
+            android:launchMode="singleTask"/>
+        <activity android:name=".viewAndController.AddTeamActivity"
+            android:launchMode="singleTask"/>
+        <activity android:name=".viewAndController.TeamApplicationActivity"
+            android:launchMode="singleTask"/>
+        <activity android:name=".viewAndController.MemberSort"
+            android:launchMode="singleTask"/>
     </application>
 
 </manifest>

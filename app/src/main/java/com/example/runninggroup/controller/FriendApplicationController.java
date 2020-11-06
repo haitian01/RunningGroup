@@ -43,6 +43,17 @@ public class FriendApplicationController {
         }).start();
     }
 
+    //同意或者拒绝
+    public void agreeToRefuse (FriendApplication friendApplication) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                boolean res = FriendApplicationDao.agreeToRefuse(friendApplication);
+                mFriendApplicationControllerInterface.agreeToRefuseBack(res);
+            }
+        }) .start();
+    }
+
 
 
 
@@ -52,6 +63,7 @@ public class FriendApplicationController {
         default void sendFriendApplicationBack(boolean res) {}
         //查询所有申请记录
         default void getApplicationBack(List<FriendApplication> friendApplicationList) {}
+        default void agreeToRefuseBack (boolean res) {}
 
     }
 }

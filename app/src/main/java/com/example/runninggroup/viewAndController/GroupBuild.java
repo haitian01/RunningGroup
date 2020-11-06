@@ -11,14 +11,18 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.runninggroup.R;
+import com.example.runninggroup.controller.TeamController;
 import com.example.runninggroup.model.DaoGroup;
+import com.example.runninggroup.pojo.Team;
+import com.example.runninggroup.util.StringUtil;
 import com.example.runninggroup.viewAndController.fragment.FragmentGroup;
 
-public class GroupBuild extends AppCompatActivity implements View.OnClickListener {
-    EditText groupNameEdt,sloganEdt;
+public class GroupBuild extends AppCompatActivity implements View.OnClickListener, TeamController.TeamControllerInterface {
+    EditText groupNameEdt,sloganEdt,campusEdt,collegeEdt;
 
     Button build;
     String username;
+    private TeamController mTeamController = new TeamController(this);
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,6 +35,8 @@ public class GroupBuild extends AppCompatActivity implements View.OnClickListene
         build = findViewById(R.id.build);
         groupNameEdt = findViewById(R.id.groupname);
         sloganEdt = findViewById(R.id.slogan);
+        campusEdt = findViewById(R.id.campus);
+        collegeEdt = findViewById(R.id.college);
     }
     private void initEvent() {
         build.setOnClickListener(this);
@@ -40,33 +46,34 @@ public class GroupBuild extends AppCompatActivity implements View.OnClickListene
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.build:
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        username = getIntent().getStringExtra("username");
-                        if("SUCCESS".equals(DaoGroup.addGroup(groupNameEdt.getText().toString(),username,sloganEdt.getText().toString()))){
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    Toast.makeText(GroupBuild.this,"创建成功！",Toast.LENGTH_SHORT).show();
-                                    Intent intent = new Intent(GroupBuild.this, MainInterface.class);
-                                    intent.putExtra("id",3);
-                                    intent.putExtra("username",username);
-                                    startActivity(intent);
-                                }
-                            });
-                        }else {
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    Toast.makeText(GroupBuild.this,"创建失败",Toast.LENGTH_SHORT).show();
-                                }
-                            });
-                        }
+                String teamName = groupNameEdt.getText().toString();
+                String slogan = sloganEdt.getText().toString();
+                String campus = campusEdt.getText().toString();
+                String college = collegeEdt.getText().toString();
+                if (StringUtil.isStringNull(teamName) || StringUtil.isStringNull(slogan) || StringUtil.isStringNull(campus) || StringUtil.isStringNull(college)) {
+                    Toast.makeText(this, "内容不完整", Toast.LENGTH_SHORT).show();
+                }else {
+                    Team team = new Team();
+                    team.setTeamName(teamName);
+                    team.setTeamSlogan(slogan);
+                    team.setCampus(campus);
+                    team.setCollege(college);
+                    mTeamController.addTeam(team);
+                }
 
-                    }
-                }).start();
+                break;
+
 
         }
+    }
+
+    @Override
+    public void buildTeamBack(boolean res) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(GroupBuild.this, res ? "success" : "error", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }
