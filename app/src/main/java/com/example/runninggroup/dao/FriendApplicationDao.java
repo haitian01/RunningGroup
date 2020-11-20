@@ -25,6 +25,11 @@ public class FriendApplicationDao {
         String json = JsonPostRequest.postRequest(ConstantUtil.URL + ConstantUtil.UPDATE_FRIENDR_APPLICATION, JSON.toJSONString(friendApplication));
         return "succeed".equals(json);
     }
+    //删除teamApplication
+    public static boolean deleteFriendApplication (FriendApplication friendApplication) {
+        String json = JsonPostRequest.postRequest(ConstantUtil.URL + ConstantUtil.DELETE_FRIENDR_APPLICATION, JSON.toJSONString(friendApplication));
+        return "succeed".equals(json);
+    }
 
     //开始申请添加好友
     public static boolean startFriendApplication (FriendApplication friendApplication) {

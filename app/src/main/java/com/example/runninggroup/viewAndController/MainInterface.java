@@ -10,6 +10,7 @@ import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.KeyEvent;
+import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,6 +41,7 @@ import com.example.runninggroup.util.StatusBarUtils;
 import com.example.runninggroup.viewAndController.adapter.MyPagerAdapter;
 import com.example.runninggroup.viewAndController.fragment.FragmentCard;
 import com.example.runninggroup.viewAndController.fragment.FragmentData;
+import com.example.runninggroup.viewAndController.fragment.FragmentFriendCircle;
 import com.example.runninggroup.viewAndController.fragment.FragmentFriends;
 import com.example.runninggroup.viewAndController.fragment.FragmentGroup;
 import com.google.android.material.tabs.TabLayout;
@@ -59,8 +61,9 @@ public class MainInterface extends AppCompatActivity implements View.OnClickList
     private ImageView personalHead,bigPersonalHead;
     private TextView usernameIn,usernameOut;
     private RadioGroup mRadioGroup;
+    private RadioButton dataTab, cardTab, friendTab, circleTab;
     Dialog mDialog;
-    int id;
+    int viewPagerNum;
     MyPagerAdapter myPagerAdapter;
     ArrayList<Fragment> fragmentList;
     ArrayList<String> list_Title;
@@ -75,18 +78,16 @@ public class MainInterface extends AppCompatActivity implements View.OnClickList
     }
     //获得头像之后的回调
     @Override
-    public void getHeadImg(Drawable drawable) {
+    public void getHeadImgBack(Drawable drawable) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 if (drawable != null) {
                     personalHead.setImageDrawable(drawable);
                     mImg_sideSetting.setImageDrawable(drawable);
-                    Toast.makeText(MainInterface.this, "头像获取成功", Toast.LENGTH_SHORT).show();
                 }else {
                     personalHead.setImageResource(Cache.user.getSex() == 1 ? R.drawable.default_head_m : R.drawable.default_head_w);
                     mImg_sideSetting.setImageResource(Cache.user.getSex() == 1 ? R.drawable.default_head_m : R.drawable.default_head_w);
-                    Toast.makeText(MainInterface.this, "头像获取失败", Toast.LENGTH_SHORT).show();
                 }
                 //大图
                 bigPersonalHead = getImageView(drawable);
@@ -101,25 +102,44 @@ public class MainInterface extends AppCompatActivity implements View.OnClickList
         });
     }
 
+
+
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        id = intent.getIntExtra("id",0);
+        viewPagerNum = intent.getIntExtra("viewPagerNum", 0);
+
+        initFragment();
+
+
+    }
+
+    public void initFragment () {
+
         fragmentList = new ArrayList<>();
         fragmentList.add(new FragmentData());
         fragmentList.add(new FragmentCard());
         fragmentList.add(new FragmentFriends());
-        fragmentList.add(new FragmentGroup());
+        fragmentList.add(new FragmentFriendCircle());
+        myPagerAdapter = new MyPagerAdapter(getSupportFragmentManager(), fragmentList, list_Title);
         mViewPager.setAdapter(myPagerAdapter);
-        mViewPager.setCurrentItem(id);
+
+        if (mRadioGroup.getCheckedRadioButtonId() == dataTab.getId()) viewPagerNum = 0;
+        else if (mRadioGroup.getCheckedRadioButtonId() == cardTab.getId()) viewPagerNum = 1;
+        else if (mRadioGroup.getCheckedRadioButtonId() == friendTab.getId()) viewPagerNum = 2;
+        else if (mRadioGroup.getCheckedRadioButtonId() == circleTab.getId()) viewPagerNum = 3;
+        mViewPager.setCurrentItem(viewPagerNum);
+
+
 
         //设置头像
+        //大图
+        mDialog = new Dialog(MainInterface.this, R.style.Theme_AppCompat_Light_Dialog_Alert);
         personalHead.setImageResource(Cache.user.getSex() == 1 ? R.drawable.default_head_m : R.drawable.default_head_w);
         bigPersonalHead.setImageResource(Cache.user.getSex() == 1 ? R.drawable.default_head_m : R.drawable.default_head_w);
         mUserController.getHeadImg(Cache.user.getHeadImg());
         usernameIn.setText(Cache.user.getUsername());
         usernameOut.setText(Cache.user.getUsername());
-
     }
 
 
@@ -129,6 +149,7 @@ public class MainInterface extends AppCompatActivity implements View.OnClickList
         super.onActivityResult(requestCode, resultCode, data);
 
     }
+
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -145,7 +166,6 @@ public class MainInterface extends AppCompatActivity implements View.OnClickList
 
 
     private void initView() {
-        id = getIntent().getIntExtra("id",0);
         mViewPager = findViewById(R.id.viewPager);
         mImg_sideSetting = findViewById(R.id.sideSetting);
         mBtn_exit = findViewById(R.id.button_quit);
@@ -159,29 +179,14 @@ public class MainInterface extends AppCompatActivity implements View.OnClickList
         usernameOut = findViewById(R.id.username_out);
         usernameIn = findViewById(R.id.username_in);
         mRadioGroup = findViewById(R.id.tabs_rg);
-        fragmentList = new ArrayList<>();
-//        list_Title = new ArrayList<>();
-        fragmentList.add(new FragmentData());
-        fragmentList.add(new FragmentCard());
-        fragmentList.add(new FragmentFriends());
-        fragmentList.add(new FragmentGroup());
-        StatusBarUtils.setWindowStatusBarColor(this, R.color.top);
-//        setDrawableTop ();
-//        list_Title.add("数据");
-//        list_Title.add("打卡");
-//        list_Title.add("好友");
-//        list_Title.add("跑团");
-        usernameOut.setText(Cache.user.getUsername());
-        usernameIn.setText(Cache.user.getUsername());
-        myPagerAdapter = new MyPagerAdapter(getSupportFragmentManager(), fragmentList, list_Title);
-        mViewPager.setAdapter(myPagerAdapter);
-//        mTabLayout.setupWithViewPager(mViewPager);//此方法就是让tablayout和ViewPager联动
-        mViewPager.setCurrentItem(id);
-        //大图
-        mDialog = new Dialog(MainInterface.this, R.style.Theme_AppCompat_Light_Dialog_Alert);
-        personalHead.setImageResource(Cache.user.getSex() == 1 ? R.drawable.default_head_m : R.drawable.default_head_w);
+        dataTab = findViewById(R.id.data_tab);
+        cardTab = findViewById(R.id.card_tab);
+        friendTab = findViewById(R.id.friend_tab);
+        circleTab = findViewById(R.id.circle_tab);
         bigPersonalHead = getImageView(getDrawable(Cache.user.getSex() == 1 ? R.drawable.default_head_m : R.drawable.default_head_w));
-        mUserController.getHeadImg(Cache.user.getHeadImg());
+        StatusBarUtils.setWindowStatusBarColor(this, R.color.top);
+        initFragment();
+
     }
 
     public void setDrawableTop () {
@@ -190,7 +195,7 @@ public class MainInterface extends AppCompatActivity implements View.OnClickList
         rbs[0] =  (RadioButton) findViewById(R.id.data_tab);
         rbs[1] = (RadioButton)findViewById(R.id.card_tab) ;
         rbs[2] = (RadioButton)findViewById(R.id.friend_tab);
-        rbs[3] = (RadioButton)findViewById(R.id.group_tab);
+        rbs[3] = (RadioButton)findViewById(R.id.circle_tab);
         for (RadioButton rb : rbs) {
             //给每个RadioButton加入drawable限制边距控制显示大小
             Drawable[] drawables = rb.getCompoundDrawables();
@@ -215,8 +220,14 @@ public class MainInterface extends AppCompatActivity implements View.OnClickList
             public boolean onTouch(View v, MotionEvent event) {
                 mPesonalSetting.setVisibility(View.INVISIBLE);
                 mRightSetting.setVisibility(View.INVISIBLE);
-                mLineraLayout.setVisibility(View.GONE);
-                return false;
+                mLineraLayout.setVisibility(View.INVISIBLE);
+                return true;
+            }
+        });
+        mPesonalSetting.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return true;
             }
         });
         mRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -253,6 +264,7 @@ public class MainInterface extends AppCompatActivity implements View.OnClickList
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (id == 0){
                     Intent intent = new Intent(MainInterface.this, PersonalSetting.class);
+                    intent.putExtra("viewPagerNum", mViewPager.getCurrentItem());
                     startActivity(intent);
                 }else if (id == 1){
                     Toast.makeText(MainInterface.this, "该功能暂未上线", Toast.LENGTH_SHORT).show();
@@ -280,44 +292,6 @@ public class MainInterface extends AppCompatActivity implements View.OnClickList
                     case 0:
                             Intent intent = new Intent(MainInterface.this, SearchActivity.class);
                             startActivity(intent);
-//                        android.app.AlertDialog.Builder alertDialog3 = new android.app.AlertDialog.Builder(MainInterface.this);
-//                        final View view1=getLayoutInflater().inflate(R.layout.helper_addfriend,null);
-//                        alertDialog3.setView(view1)
-//                        .setTitle("添加好友")
-//                        .setIcon(R.drawable.add_account).setPositiveButton("确定", new DialogInterface.OnClickListener() {
-//                            @Override
-//                            public void onClick(DialogInterface dialog, int which) {
-//                                final EditText friend_name = view1.findViewById(R.id.friend_name);
-//                                final EditText content = view1.findViewById(R.id.content);
-//                                new Thread(new Runnable() {
-//                                    @Override
-//                                    public void run() {
-//                                        if(DaoFriend.queryFriend(username,friend_name.getText().toString())){
-//                                           makeToast("你们已经是好友啦");
-//                                        }else {
-//
-//                                            String result = DaoFriend.insertMoment(username,friend_name.getText().toString(),content.getText().toString());
-//                                            if("SUCCESS".equals(result)){
-//                                               makeToast("请求发送成功！");
-//                                            }else {
-//                                                makeToast("请求发送失败");
-//                                            }
-//                                        }
-//
-//                                    }
-//                                }).start();
-//
-//                            }
-//                        }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
-//                            @Override
-//                            public void onClick(DialogInterface dialog, int which) {
-//                                Toast.makeText(MainInterface.this,"期待您拥有更值得拥有的跑友",Toast.LENGTH_SHORT).show();
-//                            }
-//                        }).create();
-//
-//
-//                        alertDialog3.show();
-
                         break;
                     //发表动态
                     case 1:
@@ -382,8 +356,13 @@ public class MainInterface extends AppCompatActivity implements View.OnClickList
                 builder.show();
                 break;
             case R.id.rightSightSetting:
-                mRightSetting.setVisibility(View.VISIBLE);
-                mLineraLayout.setVisibility(View.VISIBLE);
+                if (mRightSetting.getVisibility() == View.INVISIBLE && mLineraLayout.getVisibility() == View.INVISIBLE) {
+                    mRightSetting.setVisibility(View.VISIBLE);
+                    mLineraLayout.setVisibility(View.VISIBLE);
+                }else {
+                    mRightSetting.setVisibility(View.INVISIBLE);
+                    mLineraLayout.setVisibility(View.INVISIBLE);
+                }
                 break;
 
             case R.id.personalImage:

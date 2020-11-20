@@ -14,20 +14,25 @@ import android.widget.Toast;
 
 import com.example.runninggroup.R;
 import com.example.runninggroup.cache.Cache;
+import com.example.runninggroup.controller.UserController;
 import com.example.runninggroup.model.DaoUser;
 import com.example.runninggroup.pojo.Team;
+import com.example.runninggroup.pojo.User;
 import com.example.runninggroup.request.ImgGet;
 import com.example.runninggroup.util.ImgNameUtil;
+import com.example.runninggroup.viewAndController.AddTeamActivity;
+import com.example.runninggroup.viewAndController.TeamApplicationActivity;
 import com.example.runninggroup.viewAndController.TeamIntroduction;
 import com.example.runninggroup.viewAndController.helper.GroupHelper;
 
 import java.util.HashMap;
 import java.util.List;
 
-public class TeamAdapter extends BaseAdapter {
+public class TeamAdapter extends BaseAdapter implements UserController.UserControllerInterface {
     public LayoutInflater mInflater;
     public List<Team> mList;
     public Activity mActivity;
+    private UserController mUserController = new UserController(this);
     public TeamAdapter(LayoutInflater inflater, List<Team> list, Activity activity) {
         mInflater = inflater;
         mList = list;
@@ -85,9 +90,22 @@ public class TeamAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 Cache.team = mTeam;
-                Toast.makeText(mActivity, Cache.team.getUser().getId() + "", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(mActivity, TeamIntroduction.class);
-                mActivity.startActivity(intent);
+                User user = new User();
+                user.setId(Cache.user.getId());
+                mUserController.selectUserByUser(user);
+            }
+        });
+        viewHolder.add.setOnClickListener(new View.OnClickListener() {
+            Team mTeam = team;
+            @Override
+            public void onClick(View v) {
+                if (Cache.user.getTeam() == null) {
+                    Cache.team = mTeam;
+                    Intent intent = new Intent(mActivity, AddTeamActivity.class);
+                    mActivity.startActivity(intent);
+                }else {
+                    Toast.makeText(mActivity, "已经加入过跑团！", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         setDrawable(viewHolder, team.getId());
@@ -127,5 +145,22 @@ public class TeamAdapter extends BaseAdapter {
                 }
             }
         }).start();
+    }
+
+    @Override
+    public void selectUserByUserBack(List<User> users) {
+        mActivity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (users == null) Toast.makeText(mActivity, "网络故障", Toast.LENGTH_SHORT).show();
+                else if (users.size() == 0) Toast.makeText(mActivity, "程序错误", Toast.LENGTH_SHORT).show();
+                else {
+                    Cache.user = users.get(0);
+                    Intent intent = new Intent(mActivity, TeamIntroduction.class);
+                    mActivity.startActivity(intent);
+                }
+
+            }
+        });
     }
 }

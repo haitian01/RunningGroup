@@ -19,6 +19,7 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.runninggroup.R;
+import com.example.runninggroup.cache.Cache;
 import com.example.runninggroup.controller.UserController;
 import com.example.runninggroup.pojo.User;
 import com.example.runninggroup.util.StatusBarUtils;
@@ -36,6 +37,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
     RadioGroup tabGroup;
     ViewPager mViewPager;
     List<Fragment> frgList;
+    private UserController mUserController = new UserController(this);
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -88,20 +90,47 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         teamBtn = findViewById(R.id.team_tab);
         tabGroup = findViewById(R.id.tabs_rg);
         mViewPager = findViewById(R.id.viewPager);
+
         frgList = new ArrayList<>();
         frgList.add(new FragmentPersonSearch());
         frgList.add(new FragmentTeamSearch());
         mViewPager.setAdapter(new MyPagerAdapter(getSupportFragmentManager(), (ArrayList<Fragment>) frgList, null));
+
+
         StatusBarUtils.setWindowStatusBarColor(this,R.color.top);
 
 
 
+
     }
+
 
     @Override
     public void onClick(View v) {
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        User user = new User();
+        user.setId(Cache.user.getId());
+        mUserController.selectUserByUser(user);
 
+
+    }
+
+    @Override
+    public void selectUserBack(List<User> users) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (users == null)
+                    Toast.makeText(SearchActivity.this, "网络故障", Toast.LENGTH_SHORT).show();
+                else if (users.size() == 0)
+                    Toast.makeText(SearchActivity.this, "程序出错", Toast.LENGTH_SHORT).show();
+                else  Cache.user = users.get(0);
+            }
+        });
+    }
 }

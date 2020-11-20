@@ -39,6 +39,7 @@ import com.example.runninggroup.controller.UserController;
 import com.example.runninggroup.model.DaoUser;
 import com.example.runninggroup.pojo.User;
 
+import com.example.runninggroup.util.ConstantUtil;
 import com.example.runninggroup.util.MailSend;
 import com.example.runninggroup.util.MyLinkedHashMapUtil;
 import com.example.runninggroup.util.StringUtil;
@@ -62,6 +63,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Us
     ListView userList;
     ImageView downImg, headImg;
     Set<String> keySet = new HashSet<>();
+    private Intent mIntent;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -95,20 +97,8 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Us
         downImg = findViewById(R.id.down);
         headImg = findViewById(R.id.head);
         userList = findViewById(R.id.userList);
-        //读取
 
-        SharedPreferences sp = getSharedPreferences("login", Context.MODE_PRIVATE);
 
-        String registerNum = sp.getString("registerNum", null);
-        String password = sp.getString("password", null);
-        Map<String, String> map = (Map<String, String>) sp.getAll();
-        keySet = map.keySet();
-        if (registerNum != null && password != null) {
-            mEditText1.setText(registerNum);
-            mEditText2.setText(password);
-        }
-        userList.setAdapter(new LoginAdapter(keySet, this));
-        System.out.println("获取");
 
 
 
@@ -317,9 +307,6 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Us
                     userList.setVisibility(View.INVISIBLE);
                     Intent intent = new Intent(Login.this,MainInterface.class);
                     startActivity(intent);
-
-
-                    Toast.makeText(Login.this, user.toString(), Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(Login.this, msg, Toast.LENGTH_SHORT).show();
                 }
@@ -339,9 +326,23 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Us
     @Override
     protected void onResume() {
         super.onResume();
+        //读取
+        int fromActivity = mIntent == null ? 0 : mIntent.getIntExtra("fromActivity", 0);
         SharedPreferences sp = getSharedPreferences("login", Context.MODE_PRIVATE);
+        if (fromActivity == ConstantUtil.CHANGE_PASSWORD) {
+            SharedPreferences.Editor edit = sp.edit();
+            edit.putString("password", "");
+            edit.putString(Cache.user.getRegisterNum(), "");
+            edit.commit();
+        }
+        String registerNum = sp.getString("registerNum", null);
+        String password = sp.getString("password", null);
         Map<String, String> map = (Map<String, String>) sp.getAll();
         keySet = map.keySet();
+        if (registerNum != null && password != null) {
+            mEditText1.setText(registerNum);
+            mEditText2.setText(password);
+        }
         userList.setAdapter(new LoginAdapter(keySet, this));
 
         String temp = mEditText1.getText().toString();
@@ -350,5 +351,10 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Us
 
     }
 
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        mIntent = intent;
+    }
 }
 

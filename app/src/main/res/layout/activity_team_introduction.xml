@@ -50,20 +50,72 @@
             android:layout_marginTop="5dp"
             android:layout_marginLeft="5dp"/>
     </RelativeLayout>
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/teamMsg"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/backImg">
+        android:orientation="vertical"
+        android:layout_below="@id/backImg"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp">
+        <TextView
+            android:id="@+id/leader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="leader"
+            android:textColor="@color/black"
+            android:layout_marginLeft="20dp"
+            />
+        <TextView
+            android:id="@+id/campus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="campus"
+            android:textColor="@color/black"
+            android:layout_marginLeft="20dp"
+            />
+        <TextView
+            android:id="@+id/college"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="college"
+            android:textColor="@color/black"
+            android:layout_marginLeft="20dp"
+            />
+        <TextView
+            android:id="@+id/size"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="size"
+            android:textColor="@color/black"
+            android:layout_marginLeft="20dp"
+            />
+        <TextView
+            android:id="@+id/length"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="length"
+            android:textColor="@color/black"
+            android:layout_marginLeft="20dp"
+            />
+        <TextView
+            android:id="@+id/score"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="score"
+            android:textColor="@color/black"
+            android:layout_marginLeft="20dp"
+            />
         <TextView
             android:id="@+id/buildTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="2014年07月09日"
+            android:text="buildTime"
             android:textColor="@color/black"
             android:layout_marginLeft="20dp"
-            android:layout_marginTop="10dp"/>
-    </RelativeLayout>
+            />
+    </LinearLayout>
+
     <LinearLayout
         android:id="@+id/teamFunction"
         android:layout_width="match_parent"
@@ -74,7 +126,7 @@
         <RelativeLayout
             android:id="@+id/teamTask"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="40dp"
             android:clickable="true"
             android:background="@drawable/selector_white_to_gray">
             <TextView
@@ -82,13 +134,36 @@
                 android:layout_height="wrap_content"
                 android:text="跑团公告"
                 android:textColor="@color/black"
-                android:textSize="18dp"
+                android:textSize="16dp"
                 android:layout_marginLeft="20dp"
                 android:layout_centerVertical="true"
                 />
             <ImageView
-                android:layout_width="25dp"
-                android:layout_height="25dp"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/img_right"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"/>
+        </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/members"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:clickable="true"
+            android:background="@drawable/selector_white_to_gray">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="成员列表"
+                android:textColor="@color/black"
+                android:textSize="16dp"
+                android:layout_marginLeft="20dp"
+                android:layout_centerVertical="true"
+                />
+            <ImageView
+                android:layout_width="15dp"
+                android:layout_height="15dp"
                 android:layout_alignParentRight="true"
                 android:src="@drawable/img_right"
                 android:layout_centerVertical="true"
@@ -97,7 +172,7 @@
         <RelativeLayout
             android:id="@+id/teamSort"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="40dp"
             android:clickable="true"
             android:background="@drawable/selector_white_to_gray">
             <TextView
@@ -105,13 +180,13 @@
                 android:layout_height="wrap_content"
                 android:text="天梯榜"
                 android:textColor="@color/black"
-                android:textSize="18dp"
+                android:textSize="16dp"
                 android:layout_marginLeft="20dp"
                 android:layout_centerVertical="true"
                 />
             <ImageView
-                android:layout_width="25dp"
-                android:layout_height="25dp"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
                 android:layout_alignParentRight="true"
                 android:src="@drawable/img_right"
                 android:layout_centerVertical="true"
@@ -121,7 +196,7 @@
         <RelativeLayout
             android:id="@+id/teamManage"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="40dp"
             android:clickable="true"
             android:background="@drawable/selector_white_to_gray"
             android:layout_marginTop="20dp">
@@ -130,13 +205,13 @@
                 android:layout_height="wrap_content"
                 android:text="跑团管理"
                 android:textColor="@color/black"
-                android:textSize="18dp"
+                android:textSize="16dp"
                 android:layout_marginLeft="20dp"
                 android:layout_centerVertical="true"
                 />
             <ImageView
-                android:layout_width="25dp"
-                android:layout_height="25dp"
+                android:layout_width="15dp"
+                android:layout_height="15dp"
                 android:layout_alignParentRight="true"
                 android:src="@drawable/img_right"
                 android:layout_centerVertical="true"
@@ -159,7 +234,7 @@
         android:layout_marginBottom="20dp"/>
     <Button
         android:id="@+id/delete"
-        android:layout_width="match_parent"
+        android:layout_width="370dp"
         android:layout_height="45dp"
         android:text="退出跑团"
         android:textColor="@color/red"

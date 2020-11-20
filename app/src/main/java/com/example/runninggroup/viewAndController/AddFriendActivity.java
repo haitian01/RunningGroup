@@ -72,7 +72,7 @@ public class AddFriendActivity extends AppCompatActivity implements UserControll
     }
 
     @Override
-    public void getHeadImg(Drawable drawable) {
+    public void getHeadImgBack(Drawable drawable) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {

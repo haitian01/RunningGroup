@@ -29,6 +29,16 @@ public class FriendApplicationController {
             }
         }).start();
     }
+    //删除好友申请
+    public void deleteFriendApplication (FriendApplication friendApplication) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                boolean res = FriendApplicationDao.deleteFriendApplication(friendApplication);
+                mFriendApplicationControllerInterface.deleteFriendApplicationBack(res);
+            }
+        }).start();
+    }
 
     //查询所有的申请记录
     public void getApplication () {
@@ -64,6 +74,7 @@ public class FriendApplicationController {
         //查询所有申请记录
         default void getApplicationBack(List<FriendApplication> friendApplicationList) {}
         default void agreeToRefuseBack (boolean res) {}
+        default void deleteFriendApplicationBack (boolean res) {};
 
     }
 }

@@ -8,15 +8,18 @@
         android:layout_width="match_parent"
         android:layout_height="250dp">
         <ImageView
-            android:id="@+id/backImg"
+            android:id="@+id/userBackImg"
             android:src="@drawable/backimg"
             android:scaleType="centerCrop"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:clickable="true"
+            />
         <ImageView
             android:id="@+id/back_img"
             android:layout_width="35dp"
             android:layout_height="35dp"
+            android:clickable="true"
             android:src="@drawable/back"
             android:layout_marginTop="30dp"
             android:layout_marginLeft="5dp"/>

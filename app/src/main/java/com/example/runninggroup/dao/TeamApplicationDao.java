@@ -27,4 +27,9 @@ public class TeamApplicationDao {
         String json = JsonPostRequest.postRequest(ConstantUtil.URL + ConstantUtil.GET_TEAM_APPLICATION, JSON.toJSONString(teamApplication));
         return JSONArray.parseArray(json, TeamApplication.class);
     }
+    //删除申请
+    public static boolean deleteTeamApplication (TeamApplication teamApplication) {
+        String json = JsonPostRequest.postRequest(ConstantUtil.URL + ConstantUtil.DELETE_TEAM_APPLICATION, JSON.toJSONString(teamApplication));
+        return "succeed".equals(json) ? true : false;
+    }
 }

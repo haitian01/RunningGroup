@@ -12,11 +12,11 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 @ToString
 public class FriendApplication implements Serializable {
-    private int id;
+    private Integer id;
     private User user;
     private User from;
     private User to;
-    private int state;
+    private Integer state;
     private String applicationMsg;
     private Timestamp createTime;
     private Timestamp updateTime;

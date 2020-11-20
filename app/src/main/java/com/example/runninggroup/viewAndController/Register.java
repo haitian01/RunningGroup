@@ -1,6 +1,7 @@
 package com.example.runninggroup.viewAndController;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Looper;
 import android.text.method.PasswordTransformationMethod;
@@ -172,7 +173,16 @@ public class Register extends AppCompatActivity implements View.OnClickListener,
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                if (res) Toast.makeText(Register.this, "注册成功,账号为：" + registerNum, Toast.LENGTH_LONG).show();
+                if (res) {
+                    Toast.makeText(Register.this, "注册成功,账号为：" + registerNum, Toast.LENGTH_LONG).show();
+                    SharedPreferences sp = getSharedPreferences("login", MODE_PRIVATE);
+                    SharedPreferences.Editor edit = sp.edit();
+                    edit.putString("registerNum", registerNum);
+                    edit.putString("password", mEditText2.getText().toString());
+                    edit.commit();
+                    Intent intent = new Intent(Register.this, Login.class);
+                    startActivity(intent);
+                }
                 else Toast.makeText(Register.this, registerNum, Toast.LENGTH_SHORT).show();
             }
         });

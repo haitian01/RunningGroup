@@ -4,8 +4,10 @@ import android.graphics.drawable.Drawable;
 
 import com.example.runninggroup.cache.Cache;
 import com.example.runninggroup.dao.FileDao;
+import com.example.runninggroup.util.ImgNameUtil;
 
 import java.io.File;
+import java.util.List;
 
 public class FileController {
     private FileControllerInterface mFileControllerInterface;
@@ -24,6 +26,22 @@ public class FileController {
             }
         }).start();
     }
+
+    //上传多张
+    public void uploadMore (List<String> paths, Integer id) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                boolean res = true;
+                for (int i = 0; i < paths.size(); i++) {
+                   boolean upload = FileDao.upload(new File(paths.get(i)), ImgNameUtil.getCircleImgName(id, i));
+                   if (! upload) res = false;
+                }
+                mFileControllerInterface.uploadMoreBack(res);
+            }
+        }).start();
+
+    }
     //获取图片
     public void getImg (String imgName) {
         new Thread(new Runnable() {
@@ -39,6 +57,7 @@ public class FileController {
 
     public interface FileControllerInterface {
        default void uploadBack(boolean res){};
+       default void uploadMoreBack(boolean res){};
        default void getImgBack(Drawable drawable){};
     }
 }

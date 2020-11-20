@@ -75,7 +75,7 @@ public class AddTeamActivity extends AppCompatActivity implements View.OnClickLi
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Toast.makeText(AddTeamActivity.this, res ? "success" : "error", Toast.LENGTH_SHORT).show();
+                Toast.makeText(AddTeamActivity.this, res ? "success" : "网络故障，或者跑团已经不存在！", Toast.LENGTH_SHORT).show();
                 if (res) {
                     Intent intent = new Intent(AddTeamActivity.this, TeamIntroduction.class);
                     startActivity(intent);

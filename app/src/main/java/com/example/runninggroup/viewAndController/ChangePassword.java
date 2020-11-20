@@ -3,6 +3,7 @@ package com.example.runninggroup.viewAndController;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -12,6 +13,7 @@ import android.widget.Toast;
 import com.example.runninggroup.R;
 import com.example.runninggroup.cache.Cache;
 import com.example.runninggroup.controller.UserController;
+import com.example.runninggroup.util.ConstantUtil;
 
 
 public class ChangePassword extends AppCompatActivity implements View.OnClickListener, UserController.UserControllerInterface {
@@ -96,6 +98,7 @@ public class ChangePassword extends AppCompatActivity implements View.OnClickLis
                 if (res) {
                     Toast.makeText(ChangePassword.this, "修改成功,请重新登录", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(ChangePassword.this, Login.class);
+                    intent.putExtra("fromActivity", ConstantUtil.CHANGE_PASSWORD);
                     startActivity(intent);
                 }
                 else Toast.makeText(ChangePassword.this, "修改失败", Toast.LENGTH_SHORT).show();

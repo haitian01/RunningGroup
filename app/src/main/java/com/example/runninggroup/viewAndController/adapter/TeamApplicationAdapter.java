@@ -10,6 +10,7 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.runninggroup.R;
 import com.example.runninggroup.cache.Cache;
@@ -23,17 +24,17 @@ import com.example.runninggroup.util.ImgNameUtil;
 
 import java.util.List;
 
-public class TeamApplicationAdapter extends BaseAdapter {
+public class TeamApplicationAdapter extends BaseAdapter implements TeamApplicationController.TeamApplicationControllerInterface {
     LayoutInflater mInflater;
     List<TeamApplication> mList;
     private Activity mActivity;
     private ViewHolder viewHolder1;
     private TeamApplicationController mTeamApplicationController;
-    public TeamApplicationAdapter(LayoutInflater inflater, List<TeamApplication> list, Activity activity, TeamApplicationController.TeamApplicationControllerInterface teamApplicationControllerInterface) {
+    public TeamApplicationAdapter(LayoutInflater inflater, List<TeamApplication> list, Activity activity) {
         mInflater = inflater;
         mList = list;
         mActivity = activity;
-        mTeamApplicationController = new TeamApplicationController(teamApplicationControllerInterface);
+        mTeamApplicationController = new TeamApplicationController(this);
     }
     @Override
     public int getCount() {
@@ -69,14 +70,14 @@ public class TeamApplicationAdapter extends BaseAdapter {
         viewHolder1.btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mTeamApplicationController.updateTeamApplication(id,2, user.getId());
+                mTeamApplicationController.updateTeamApplication(id,2, user.getId(), viewHolder1);
 
             }
         });
         viewHolder1.btn1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mTeamApplicationController.updateTeamApplication(id,3, user.getId());
+                mTeamApplicationController.updateTeamApplication(id,3, user.getId(), viewHolder1);
 
             }
         });
@@ -115,7 +116,7 @@ public class TeamApplicationAdapter extends BaseAdapter {
 
         return convertView;
     }
-    class ViewHolder {
+    public class ViewHolder {
         ImageView mImageView;
         TextView usernameText, msgText, stateText;
         Button btn,btn1;
@@ -138,6 +139,18 @@ public class TeamApplicationAdapter extends BaseAdapter {
         }).start();
     }
 
-
-
+    @Override
+    public void updateTeamApplicationBack(boolean res, int state, ViewHolder viewHolder) {
+        mActivity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(mActivity,  res ? "success" : "error", Toast.LENGTH_SHORT).show();
+                if (res) {
+                    viewHolder.btn.setVisibility(View.INVISIBLE);
+                    viewHolder.btn1.setVisibility(View.INVISIBLE);
+                    viewHolder.stateText.setText(state == 2 ? "已同意" : "已拒绝");
+                }
+            }
+        });
+    }
 }

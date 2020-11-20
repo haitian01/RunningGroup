@@ -4,11 +4,15 @@ public class ConstantUtil {
     private ConstantUtil () {}
     //app后端版本（对应不同的后端）
     public final static int VERSION = 1;
-    public final static String URL = "http://192.168.43.222:8080";
+//    public final static String URL = "http://192.168.43.222:8080";
+    public final static String URL = "http://10.28.184.84:8080";
     //用户表controller
     public final static String ADD_USER = "/user/addUser";
     public final static String UPDATE_USER = "/user/updateUser";
     public final static String GET_USER = "/user/getUser";
+    public final static String ADMINISTRATORS = "/user/administrators";
+        //退出跑团
+    public final static String SIGN_OUT_TEAM = "/user/signOutTeam";
 
     //活动表controller
     public final static String ADD_ACT = "/act/addAct";
@@ -24,6 +28,7 @@ public class ConstantUtil {
     public final static String ADD_FRIENDR_APPLICATION = "/friendApplication/addFriendApplication";
     public final static String UPDATE_FRIENDR_APPLICATION = "/friendApplication/updateFriendApplication";
     public final static String GET_FRIENDR_APPLICATION = "/friendApplication/getFriendApplication";
+    public final static String DELETE_FRIENDR_APPLICATION = "/friendApplication/deleteFriendApplication";
     public final static String START_FRIENDR_APPLICATION = "/friendApplication/startFriendApplication";
     public final static String AGREE_TO_REFUSE = "/friendApplication/agreeToRefuse";
 
@@ -31,11 +36,15 @@ public class ConstantUtil {
     public final static String ADD_TEAM_APPLICATION = "/teamApplication/addTeamApplication";
     public final static String GET_TEAM_APPLICATION = "/teamApplication/getTeamApplication";
     public final static String UPDATE_TEAM_APPLICATION = "/teamApplication/updateTeamApplication";
+    public final static String DELETE_TEAM_APPLICATION = "/teamApplication/deleteTeamApplication";
 
     //朋友圈controller
-    public final static String ADD_FRIENDR_CIRCLE = "/friendCircle/addFriendCircle";
-    public final static String UPDATE_FRIENDR_CIRCLE = "/friendCircle/updateFriendCircle";
-    public final static String GET_FRIENDR_CIRCLE = "/friendCircle/getFriendCircle";
+    public final static String ADD_FRIEND_CIRCLE = "/friendCircle/addFriendCircle";
+    public final static String UPDATE_FRIEND_CIRCLE = "/friendCircle/updateFriendCircle";
+    public final static String GET_FRIEND_CIRCLE = "/friendCircle/getFriendCircle";
+    public final static String GET_FRIEND_CIRCLE_First = "/friendCircle/getFriendCircleFirst";
+    public final static String GIVE_ZAN = "/friendCircle/giveZan";
+
 
     //分数表controller
     public final static String ADD_SCORE = "/score/addScore";
@@ -47,11 +56,15 @@ public class ConstantUtil {
     public final static String BUILD_TEAM = "/team/buildTeam";
     public final static String UPDATE_TEAM = "/team/updateTeam";
     public final static String GET_TEAM = "/team/getTeam";
+        //解散跑团
+    public final static String DELETE_TEAM = "/team/deleteTeam";
+    public final static String REMOVE_USER_FROM_TEAM = "/team/removeUserFromTeam";
 
     //跑团任务表 controller
     public final static String ADD_TEAM_TASK= "/teamTask/addTeamTask";
     public final static String UPDATE_TEAM_TASK = "/teamTask/updateTeamTask";
     public final static String GET_TEAM_TASK = "/teamTask/getTeamTask";
+    public final static String DELETE_TEAM_TASK = "/teamTask/deleteTeamTask";
 
     //文件上传
     public final static String UPLOAD = "/file/upload";
@@ -61,6 +74,14 @@ public class ConstantUtil {
     //界面常量
     public static final int MAIN_INTERFACE = 0;
     public static final int PERSON_SEARCH = 1;
+    public static final int MEMBER_SORT = 2;
+    public static final int CHANGE_PASSWORD = 3;
+
+    //viewPageNum
+    public static final int FRAGMENT_FRIEND_CIRCLE = 3;
+    public static final int FRAGMENT_DATA = 0;
+    public static final int FRAGMENT_CARD = 1;
+    public static final int FRAGMENT_FRIENDS = 2;
 
 
 

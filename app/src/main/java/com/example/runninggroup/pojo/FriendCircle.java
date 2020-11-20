@@ -12,10 +12,13 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 @ToString
 public class FriendCircle implements Serializable {
-    private int id;
+    private Integer id;
     private User user;
     private String circleMsg;
-    private String circleImg;
+    private Integer commentNum;
+    private Integer zanNum;
+    private String zanGroup;
+    private Integer imgNum;
     private Timestamp createTime;
     private Timestamp updateTime;
 }

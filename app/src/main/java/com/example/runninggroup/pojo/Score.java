@@ -13,7 +13,7 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 @ToString
 public class Score implements Serializable {
-    private int id;
+    private Integer id;
     private User user;
     private double scoreNum;
     private String ScoreType;

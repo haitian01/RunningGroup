@@ -53,11 +53,11 @@
             <!--/>-->
         <ImageView
             android:id="@+id/rightSightSetting"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:src="@drawable/img_add"
             android:layout_alignParentRight="true"
-            android:layout_marginTop="5dp"
+            android:layout_centerVertical="true"
             android:layout_marginRight="5dp"
             />
     </RelativeLayout>
@@ -65,23 +65,14 @@
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_below="@id/maininterface_rela"
+        android:layout_above="@id/tabs_rg"
         tools:ignore="MissingConstraints">
 
     </androidx.viewpager.widget.ViewPager>
 
-    <LinearLayout
-        android:id="@+id/ll_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/black"
-        android:alpha="0.5"
-        android:visibility="gone"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:orientation="horizontal">
-    </LinearLayout>
+
 
 
     <!--<com.google.android.material.tabs.TabLayout-->
@@ -122,11 +113,21 @@
             android:text="好友" />
 
         <RadioButton
-            android:id="@+id/group_tab"
+            android:id="@+id/circle_tab"
             style="@style/Custom.TabRadioButton"
             android:textColor="@drawable/radio_text_selector"
-            android:text="跑团" />
+            android:text="动态" />
     </RadioGroup>
+    <LinearLayout
+        android:id="@+id/ll_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alpha="0.5"
+        android:background="@color/black"
+        android:orientation="horizontal"
+        android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"></LinearLayout>
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -191,23 +192,32 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/rightSetting"
-        android:layout_width="180dp"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_marginTop="50dp"
-        android:background="@color/white"
+        android:layout_below="@id/maininterface_rela"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@color/greyWhite"
         android:visibility="invisible"
         tools:ignore="MissingConstraints">
 
-        <ListView
-            android:id="@+id/rightList"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:entries="@array/addicon">
+       <androidx.cardview.widget.CardView
+           android:layout_width="match_parent"
+           android:layout_height="match_parent"
+           app:cardUseCompatPadding="true"
+           >
+           <ListView
+               android:id="@+id/rightList"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:entries="@array/addicon">
 
-        </ListView>
+           </ListView>
+       </androidx.cardview.widget.CardView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

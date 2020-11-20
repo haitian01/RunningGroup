@@ -104,10 +104,6 @@ public class Manage extends AppCompatActivity implements View.OnClickListener , 
                switch (position){
                    case 0:
                        Intent intent = new Intent(Manage.this,WriteTask.class);
-                       intent.putExtra("username",username);
-                       intent.putExtra("group",group);
-                       intent.putExtra("num",num);
-                       intent.putExtra("type","task");
                        startActivity(intent);
                        break;
                    case 1:
@@ -120,13 +116,10 @@ public class Manage extends AppCompatActivity implements View.OnClickListener , 
                        break;
                    case 2:
                         Intent intent2 = new Intent(Manage.this,MemberManage.class);
-                        intent2.putExtra("username",username);
-                        intent2.putExtra("group",group);
-                        intent2.putExtra("num",num);
                         startActivity(intent2);
                        break;
                    case 3:
-                       if(username.equals(leader)){
+                       if(Cache.user.getId() == Cache.user.getTeam().getUser().getId()){
                            AlertDialog.Builder builder = new AlertDialog.Builder(Manage.this);
                            builder.setTitle("解散跑团")
                                    .setMessage("你确定解散跑团？")
@@ -134,24 +127,8 @@ public class Manage extends AppCompatActivity implements View.OnClickListener , 
                                        @Override
                                        public void onClick(DialogInterface dialog, int which) {
                                            //解散跑团
-                                           new Thread(new Runnable() {
-                                               @Override
-                                               public void run() {
-                                                   if(DaoGroup.dismissGroup(group)){
-                                                       makeToast("解散成功");
-                                                       Intent intent = new Intent(Manage.this,MainInterface.class);
-                                                       intent.putExtra("username",username);
-                                                       intent.putExtra("id",3);
-                                                       startActivity(intent);
-                                                   }else {makeToast("解散失败");}
-                                               }
-                                           }).start();
-                                       }
-                                   })
-                                   .setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                                       @Override
-                                       public void onClick(DialogInterface dialog, int which) {
-                                           //
+                                           mTeamController.deleteTeam();
+
                                        }
                                    }).create();
                            builder.show();
@@ -253,6 +230,20 @@ public class Manage extends AppCompatActivity implements View.OnClickListener , 
             @Override
             public void run() {
                 Toast.makeText(Manage.this, res ? "success" : "error", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    @Override
+    public void deleteTeamBack(boolean res) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(Manage.this, res ? "success" : "fail", Toast.LENGTH_SHORT).show();
+                if (res) {
+                    Intent intent = new Intent(Manage.this, SearchActivity.class);
+                    startActivity(intent);
+                }
             }
         });
     }

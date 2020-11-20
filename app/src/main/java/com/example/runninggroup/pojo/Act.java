@@ -12,11 +12,11 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 @ToString
 public class Act implements Serializable {
-    private int id;
+    private Integer id;
     private User user;
     private Timestamp beginTime;
     private Timestamp endTime;
-    private int runLen;
+    private Integer runLen;
     private String runType;
     private String actImg;
     private String beginPlace;

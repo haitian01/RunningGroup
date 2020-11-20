@@ -7,6 +7,7 @@ import android.widget.ImageView;
 import com.example.runninggroup.cache.Cache;
 import com.example.runninggroup.dao.FileDao;
 import com.example.runninggroup.dao.UserDao;
+import com.example.runninggroup.pojo.Team;
 import com.example.runninggroup.pojo.User;
 import com.example.runninggroup.util.ImgNameUtil;
 import com.example.runninggroup.util.StringUtil;
@@ -46,6 +47,10 @@ public class UserController {
                 User user = new User();
                 user.setUsername(msg);
                 List<User> users = UserDao.getUser(user);
+
+                User user1 = new User();
+                user1.setRegisterNum(msg);
+                users.addAll(UserDao.getUser(user1));
                 if (users == null) mUserControllerInterface.selectUserBack(null);
                 else {
                     mUserControllerInterface.selectUserBack(users);
@@ -58,7 +63,11 @@ public class UserController {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                List<User> users = UserDao.getUser(user);
+                List<User> users = null;
+                for (int i = 0; i < 10; i++) {
+                    if (users == null) users = UserDao.getUser(user);
+                    else break;
+                }
                 mUserControllerInterface.selectUserByUserBack(users);
 
             }
@@ -115,7 +124,7 @@ public class UserController {
             @Override
             public void run() {
                 Drawable drawable = FileDao.getImg(imgName);
-                mUserControllerInterface.getHeadImg(drawable);
+                mUserControllerInterface.getHeadImgBack(drawable);
             }
         }).start();
     }
@@ -153,7 +162,7 @@ public class UserController {
             }
         }).start();
     }
-    //修改昵称
+    //修改性别
     public void changeSex () {
         new Thread(new Runnable() {
             @Override
@@ -185,6 +194,31 @@ public class UserController {
             }
         }).start();
     }
+    //退出跑团
+    public void signOutTeam () {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                boolean res = UserDao.signOutTeam(Cache.user);
+                if (res) Cache.user.setTeam(null);
+                mUserControllerInterface.signOutTeamBack(res);
+
+            }
+        }).start();
+    }
+
+    //修改用户权限
+    public void administrators (User user) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if (user.getTeamLevel() == 2) user.setTeamLevel(1);
+                else if (user.getTeamLevel() == 1) user.setTeamLevel(2);
+                boolean res = UserDao.administrators(user);
+                mUserControllerInterface.administratorsBack(res);
+            }
+        }).start();
+    }
 
 
 
@@ -199,7 +233,7 @@ public class UserController {
         //更换头像
         default void changeHeadImgBack (boolean res){}
         //获得头像
-        default void getHeadImg (Drawable drawable) {}
+        default void getHeadImgBack (Drawable drawable) {}
         //修改昵称
         default void changeNameBack (boolean res) {}
         //修改性别
@@ -207,5 +241,9 @@ public class UserController {
         //修改密码
         default void changePwdBack(boolean res) {};
         default void getImgByRegisterNumBack (Drawable drawable){}
+        //退出跑团
+        default void signOutTeamBack(boolean res){};
+        //修改用户权限
+        default void administratorsBack(boolean res){};
     }
 }

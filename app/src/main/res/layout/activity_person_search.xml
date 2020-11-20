@@ -49,11 +49,12 @@
         android:dividerHeight="0.01dp"
         ></ListView>
     <ListView
-        android:id="@+id/rea_list"
+        android:id="@+id/res_list"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/search_rela"
-        android:visibility="invisible">
+        android:layout_height="match_parent"
+        android:layout_below="@id/search_list"
+        android:divider="@null"
+       >
 
     </ListView>
 

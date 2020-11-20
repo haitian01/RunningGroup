@@ -6,6 +6,7 @@ import com.example.runninggroup.dao.TeamDao;
 import com.example.runninggroup.pojo.Team;
 import com.example.runninggroup.pojo.TeamApplication;
 import com.example.runninggroup.pojo.User;
+import com.example.runninggroup.viewAndController.adapter.TeamApplicationAdapter;
 
 import java.util.List;
 
@@ -48,7 +49,7 @@ public class TeamApplicationController {
 
     }
     //处理跑团申请
-    public void updateTeamApplication (int id, int state, int user_id) {
+    public void updateTeamApplication (int id, int state, int user_id, TeamApplicationAdapter.ViewHolder viewHolder) {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -62,10 +63,21 @@ public class TeamApplicationController {
                 teamApplication.setUser(user);
                 teamApplication.setTeam(team);
                 boolean res = TeamApplicationDao.updateTeamApplication(teamApplication);
-                mTeamApplicationControllerInterface.updateTeamApplicationBack(res);
+                mTeamApplicationControllerInterface.updateTeamApplicationBack(res, state, viewHolder);
             }
         }).start();
 
+    }
+
+    //删除跑团申请
+    public void deleteTeamApplication (TeamApplication teamApplication) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                boolean res = TeamApplicationDao.deleteTeamApplication(teamApplication);
+                mTeamApplicationControllerInterface.deleteTeamApplicationBack(res);
+            }
+        }).start();
     }
 
 
@@ -78,6 +90,7 @@ public class TeamApplicationController {
     public interface TeamApplicationControllerInterface {
       default void addTeamApplicationBack (boolean res){};
       default void getTeamApplicationBack (List<TeamApplication> teamApplications){};
-      default void updateTeamApplicationBack (boolean res){};
+      default void updateTeamApplicationBack (boolean res, int state, TeamApplicationAdapter.ViewHolder viewHolder){};
+      default void deleteTeamApplicationBack (boolean res){};
     }
 }

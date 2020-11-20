@@ -9,6 +9,7 @@ import android.provider.MediaStore;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -31,8 +32,10 @@ public class PersonalSetting extends AppCompatActivity implements UserController
     private final int WRITE_EXTERNAL_STORAGE_REQUEST_CODE = 1;
     private final int REQUESTCODE_CUTTING = 3;
     ListView mListView;
+    ImageView backImg;
     File file;
     Uri mImageUri;
+    int viewPagerNum;
     UserController mUserController = new UserController(this);
     final int CHANGE_HEAD = 0;
     final int CHANGE_NAME = 1;
@@ -45,6 +48,14 @@ public class PersonalSetting extends AppCompatActivity implements UserController
         initView();
         initEvent();
     }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        viewPagerNum = intent.getIntExtra("viewPagerNum", 0);
+        System.out.println("<--------------" + viewPagerNum);
+    }
+
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         super.onActivityResult(requestCode, resultCode, data);
@@ -151,10 +162,18 @@ public class PersonalSetting extends AppCompatActivity implements UserController
         startActivityForResult(intent, REQUESTCODE_CUTTING);
     }
     private void initView() {
-        username = getIntent().getStringExtra("username");
         mListView = findViewById(R.id.settingList);
+        backImg = findViewById(R.id.back);
     }
     private void initEvent() {
+        backImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(PersonalSetting.this, MainInterface.class);
+                intent.putExtra("viewPagerNum", viewPagerNum);
+                startActivity(intent);
+            }
+        });
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

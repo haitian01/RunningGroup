@@ -13,17 +13,17 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 @ToString
 public class User implements Serializable {
-    private int id;
+    private Integer id;
     private Team team;
-    private int teamLevel;
+    private Integer teamLevel;
     private String registerNum;
     private String username;
     private String password;
-    private int sex;
+    private Integer sex;
     private String headImg;
     private String mail;
-    private long length;
-    private long score;
+    private Long length;
+    private Long score;
     private Timestamp createTime;
     private Timestamp updateTime;
 

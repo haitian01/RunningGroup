@@ -16,17 +16,21 @@ import androidx.fragment.app.Fragment;
 import com.example.runninggroup.R;
 import com.example.runninggroup.cache.Cache;
 import com.example.runninggroup.controller.TeamController;
+import com.example.runninggroup.controller.UserController;
 import com.example.runninggroup.pojo.Team;
+import com.example.runninggroup.pojo.User;
+import com.example.runninggroup.viewAndController.TeamIntroduction;
 import com.example.runninggroup.viewAndController.adapter.TeamAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class FragmentTeamSearch extends Fragment implements TeamController.TeamControllerInterface {
+public class FragmentTeamSearch extends Fragment implements TeamController.TeamControllerInterface, UserController.UserControllerInterface {
     View view;
     ListView mListView;
     List<Team> teamList = new ArrayList<>();
     TeamController mTeamController = new TeamController(this);
+    private UserController mUserController = new UserController(this);
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +47,7 @@ public class FragmentTeamSearch extends Fragment implements TeamController.TeamC
     }
 
     private void initEvent() {
+
 
     }
 
@@ -68,4 +73,6 @@ public class FragmentTeamSearch extends Fragment implements TeamController.TeamC
             }
         });
     }
+
+
 }

@@ -28,6 +28,21 @@ public class TeamController {
             }
         }).start();
     }
+    public void getTeamByMsg (String msg) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Team team = new Team();
+                team.setRegisterNum(msg);
+                List<Team> teams = TeamDao.getTeam(team);
+
+                Team team1 = new Team();
+                team1.setTeamName(msg);
+                teams.addAll(TeamDao.getTeam(team1));
+                mTeamControllerInterface.getTeamByMagBack(teams);
+            }
+        }).start();
+    }
     public void addTeam (Team team) {
        new Thread(new Runnable() {
            @Override
@@ -58,6 +73,29 @@ public class TeamController {
         }).start();
     }
 
+    //解散跑团
+    public void deleteTeam () {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                boolean res = TeamDao.deleteTeam(Cache.user.getTeam());
+                if (res) Cache.user.setTeam(null);
+                mTeamControllerInterface.deleteTeamBack(res);
+            }
+        }).start();
+    }
+
+    //踢出跑团成员
+    public void removeUserFromTeam (int userId, int teamId) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                boolean res = TeamDao.removeUserFromTeam(userId, teamId);
+                mTeamControllerInterface.removeUserFromTeamBack(res);
+            }
+        }).start();
+    }
+
 
 
 
@@ -69,5 +107,8 @@ public class TeamController {
        default void getTeamBack (List<Team> teams){}
         default void buildTeamBack (boolean res){}
         default void updateTeamSloganBack (boolean res){};
+       default void deleteTeamBack(boolean res){};
+       default void getTeamByMagBack(List<Team> teams){};
+       default void removeUserFromTeamBack(boolean res){};
     }
 }

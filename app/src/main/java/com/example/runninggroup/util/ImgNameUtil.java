@@ -5,13 +5,17 @@ public class ImgNameUtil {
     public static String getUserHeadImgName(int id){
         return "user_head_"+id;
     }
+    //获取用户头像的imgName
+    public static String getUserBackImgName(int id){
+        return "user_back_"+id;
+    }
     //获取跑团的头像
     public static String getGroupHeadImgName(int id){
         return "team_head_" + id;
     }
     //获取好友某条动态的图片
-    public static String getDynamicImgName(String username,long dynamic_time){
-        return "dynamic_"+username+"_"+dynamic_time;
+    public static String getCircleImgName(int id, int position){
+        return "circle_" + id + "_" + position;
     }
     //获取跑团某条任务的图片
     public static String getTaskImgName(String admin,long task_time){

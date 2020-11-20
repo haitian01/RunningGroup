@@ -12,7 +12,7 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 @ToString
 public class TeamTask implements Serializable {
-    private int id;
+    private Integer id;
     private Team team;
     private User user;
     private String taskMsg;

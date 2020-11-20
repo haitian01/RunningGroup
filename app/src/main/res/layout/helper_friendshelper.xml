@@ -4,7 +4,7 @@
     android:orientation="vertical">
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="70dp"
        >
         <com.example.runninggroup.view.MyImageView
             android:id="@+id/img"
@@ -12,7 +12,7 @@
             android:layout_height="50dp"
             android:layout_marginLeft="10dp"
             android:src="@mipmap/friendshelper"
-            android:layout_marginTop="5dp"
+            android:layout_centerVertical="true"
             android:layout_marginBottom="5dp"/>
         <TextView
             android:id="@+id/name"
@@ -21,7 +21,7 @@
             android:text="姓名"
             android:textSize="15dp"
             android:textColor="#000"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="15dp"
             android:layout_toRightOf="@+id/img"
             android:layout_marginLeft="10dp"/>
         <TextView
@@ -39,8 +39,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/name"
-            android:layout_toRightOf="@id/group"
-            android:layout_marginLeft="50dp"
+            android:layout_alignLeft="@id/group"
+            android:layout_marginLeft="100dp"
             android:text="20"
             />
         <TextView
@@ -54,9 +54,9 @@
             android:id="@+id/score"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/length"
+            android:layout_alignLeft="@id/group"
             android:layout_below="@id/name"
-            android:layout_marginLeft="50dp"
+            android:layout_marginLeft="200dp"
             android:text="580"
             />
         <TextView
@@ -67,11 +67,7 @@
             android:text="分"
             />
     </RelativeLayout>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="0.1dp"
-        android:background="#000"
-        />
+
 
 
 </LinearLayout>

@@ -2,10 +2,36 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
+    <RelativeLayout
+        android:id="@+id/maininterface_rela"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/top"
+        >
+
+        <TextView
+            android:id="@+id/username_out"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="设置"
+            android:textSize="17dp"
+            android:layout_centerInParent="true"
+            android:textColor="@color/white"
+            />
+        <ImageView
+            android:id="@+id/back"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/back"
+            android:layout_centerVertical="true"
+            />
+
+    </RelativeLayout>
     <ListView
         android:id="@+id/settingList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:entries="@array/personalsetting"></ListView>
 
 </LinearLayout>
