@@ -23,7 +23,7 @@ public class FriendCircleDao {
         return JSONArray.parseArray(json, FriendCircle.class);
     }
     //发表动态
-    public static String  addFriendCircle (FriendCircle friendCircle) {
+    public static String addFriendCircle (FriendCircle friendCircle) {
         String json = JsonPostRequest.postRequest(ConstantUtil.URL + ConstantUtil.ADD_FRIEND_CIRCLE, JSON.toJSONString(friendCircle));
         return json;
     }
@@ -31,6 +31,12 @@ public class FriendCircleDao {
     //点赞
     public static boolean updateZan (int id, int userId) {
         String json = PostRequest.postRequest(ConstantUtil.URL + ConstantUtil.GIVE_ZAN, "userId=" + userId + "&id=" + id);
+        return "succeed".equals(json);
+    }
+
+    //删除动态
+    public static boolean deleteFriendCircle (FriendCircle friendCircle) {
+        String json = JsonPostRequest.postRequest(ConstantUtil.URL + ConstantUtil.DELETE_FRIEND_CIRCLE, JSON.toJSONString(friendCircle));
         return "succeed".equals(json);
     }
 }

@@ -16,7 +16,7 @@
 
             android:background="@drawable/btn_style11"
             android:paddingLeft="30dp"
-            android:hint="邮箱/群"
+            android:hint="账号/名称"
             />
         <ImageView
             android:id="@+id/delete"

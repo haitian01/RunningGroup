@@ -8,8 +8,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.runninggroup.R;
-import com.example.runninggroup.pojo.Team;
-import com.example.runninggroup.pojo.User;
 
 public class SearchAdapter extends BaseAdapter {
     LayoutInflater mInflater;
@@ -43,7 +41,7 @@ public class SearchAdapter extends BaseAdapter {
         switch (position) {
             case 0:
 
-                convertView = mInflater.inflate(R.layout.helper_friendmessage, null);
+                convertView = mInflater.inflate(R.layout.helper_friend_message, null);
                 viewHolder1 = new ViewHolder();
                 viewHolder1.mImageView = convertView.findViewById(R.id.img);
                 viewHolder1.mTextView = convertView.findViewById(R.id.msg);
@@ -52,7 +50,7 @@ public class SearchAdapter extends BaseAdapter {
                 viewHolder1.mImageView.setImageResource(R.drawable.img_group);
                 break;
             case 1:
-                convertView = mInflater.inflate(R.layout.helper_friendmessage, null);
+                convertView = mInflater.inflate(R.layout.helper_friend_message, null);
                 viewHolder1 = new ViewHolder();
                 viewHolder1.mImageView = convertView.findViewById(R.id.img);
                 viewHolder1.mTextView = convertView.findViewById(R.id.msg);

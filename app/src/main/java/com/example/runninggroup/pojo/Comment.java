@@ -11,10 +11,10 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @ToString
 public class Comment {
-    private int id;
-    private int friendCircleId;
-    private int fromId;
-    private int toId;
+    private Integer id;
+    private FriendCircle friendCircle;
+    private User from;
+    private User to;
     private String message;
     private Timestamp createTime;
     private Timestamp updateTime;

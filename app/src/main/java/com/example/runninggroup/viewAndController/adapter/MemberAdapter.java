@@ -14,6 +14,9 @@ import com.example.runninggroup.pojo.User;
 import com.example.runninggroup.request.ImgGet;
 import com.example.runninggroup.util.ImgNameUtil;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.zip.Inflater;
 
@@ -22,10 +25,15 @@ public class MemberAdapter extends BaseAdapter {
     Activity mActivity;
     String mSorted;
     public MemberAdapter (List<User> list, Activity activity, String sorted) {
-            mList = list;
+
             mActivity = activity;
             mSorted = sorted;
+
+            mList = list;
+
+
     }
+
     @Override
     public int getCount() {
         return mList.size();
@@ -54,8 +62,8 @@ public class MemberAdapter extends BaseAdapter {
         viewHolder.username.setText(user.getUsername());
         int pos = position + 1;
         viewHolder.ranking.setText(pos + "");
-        if ("length".equals(mSorted)) viewHolder.sorted.setText(user.getLength() + "米");
-        else if ("score".equals(mSorted)) viewHolder.sorted.setText(user.getScore() + "分");
+        if ("里程".equals(mSorted)) viewHolder.sorted.setText(user.getLength() + "公里");
+        else if ("分数".equals(mSorted)) viewHolder.sorted.setText(user.getScore() + "分");
         setImg(viewHolder, user.getId());
         return convertView;
     }

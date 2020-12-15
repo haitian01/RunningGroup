@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+    <RelativeLayout
+        android:id="@+id/top"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/top"
+        >
+
+        <TextView
+            android:id="@+id/username_out"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="跑团公告"
+            android:textSize="17dp"
+            android:layout_centerInParent="true"
+            android:textColor="@color/white"
+            />
+        <ImageView
+            android:id="@+id/back"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/back"
+            android:layout_centerVertical="true"
+            />
+
+    </RelativeLayout>
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/refresh"
+        android:layout_below="@id/top"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/notice_recy"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white1"
+             >
+
+        </androidx.recyclerview.widget.RecyclerView>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+</RelativeLayout>

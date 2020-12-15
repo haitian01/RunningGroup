@@ -7,13 +7,9 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.recyclerview.widget.ListAdapter;
-
 import com.example.runninggroup.R;
 import com.example.runninggroup.pojo.Team;
 import com.example.runninggroup.pojo.User;
-
-import java.util.zip.Inflater;
 
 public class FriendMessageAdapter extends BaseAdapter {
     LayoutInflater mInflater;
@@ -24,7 +20,7 @@ public class FriendMessageAdapter extends BaseAdapter {
     }
     @Override
     public int getCount() {
-        return 4;
+        return 3;
     }
 
     @Override
@@ -47,16 +43,16 @@ public class FriendMessageAdapter extends BaseAdapter {
         switch (position) {
             case 0:
 
-                convertView = mInflater.inflate(R.layout.helper_friendmessage, null);
+                convertView = mInflater.inflate(R.layout.helper_friend_message, null);
                 viewHolder1 = new ViewHolder();
                 viewHolder1.mImageView = convertView.findViewById(R.id.img);
                 viewHolder1.mTextView = convertView.findViewById(R.id.msg);
                 convertView.setTag(viewHolder1);
                 String sex = mUser.getSex() == 1 ? "男" : "女";
-                viewHolder1.mTextView.setText(sex + " | " + mUser.getHeadImg());
+                viewHolder1.mTextView.setText(sex);
                 break;
             case 1:
-                convertView = mInflater.inflate(R.layout.helper_friendmessage, null);
+                convertView = mInflater.inflate(R.layout.helper_friend_message, null);
                 viewHolder1 = new ViewHolder();
                 viewHolder1.mImageView = convertView.findViewById(R.id.img);
                 viewHolder1.mTextView = convertView.findViewById(R.id.msg);
@@ -68,12 +64,12 @@ public class FriendMessageAdapter extends BaseAdapter {
                 break;
 
             case 2:
-                convertView = mInflater.inflate(R.layout.helper_friendmessage, null);
+                convertView = mInflater.inflate(R.layout.helper_friend_message, null);
                 viewHolder1 = new ViewHolder();
                 viewHolder1.mImageView = convertView.findViewById(R.id.img);
                 viewHolder1.mTextView = convertView.findViewById(R.id.msg);
                 convertView.setTag(viewHolder1);
-                viewHolder1.mTextView.setText("155240米 | 452分");
+                viewHolder1.mTextView.setText(mUser.getLength() + "km" + " | " + mUser.getScore() + "分");
 
                 break;
 

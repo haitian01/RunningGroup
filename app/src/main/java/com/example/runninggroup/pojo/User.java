@@ -20,10 +20,9 @@ public class User implements Serializable {
     private String username;
     private String password;
     private Integer sex;
-    private String headImg;
     private String mail;
-    private Long length;
-    private Long score;
+    private Double length;
+    private Double score;
     private Timestamp createTime;
     private Timestamp updateTime;
 

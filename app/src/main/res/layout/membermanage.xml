@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
     <RelativeLayout
@@ -10,7 +10,7 @@
         >
         <ImageView
             android:id="@+id/back"
-            android:layout_width="50dp"
+            android:layout_width="35dp"
             android:layout_height="wrap_content"
             android:src="@drawable/back"
             />
@@ -22,11 +22,17 @@
             android:textSize="18dp"
             android:textColor="@color/white"/>
     </RelativeLayout>
-    <ListView
-        android:id="@+id/memberListView"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/refresh"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:divider="@null"
-        ></ListView>
+        android:layout_below="@id/top">
+        <ListView
+            android:id="@+id/memberListView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:divider="@null"
+            ></ListView>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-</LinearLayout>
+</RelativeLayout>

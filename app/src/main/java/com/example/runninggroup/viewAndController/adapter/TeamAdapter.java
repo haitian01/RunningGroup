@@ -83,8 +83,14 @@ public class TeamAdapter extends BaseAdapter implements UserController.UserContr
         viewHolder.num.setText(team.getTeamSize() + "");
         viewHolder.slogan.setText(team.getTeamSlogan());
         viewHolder.campus.setText(team.getCampus() + " | " + team.getCollege());
-        if (Cache.user.getTeam() != null && Cache.user.getTeam().getId() == mList.get(position).getId()) viewHolder.add.setVisibility(View.INVISIBLE);
-        else viewHolder.add.setVisibility(View.VISIBLE);
+        if (Cache.user.getTeam() != null && Cache.user.getTeam().getId() == mList.get(position).getId()) {
+            viewHolder.add.setVisibility(View.INVISIBLE);
+            viewHolder.state.setVisibility(View.VISIBLE);
+        }
+        else {
+            viewHolder.add.setVisibility(View.VISIBLE);
+            viewHolder.state.setVisibility(View.INVISIBLE);
+        }
         convertView.setOnClickListener(new View.OnClickListener() {
             Team mTeam = team;
             @Override

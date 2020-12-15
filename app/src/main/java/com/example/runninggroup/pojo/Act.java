@@ -16,11 +16,10 @@ public class Act implements Serializable {
     private User user;
     private Timestamp beginTime;
     private Timestamp endTime;
-    private Integer runLen;
+    private Double runLen;
     private String runType;
-    private String actImg;
-    private String beginPlace;
-    private String endPlace;
+    private String place;
+    private Integer shared;
     private Timestamp createTime;
     private Timestamp updateTime;
 }

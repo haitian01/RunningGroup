@@ -1,5 +1,7 @@
 package com.example.runninggroup.controller;
 
+import android.content.res.Resources;
+
 import com.example.runninggroup.cache.Cache;
 import com.example.runninggroup.dao.FriendCircleDao;
 import com.example.runninggroup.pojo.FriendCircle;
@@ -62,10 +64,22 @@ public class FriendCircleController {
         }).start();
     }
 
+    //删除动态
+    public void deleteFriendCircle (FriendCircleAdapter.InnerHolder innerHolder) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                boolean res = FriendCircleDao.deleteFriendCircle(innerHolder.mFriendCircle);
+                mFriendCircleControllerInterface.deleteFriendCircleBack(res);
+            }
+        }).start();
+    }
+
     public interface FriendCircleControllerInterface {
         default void getFriendCircleFirstBack( List<FriendCircle> friendCircleList){};
         default void getFriendCircleBack( List<FriendCircle> friendCircleList, FriendCircleAdapter.LoadHolder loadHolder){};
         default void addFriendCircleBack (String res) {};
         default void updateZanBack (boolean res, FriendCircleAdapter.InnerHolder innerHolder){};
+        default void deleteFriendCircleBack (boolean res){};
     }
 }

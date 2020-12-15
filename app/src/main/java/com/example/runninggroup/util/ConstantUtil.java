@@ -1,11 +1,15 @@
 package com.example.runninggroup.util;
 
 public class ConstantUtil {
+
+
+
+
     private ConstantUtil () {}
     //app后端版本（对应不同的后端）
     public final static int VERSION = 1;
 //    public final static String URL = "http://192.168.43.222:8080";
-    public final static String URL = "http://10.28.184.84:8080";
+    public final static String URL = "http://10.28.170.186:8080";
     //用户表controller
     public final static String ADD_USER = "/user/addUser";
     public final static String UPDATE_USER = "/user/updateUser";
@@ -18,6 +22,7 @@ public class ConstantUtil {
     public final static String ADD_ACT = "/act/addAct";
     public final static String UPDATE_ACT = "/act/updateAct";
     public final static String GET_ACT = "/act/getAct";
+    public static final String DELETE_ACT = "/act/deleteAct";
 
     //好友表controller
     public final static String ADD_FRIENDR_RELATION = "/friendRelation/addFriendRelation";
@@ -44,6 +49,12 @@ public class ConstantUtil {
     public final static String GET_FRIEND_CIRCLE = "/friendCircle/getFriendCircle";
     public final static String GET_FRIEND_CIRCLE_First = "/friendCircle/getFriendCircleFirst";
     public final static String GIVE_ZAN = "/friendCircle/giveZan";
+    public static final String DELETE_FRIEND_CIRCLE = "/friendCircle/deleteFriendCircle";
+
+    //评论表
+    public final static String GET_COMMENT = "/comment/selectCommentByFriendCircleId";
+    public final static String ADD_COMMENT = "/comment/insertComment";
+    public final static String DELETE_COMMENT = "/comment/deleteComment";
 
 
     //分数表controller
@@ -60,11 +71,10 @@ public class ConstantUtil {
     public final static String DELETE_TEAM = "/team/deleteTeam";
     public final static String REMOVE_USER_FROM_TEAM = "/team/removeUserFromTeam";
 
-    //跑团任务表 controller
-    public final static String ADD_TEAM_TASK= "/teamTask/addTeamTask";
-    public final static String UPDATE_TEAM_TASK = "/teamTask/updateTeamTask";
-    public final static String GET_TEAM_TASK = "/teamTask/getTeamTask";
-    public final static String DELETE_TEAM_TASK = "/teamTask/deleteTeamTask";
+    //跑团公告表 controller
+    public final static String ADD_TEAM_NOTICE= "/teamNotice/addTeamNotice";
+    public static final String GET_TEAM_NOTICE = "/teamNotice/getTeamNotice";
+    public static final String GET_TEAM_NOTICE_LIMIT = "/teamNotice/getTeamNoticeLimit";
 
     //文件上传
     public final static String UPLOAD = "/file/upload";
@@ -82,6 +92,9 @@ public class ConstantUtil {
     public static final int FRAGMENT_DATA = 0;
     public static final int FRAGMENT_CARD = 1;
     public static final int FRAGMENT_FRIENDS = 2;
+
+    //最大加载次数
+    public static final int MAX_LOAD_TIME = 10;
 
 
 

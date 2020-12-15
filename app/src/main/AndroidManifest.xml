@@ -87,32 +87,29 @@
             android:launchMode="singleTask" />
         <activity
             android:name=".viewAndController.MainInterface"
-            android:launchMode="singleTask" />
+            android:launchMode="singleTask"
+            android:windowSoftInputMode="adjustPan|stateHidden"/>
         <activity
             android:name=".viewAndController.FriendMessage"
-            android:launchMode="singleTask" />
-        <activity
-            android:name=".viewAndController.GroupMessage"
             android:launchMode="singleTask" />
         <activity
             android:name=".viewAndController.GroupBuild"
             android:launchMode="singleTask" />
         <activity
-            android:name=".viewAndController.GroupIntroduct"
-            android:launchMode="singleTask" />
-        <activity
             android:name=".viewAndController.Manage"
             android:launchMode="singleTask" />
         <activity
-            android:name=".viewAndController.Write"
+        android:name=".viewAndController.Write"
+        android:launchMode="singleTask" >
+
+        </activity>
+        <activity
+            android:name=".viewAndController.WriteNotice"
             android:launchMode="singleTask" >
 
         </activity>
         <activity
             android:name=".viewAndController.MemberManage"
-            android:launchMode="singleTask" />
-        <activity
-            android:name=".viewAndController.WriteTask"
             android:launchMode="singleTask" />
         <activity
             android:name=".viewAndController.CardPersonal"
@@ -122,7 +119,7 @@
             android:launchMode="singleTask" />
         <activity
             android:name=".viewAndController.TimerCard"
-            android:launchMode="singleInstance" />
+            android:launchMode="singleTask" />
         <activity android:name=".viewAndController.PersonSearchActivity"
             android:launchMode="singleTask"/>
         <activity android:name=".viewAndController.SearchActivity"
@@ -130,6 +127,8 @@
         <activity android:name=".viewAndController.AddFriendActivity"
             android:launchMode="singleTask"/>
         <activity android:name=".viewAndController.FriendApplicationActivity"
+            android:launchMode="singleTask"/>
+        <activity android:name=".viewAndController.FriendSearchActivity"
             android:launchMode="singleTask"/>
 
         <meta-data
@@ -148,6 +147,13 @@
             android:launchMode="singleTask"/>
         <activity android:name=".viewAndController.MemberSort"
             android:launchMode="singleTask"/>
+        <activity android:name=".viewAndController.ImageDetail"
+            android:launchMode="singleTask"/>
+        <activity android:name=".viewAndController.TeamNoticeActivity"
+            android:launchMode="singleTask"/>
+        <activity android:name=".viewAndController.TeamNoticePage"
+            android:launchMode="singleTask"/>
+
 
 
 

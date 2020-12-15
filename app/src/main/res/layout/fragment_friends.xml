@@ -1,52 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent">
-    <RelativeLayout
-        android:id="@+id/nofriend"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone">
-        <TextView
+        <RelativeLayout
+            android:id="@+id/loadImg_out"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:text="暂无好友..."
-            android:textSize="25dp"
-            android:layout_above="@+id/man"/>
-        <ImageView
-            android:id="@+id/man"
+            android:layout_centerInParent="true"
+            android:visibility="invisible">
+            <ImageView
+                android:id="@+id/loadImg"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_centerInParent="true"
+                android:src="@drawable/liuyu_load"/>
+        </RelativeLayout>
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/reload"
             android:layout_width="match_parent"
-            android:layout_centerInParent="true"
-            android:layout_height="200dp"
-            android:src="@mipmap/nofriend"
-            android:visibility="visible"/>
-    </RelativeLayout>
-    <RelativeLayout
-        android:id="@+id/loadImg_out"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:visibility="invisible">
-        <ImageView
-            android:id="@+id/loadImg"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_centerInParent="true"
-            android:src="@drawable/liuyu_load"/>
-    </RelativeLayout>
+            android:layout_height="match_parent"
+            >
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <RelativeLayout
+                        android:id="@+id/search"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white1"
+                        android:clickable="true">
+                        <RelativeLayout
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="10dp"
+                            android:layout_width="380dp"
+                            android:background="@drawable/edt_search_friend_selector"
+                            android:clickable="false"
+                            android:layout_height="35dp"
+                            android:layout_centerHorizontal="true">
+                            <TextView
+                                android:id="@+id/searchTxt"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:text="搜索"
+                                android:textSize="18dp"
+                                android:textColor="@color/greyWhite"
+                                android:layout_centerInParent="true"
+                                />
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:layout_marginLeft="10dp"
+                                android:layout_centerVertical="true"
+                                android:src="@drawable/img_friend"
+                                android:layout_toLeftOf="@id/searchTxt"/>
+                        </RelativeLayout>
+                    </RelativeLayout>
+                    <ListView
+                        android:id="@+id/listView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:divider="@null"
+                        android:layout_below="@id/search"
+                        ></ListView>
+                </RelativeLayout>
+            </ScrollView>
 
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-
-
-
-
-
-    <ListView
-        android:id="@+id/listView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:divider="@null"
-        ></ListView>
 
 
 

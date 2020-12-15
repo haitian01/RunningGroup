@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="wrap_content"
+    android:orientation="vertical">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+       >
+        <com.example.runninggroup.view.MyImageView
+            android:id="@+id/img"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="10dp"
+            android:src="@drawable/img_unload"
+            android:layout_centerVertical="true"
+            android:layout_marginBottom="5dp"/>
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="姓名"
+            android:textSize="15dp"
+            android:textColor="#000"
+            android:layout_marginTop="15dp"
+            android:layout_toRightOf="@+id/img"
+            android:layout_marginLeft="10dp"/>
+        <TextView
+            android:id="@+id/group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/img"
+            android:layout_below="@+id/name"
+            android:layout_marginLeft="10dp"
+            android:text="跑团"
+            android:visibility="invisible"
+            />
+        <TextView
+            android:id="@+id/length"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/name"
+            android:layout_alignLeft="@id/group"
+            android:layout_marginLeft="100dp"
+            android:text="20"
+            android:visibility="gone"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/length"
+            android:layout_below="@id/name"
+            android:text="米"
+            android:visibility="gone"
+            />
+        <TextView
+            android:id="@+id/score"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/group"
+            android:layout_below="@id/name"
+            android:layout_marginLeft="200dp"
+            android:text="580"
+            android:visibility="gone"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/score"
+            android:layout_below="@id/name"
+            android:text="分"
+            android:visibility="gone"
+            />
+    </RelativeLayout>
+
+
+
+</LinearLayout>

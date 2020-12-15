@@ -25,6 +25,7 @@ import com.example.runninggroup.util.ConstantUtil;
 import com.example.runninggroup.util.ImgNameUtil;
 import com.example.runninggroup.util.StatusBarUtils;
 import com.example.runninggroup.util.StringUtil;
+import com.example.runninggroup.util.WindowsEventUtil;
 import com.example.runninggroup.viewAndController.adapter.FriendMessageAdapter;
 
 import java.util.List;
@@ -78,7 +79,9 @@ public class AddFriendActivity extends AppCompatActivity implements UserControll
             public void run() {
                 if (drawable != null)
                 mImageView.setImageDrawable(drawable);
-                else Toast.makeText(AddFriendActivity.this, "图片为空", Toast.LENGTH_SHORT).show();
+                else {
+                    if (Cache.friend != null) mImageView.setImageResource(Cache.friend.getSex() == 1 ? R.drawable.default_head_m : R.drawable.default_head_w);
+                }
             }
         });
     }
@@ -92,8 +95,7 @@ public class AddFriendActivity extends AppCompatActivity implements UserControll
                 break;
 
             case R.id.cancel:
-                Intent intent = new Intent(AddFriendActivity.this, FriendMessage.class);
-                startActivity(intent);
+                WindowsEventUtil.systemBack();
 
             case R.id.setting:
                 break;

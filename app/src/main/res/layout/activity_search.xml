@@ -10,8 +10,9 @@
         >
 
        <ImageView
-           android:layout_width="40dp"
-           android:layout_height="40dp"
+           android:id="@+id/back"
+           android:layout_width="35dp"
+           android:layout_height="35dp"
            android:src="@drawable/back"
            android:layout_alignParentBottom="true"
            android:layout_marginBottom="10dp"/>
@@ -22,7 +23,7 @@
             android:layout_alignParentBottom="true"
            android:layout_centerHorizontal="true"
             android:layout_marginBottom="10dp"
-            android:background="@drawable/btn_style2"
+            android:background="@drawable/logout_btn_style"
             android:orientation="horizontal">
 
             <RadioButton
@@ -30,12 +31,13 @@
                 style="@style/Custom.TabRadioButton"
                 android:textColor="@drawable/radio_text_selector_search"
                 android:checked="true"
-                android:background="@drawable/btn_style9"
+                android:background="@drawable/search_activity_left_btn_checked"
                 android:text="找人" />
 
             <RadioButton
                 android:id="@+id/team_tab"
                 style="@style/Custom.TabRadioButton"
+                android:background="@drawable/search_activity_right_btn_unchecked"
                 android:textColor="@drawable/radio_text_selector_search"
                 android:text="找团" />
 

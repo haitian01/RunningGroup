@@ -5,7 +5,8 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:background="@color/white">
+    android:background="@color/white"
+    >
     <RelativeLayout
         android:id="@+id/maininterface_rela"
         android:layout_width="match_parent"
@@ -90,33 +91,38 @@
         android:layout_width="match_parent"
         android:layout_height="56dp"
         android:layout_alignParentBottom="true"
-        android:background="#dcdcdc"
-        android:orientation="horizontal">
+        android:background="#fbfbfd"
+        android:orientation="horizontal"
+        >
 
         <RadioButton
             android:id="@+id/data_tab"
             style="@style/Custom.TabRadioButton"
             android:textColor="@drawable/radio_text_selector"
             android:checked="true"
-            android:text="数据" />
+            android:text="数据"
+            android:textSize="10dp"/>
 
         <RadioButton
             android:id="@+id/card_tab"
             style="@style/Custom.TabRadioButton"
             android:textColor="@drawable/radio_text_selector"
-            android:text="打卡" />
+            android:text="打卡"
+            android:textSize="10dp"/>
 
         <RadioButton
             android:id="@+id/friend_tab"
             style="@style/Custom.TabRadioButton"
             android:textColor="@drawable/radio_text_selector"
-            android:text="好友" />
+            android:text="好友"
+            android:textSize="10dp"/>
 
         <RadioButton
             android:id="@+id/circle_tab"
             style="@style/Custom.TabRadioButton"
             android:textColor="@drawable/radio_text_selector"
-            android:text="动态" />
+            android:text="动态"
+            android:textSize="10dp"/>
     </RadioGroup>
     <LinearLayout
         android:id="@+id/ll_container"
@@ -178,8 +184,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="退出登录"
-            android:background="@drawable/btn_style2"
-            android:textColor="@color/softyellow"
+            android:background="@drawable/logout_btn_style"
+            android:textColor="@color/black"
             android:fontFamily="sans-serif-thin"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -187,6 +193,7 @@
             android:layout_marginTop="600dp"
             android:layout_marginStart="40dp"
             android:layout_marginEnd="40dp"
+            style="?android:attr/borderlessButtonStyle"
             >
         </Button>
 

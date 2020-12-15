@@ -36,17 +36,17 @@
             android:textSize="13dp"/>
 
         <Button
-            android:id="@+id/btn"
+            android:id="@+id/acceptBtn"
             android:layout_width="60dp"
             android:layout_height="30dp"
             android:layout_centerVertical="true"
             android:layout_marginRight="11dp"
-            android:layout_toLeftOf="@+id/btn1"
+            android:layout_toLeftOf="@+id/refuseBtn"
             android:text="同意"
             android:background="@drawable/btn_style11"
             />
         <Button
-            android:id="@+id/btn1"
+            android:id="@+id/refuseBtn"
             android:layout_width="60dp"
             android:layout_height="30dp"
             android:layout_alignParentRight="true"

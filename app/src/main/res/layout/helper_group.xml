@@ -76,7 +76,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="10dp"
                 android:background="@drawable/btn_style11"
-
+                style="?android:attr/borderlessButtonStyle"
                 />
             <TextView
                 android:id="@+id/state"
@@ -85,7 +85,8 @@
                 android:text="已加入"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="20dp"
-                android:layout_centerInParent="true"/>
+                android:layout_centerInParent="true"
+                android:visibility="invisible"/>
 
         </RelativeLayout>
     </RelativeLayout>

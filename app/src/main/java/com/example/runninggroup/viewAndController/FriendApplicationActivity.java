@@ -20,6 +20,7 @@ import com.example.runninggroup.pojo.FriendApplication;
 import com.example.runninggroup.pojo.FriendRelation;
 import com.example.runninggroup.pojo.Team;
 import com.example.runninggroup.pojo.User;
+import com.example.runninggroup.util.WindowsEventUtil;
 import com.example.runninggroup.viewAndController.adapter.FriendApplicationAdapter;
 
 import java.util.ArrayList;
@@ -43,8 +44,7 @@ public class FriendApplicationActivity extends AppCompatActivity implements Frie
         backImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(FriendApplicationActivity.this, MainInterface.class);
-                startActivity(intent);
+                WindowsEventUtil.systemBack();
             }
         });
         clearTxt.setOnClickListener(new View.OnClickListener() {

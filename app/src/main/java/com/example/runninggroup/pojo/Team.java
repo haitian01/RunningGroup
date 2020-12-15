@@ -16,7 +16,6 @@ public class Team implements Serializable {
     private String registerNum;
     private String campus;
     private String college;
-    private String teamImg;
     private User user;//团长
     private String teamName;
     private Integer teamSize;

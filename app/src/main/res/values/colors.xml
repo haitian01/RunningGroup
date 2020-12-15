@@ -15,9 +15,11 @@
     <color name="whitegrey">#FAFAFA</color>
     <color name="softyellow">#FFC498</color>
     <color name="top">#4dd0ff</color>
+    <color name="blue_dep">#0096cc</color>
     <color name="gray">#eee</color>
     <color name="gray1">#e6e6e6</color>
     <color name="gray2">#d9d9d9</color>
+    <color name="white1">#f1f1f1</color>
 
 
     <!--//radiogroup选择器-->
@@ -25,5 +27,5 @@
     <color name="color_bg_selected">#e0301e</color>
     <color name="color_bg_normal">#e7e7e8</color>
     <color name="color_text_selected">#ffffff</color>
-    <color name="color_text_normal">#000000</color>
+    <color name="color_text_normal">@color/gray</color>
 </resources>

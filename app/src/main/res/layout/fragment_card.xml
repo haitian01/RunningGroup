@@ -1,28 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent" android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/white">
-    <ImageView
-        android:id="@+id/famousQuotes"
-        android:layout_marginTop="100dp"
-        android:background="@drawable/quote01"
-        android:layout_gravity="center_horizontal"
-        android:layout_width="380dp"
-        android:layout_height="190dp"
-        />
 
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/refresh"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/card_record"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        </androidx.recyclerview.widget.RecyclerView>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
     <Button
         android:id="@+id/btn"
         android:layout_width="288dp"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="100dp"
+        android:layout_centerHorizontal="true"
         android:background="@drawable/btn_style5"
         android:fontFamily="sans-serif-black"
         android:text="打卡"
-        android:textColor="@color/softwhite"
-        android:textSize="30dp" />
+        android:textColor="@color/black"
+        android:textSize="30dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="20dp"/>
 
 
-</LinearLayout>
+
+
+</RelativeLayout>

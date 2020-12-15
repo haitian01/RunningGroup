@@ -1,6 +1,5 @@
 package com.example.runninggroup.viewAndController;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -12,10 +11,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.runninggroup.R;
 import com.example.runninggroup.controller.TeamController;
-import com.example.runninggroup.model.DaoGroup;
 import com.example.runninggroup.pojo.Team;
 import com.example.runninggroup.util.StringUtil;
-import com.example.runninggroup.viewAndController.fragment.FragmentGroup;
 
 public class GroupBuild extends AppCompatActivity implements View.OnClickListener, TeamController.TeamControllerInterface {
     EditText groupNameEdt,sloganEdt,campusEdt,collegeEdt;
@@ -26,7 +23,7 @@ public class GroupBuild extends AppCompatActivity implements View.OnClickListene
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_groupbuild);
+        setContentView(R.layout.activity_build_group);
         initView();
         initEvent();
     }

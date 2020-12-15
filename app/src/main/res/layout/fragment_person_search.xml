@@ -15,7 +15,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:text="QQ号/手机号/群"
+            android:text="账号/邮箱/跑团"
             android:layout_marginLeft="40dp"
             android:textSize="18dp"
             android:textColor="@color/greyWhite"

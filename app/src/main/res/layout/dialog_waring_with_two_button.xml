@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="280dp" android:layout_height="wrap_content"
+    android:background="@drawable/dialog_waring_style"
+    >
+    <TextView
+        android:id="@+id/msg"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_below="@+id/title"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/black"
+        android:text="账号或密码错误，请重新输入。"
+        android:layout_marginTop="10dp"
+        android:gravity="center"/>
+    <TextView
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="0.01dp"
+        android:background="@color/gray"
+        android:layout_below="@id/msg"/>
+
+    <TextView
+        android:id="@+id/left"
+        android:layout_width="140dp"
+        android:layout_height="40dp"
+        android:layout_below="@id/divider"
+        android:textSize="16dp"
+        android:text="取消"
+        android:gravity="center"
+        android:textColor="@color/black"
+        android:background="@drawable/selector_white_to_gray_dialog_cancel"/>
+    <TextView
+        android:id="@+id/right"
+        android:layout_width="140dp"
+        android:layout_height="40dp"
+        android:layout_below="@id/divider"
+        android:textSize="16dp"
+        android:text="确定"
+        android:layout_alignParentRight="true"
+        android:gravity="center"
+        android:textColor="@color/black"
+        android:background="@drawable/selector_white_to_gray_dialog_define"/>
+
+
+</RelativeLayout>

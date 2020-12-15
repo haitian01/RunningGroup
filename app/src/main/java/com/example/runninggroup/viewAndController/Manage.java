@@ -1,18 +1,14 @@
 package com.example.runninggroup.viewAndController;
 
-import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -21,33 +17,23 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.loader.content.CursorLoader;
 
 import com.example.runninggroup.R;
 import com.example.runninggroup.cache.Cache;
 import com.example.runninggroup.controller.FileController;
 import com.example.runninggroup.controller.TeamController;
-import com.example.runninggroup.model.DaoGroup;
-import com.example.runninggroup.model.DaoUser;
 import com.example.runninggroup.pojo.Team;
-import com.example.runninggroup.request.ImgUpload;
-import com.example.runninggroup.util.BitmapUtil;
 import com.example.runninggroup.util.ImgNameUtil;
 import com.example.runninggroup.util.StringUtil;
+import com.example.runninggroup.util.WindowsEventUtil;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.zip.Inflater;
 
 public class Manage extends AppCompatActivity implements View.OnClickListener , FileController.FileControllerInterface, TeamController.TeamControllerInterface {
-    ListView groupmanageList;
+    ListView groupManageList;
     Intent mIntent;
     String username;
-    String group;
-    String num;
-    String leader;
+    ImageView backImg;
     private final int SELECT_PHOTO = 2;
     private final int WRITE_EXTERNAL_STORAGE_REQUEST_CODE = 1;
     private final int REQUESTCODE_CUTTING = 3;
@@ -90,56 +76,28 @@ public class Manage extends AppCompatActivity implements View.OnClickListener , 
 
     }
     private void initView() {
-        groupmanageList = findViewById(R.id.groupmanage_list);
+        groupManageList = findViewById(R.id.groupmanage_list);
+        backImg = findViewById(R.id.back);
         mIntent = getIntent();
-        username = mIntent.getStringExtra("username");
-        group = mIntent.getStringExtra("group");
-        num = mIntent.getStringExtra("num");
-        leader = mIntent.getStringExtra("leader");
     }
     private void initEvent() {
-       groupmanageList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+       groupManageList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
            @Override
            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                switch (position){
                    case 0:
-                       Intent intent = new Intent(Manage.this,WriteTask.class);
+                       //发布公告
+                       Intent intent = new Intent(Manage.this, WriteNotice.class);
                        startActivity(intent);
                        break;
+
                    case 1:
-                       Intent intent1 = new Intent(Manage.this,WriteTask.class);
-                       intent1.putExtra("username",username);
-                       intent1.putExtra("group",group);
-                       intent1.putExtra("num",num);
-                       intent1.putExtra("type","call");
-                       startActivity(intent1);
+                       //成员管理
+                       Intent intent2 = new Intent(Manage.this,MemberManage.class);
+                       startActivity(intent2);
                        break;
                    case 2:
-                        Intent intent2 = new Intent(Manage.this,MemberManage.class);
-                        startActivity(intent2);
-                       break;
-                   case 3:
-                       if(Cache.user.getId() == Cache.user.getTeam().getUser().getId()){
-                           AlertDialog.Builder builder = new AlertDialog.Builder(Manage.this);
-                           builder.setTitle("解散跑团")
-                                   .setMessage("你确定解散跑团？")
-                                   .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                                       @Override
-                                       public void onClick(DialogInterface dialog, int which) {
-                                           //解散跑团
-                                           mTeamController.deleteTeam();
-
-                                       }
-                                   }).create();
-                           builder.show();
-                       }else {
-                           androidx.appcompat.app.AlertDialog.Builder builder = new AlertDialog.Builder(Manage.this);
-                           builder.setMessage("没有管理权限！").create();
-                           builder.show();
-                       }
-
-                       break;
-                   case 4:
+                       //更换头像
                        AlertDialog.Builder builder = new AlertDialog.Builder(Manage.this);
                        builder.setTitle("请选择头像：");
                        builder.setMessage("可以通过相机或者相册选取头像。");
@@ -154,7 +112,9 @@ public class Manage extends AppCompatActivity implements View.OnClickListener , 
                        builder.create();
                        builder.show();
                        break;
-                   case 5:
+                   case 3:
+                       //编辑口号
+
                        androidx.appcompat.app.AlertDialog.Builder builder1 = new AlertDialog.Builder(Manage.this);
                        View view1 = getLayoutInflater().inflate(R.layout.helper_slogan,null);
                        builder1.setView(view1)
@@ -163,15 +123,15 @@ public class Manage extends AppCompatActivity implements View.OnClickListener , 
                                    public void onClick(DialogInterface dialog, int which) {
 
 
-                                        EditText editText = view1.findViewById(R.id.write_slogan);
-                                        String slogan = editText.getText().toString();
-                                        if(StringUtil.isStringNull(slogan)){
-                                            makeToast("口号不能为空");
-                                        }else {
-                                            Team team = new Team();
-                                            team.setTeamSlogan(slogan);
-                                            mTeamController.updateTeamSlogan(team);
-                                        }
+                                       EditText editText = view1.findViewById(R.id.write_slogan);
+                                       String slogan = editText.getText().toString();
+                                       if(StringUtil.isStringNull(slogan)){
+                                           makeToast("口号不能为空");
+                                       }else {
+                                           Team team = new Team();
+                                           team.setTeamSlogan(slogan);
+                                           mTeamController.updateTeamSlogan(team);
+                                       }
 
                                    }
                                })
@@ -182,13 +142,42 @@ public class Manage extends AppCompatActivity implements View.OnClickListener , 
                                    }
                                }).create().show();
                        break;
-                       //跑团申请列表
-                   case 6:
-                       Intent intent3 = new Intent(Manage.this, TeamApplicationActivity.class);
 
+                   case 4:
+                       //申请消息
+                       Intent intent3 = new Intent(Manage.this, TeamApplicationActivity.class);
                        startActivity(intent3);
+
                        break;
+                   case 5:
+                       //解散跑团
+                       if(Cache.user.getId() == Cache.user.getTeam().getUser().getId()){
+                           AlertDialog.Builder builder2 = new AlertDialog.Builder(Manage.this);
+                           builder2.setTitle("解散跑团")
+                                   .setMessage("你确定解散跑团？")
+                                   .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                                       @Override
+                                       public void onClick(DialogInterface dialog, int which) {
+                                           //解散跑团
+                                           mTeamController.deleteTeam();
+
+                                       }
+                                   }).create();
+                           builder2.show();
+                       }else {
+                           androidx.appcompat.app.AlertDialog.Builder builder2 = new AlertDialog.Builder(Manage.this);
+                           builder2.setMessage("没有管理权限！").create();
+                           builder2.show();
+                       }
+                       break;
+
                }
+           }
+       });
+       backImg.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View v) {
+               WindowsEventUtil.systemBack();
            }
        });
     }

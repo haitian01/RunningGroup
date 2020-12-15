@@ -1,5 +1,6 @@
 package com.example.runninggroup.viewAndController.adapter;
 
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,14 +11,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.runninggroup.R;
 
+
 import java.util.List;
 
 public class WriteAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final int NORMAL = 0;
     private static final int ADD_IMG = 1;
-    private List<Drawable> mList;
+    private List<Bitmap> mList;
     private ImgOnClickListener mImgOnClickListener;
-    public WriteAdapter (List<Drawable> list) {
+    public WriteAdapter (List<Bitmap> list) {
         mList = list;
     }
     public interface ImgOnClickListener {
@@ -87,8 +89,9 @@ public class WriteAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             img = itemView.findViewById(R.id.img);
         }
 
-        private void setDate(Drawable drawable) {
-            img.setImageDrawable(drawable);
+        private void setDate(Bitmap bm) {
+
+            img.setImageBitmap(bm);
         }
     }
     public class ImgHolder extends RecyclerView.ViewHolder{

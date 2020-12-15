@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.runninggroup.R;
 import com.example.runninggroup.cache.Cache;
@@ -31,6 +32,8 @@ public class TeamApplicationActivity extends AppCompatActivity implements TeamAp
     private List<TeamApplication> mTeamApplications = new ArrayList<>();
     private ImageView backImg;
     private TextView clearTxt;
+    private TeamApplicationAdapter mTeamApplicationAdapter;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +61,16 @@ public class TeamApplicationActivity extends AppCompatActivity implements TeamAp
             }
         });
 
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                mTeamApplicationController.getTeamApplication();
+            }
+        });
+
+
+
+
 
     }
 
@@ -65,20 +78,67 @@ public class TeamApplicationActivity extends AppCompatActivity implements TeamAp
         applicationList = findViewById(R.id.application);
         backImg = findViewById(R.id.back);
         clearTxt = findViewById(R.id.clear);
-        applicationList.setAdapter(new TeamApplicationAdapter(getLayoutInflater(), mTeamApplications, this));
+        mSwipeRefreshLayout = findViewById(R.id.refresh);
+        mTeamApplicationAdapter = new TeamApplicationAdapter(getLayoutInflater(), mTeamApplications, this);
+        /**
+         * 设置同意or拒绝的点击事件
+         */
+        mTeamApplicationAdapter.setBtnOnClickListener(new TeamApplicationAdapter.BtnOnClickListener() {
+            @Override
+            public void acceptOnClick(TeamApplicationAdapter.ViewHolder viewHolder) {
+                TeamApplication teamApplication = viewHolder.mTeamApplication;
+                mTeamApplicationController.updateTeamApplication(teamApplication.getId(), 2, teamApplication.getUser().getId(), viewHolder);
+            }
+
+            @Override
+            public void refuseOnClick(TeamApplicationAdapter.ViewHolder viewHolder) {
+                TeamApplication teamApplication = viewHolder.mTeamApplication;
+                mTeamApplicationController.updateTeamApplication(teamApplication.getId(), 3, teamApplication.getUser().getId(), viewHolder);
+            }
+        });
+        applicationList.setAdapter(mTeamApplicationAdapter);
         mTeamApplicationController.getTeamApplication();
 
     }
 
+
+    /**
+     * 跑团申请列表点击同意or拒绝的回调
+     * @param res
+     * @param state
+     * @param viewHolder
+     */
+
+    @Override
+    public void updateTeamApplicationBack(boolean res, int state, TeamApplicationAdapter.ViewHolder viewHolder) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(TeamApplicationActivity.this,  res ? "success" : "error", Toast.LENGTH_SHORT).show();
+                if (res) {
+                    viewHolder.acceptBtn.setVisibility(View.INVISIBLE);
+                    viewHolder.refuseBtn.setVisibility(View.INVISIBLE);
+                    viewHolder.stateText.setText(state == 2 ? "已同意" : "已拒绝");
+                }
+            }
+        });
+    }
+
+    /**
+     * 获取Application回调
+     * @param teamApplications
+     */
     @Override
     public void getTeamApplicationBack(List<TeamApplication> teamApplications) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                mSwipeRefreshLayout.setRefreshing(false);
                 if (teamApplications == null) Toast.makeText(TeamApplicationActivity.this, "网络故障", Toast.LENGTH_SHORT).show();
                 else  {
-                    mTeamApplications = teamApplications;
-                    applicationList.setAdapter(new TeamApplicationAdapter(getLayoutInflater(), mTeamApplications, TeamApplicationActivity.this));
+                    mTeamApplications.clear();
+                    mTeamApplications.addAll(teamApplications);
+                    applicationList.setAdapter(mTeamApplicationAdapter);
                 }
             }
         });

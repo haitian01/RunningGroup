@@ -20,6 +20,7 @@ import com.example.runninggroup.controller.TeamApplicationController;
 import com.example.runninggroup.controller.UserController;
 import com.example.runninggroup.util.ImgNameUtil;
 import com.example.runninggroup.util.StringUtil;
+import com.example.runninggroup.util.WindowsEventUtil;
 
 public class AddTeamActivity extends AppCompatActivity implements View.OnClickListener, FileController.FileControllerInterface, TeamApplicationController.TeamApplicationControllerInterface {
     private ImageView teamImg;
@@ -92,8 +93,7 @@ public class AddTeamActivity extends AppCompatActivity implements View.OnClickLi
                 break;
 
             case R.id.cancel:
-                Intent intent = new Intent(AddTeamActivity.this, TeamIntroduction.class);
-                startActivity(intent);
+                WindowsEventUtil.systemBack();
 
             case R.id.setting:
                 break;

@@ -24,17 +24,23 @@ import com.example.runninggroup.util.ImgNameUtil;
 
 import java.util.List;
 
-public class TeamApplicationAdapter extends BaseAdapter implements TeamApplicationController.TeamApplicationControllerInterface {
+public class TeamApplicationAdapter extends BaseAdapter {
     LayoutInflater mInflater;
     List<TeamApplication> mList;
     private Activity mActivity;
-    private ViewHolder viewHolder1;
-    private TeamApplicationController mTeamApplicationController;
+    private BtnOnClickListener mBtnOnClickListener;
     public TeamApplicationAdapter(LayoutInflater inflater, List<TeamApplication> list, Activity activity) {
         mInflater = inflater;
         mList = list;
         mActivity = activity;
-        mTeamApplicationController = new TeamApplicationController(this);
+    }
+
+    public interface BtnOnClickListener {
+        void acceptOnClick (ViewHolder viewHolder);
+        void refuseOnClick(ViewHolder  viewHolder);
+    }
+    public void setBtnOnClickListener (BtnOnClickListener btnOnClickListener) {
+        mBtnOnClickListener = btnOnClickListener;
     }
     @Override
     public int getCount() {
@@ -53,31 +59,30 @@ public class TeamApplicationAdapter extends BaseAdapter implements TeamApplicati
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        int id = mList.get(position).getId();
         int state = mList.get(position).getState();
         User user = mList.get(position).getUser();
 
         String msg = mList.get(position).getApplicationMsg();
         convertView = mInflater.inflate(R.layout.helper_friend_application, null);
-        viewHolder1 = new ViewHolder();
+        ViewHolder viewHolder1 = new ViewHolder();
         viewHolder1.mImageView = convertView.findViewById(R.id.img);
         viewHolder1.usernameText = convertView.findViewById(R.id.username);
         viewHolder1.msgText = convertView.findViewById(R.id.msg);
         viewHolder1.stateText = convertView.findViewById(R.id.state);
-        viewHolder1.btn = convertView.findViewById(R.id.btn);
-        viewHolder1.btn1 = convertView.findViewById(R.id.btn1);
+        viewHolder1.acceptBtn = convertView.findViewById(R.id.acceptBtn);
+        viewHolder1.refuseBtn = convertView.findViewById(R.id.refuseBtn);
         //按钮事件
-        viewHolder1.btn.setOnClickListener(new View.OnClickListener() {
+        viewHolder1.acceptBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mTeamApplicationController.updateTeamApplication(id,2, user.getId(), viewHolder1);
+                if (mBtnOnClickListener != null) mBtnOnClickListener.acceptOnClick(viewHolder1);
 
             }
         });
-        viewHolder1.btn1.setOnClickListener(new View.OnClickListener() {
+        viewHolder1.refuseBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mTeamApplicationController.updateTeamApplication(id,3, user.getId(), viewHolder1);
+                if (mBtnOnClickListener != null) mBtnOnClickListener.refuseOnClick(viewHolder1);
 
             }
         });
@@ -85,28 +90,29 @@ public class TeamApplicationAdapter extends BaseAdapter implements TeamApplicati
 
 
         viewHolder1.mImageView.setImageResource(user.getSex() == 1 ? R.drawable.default_head_m : R.drawable.default_head_w);
+        viewHolder1.mTeamApplication = mList.get(position);
         setImg(viewHolder1, ImgNameUtil.getUserHeadImgName(user.getId()));
         if (state == 1) {
             //未处理
             viewHolder1.usernameText.setText(user.getUsername());
-            viewHolder1.btn.setVisibility(View.VISIBLE);
-            viewHolder1.btn1.setVisibility(View.VISIBLE);
+            viewHolder1.acceptBtn.setVisibility(View.VISIBLE);
+            viewHolder1.refuseBtn.setVisibility(View.VISIBLE);
             viewHolder1.msgText.setText(msg);
 
 
         }else if (state == 2) {
             //已经同意的
             viewHolder1.usernameText.setText(user.getUsername());
-            viewHolder1.btn.setVisibility(View.INVISIBLE);
-            viewHolder1.btn1.setVisibility(View.INVISIBLE);
+            viewHolder1.acceptBtn.setVisibility(View.INVISIBLE);
+            viewHolder1.refuseBtn.setVisibility(View.INVISIBLE);
             viewHolder1.stateText.setText("已同意");
             viewHolder1.msgText.setText(msg);
 
         }else if (state == 3) {
             //已拒绝
             viewHolder1.usernameText.setText(user.getUsername());
-            viewHolder1.btn.setVisibility(View.INVISIBLE);
-            viewHolder1.btn1.setVisibility(View.INVISIBLE);
+            viewHolder1.acceptBtn.setVisibility(View.INVISIBLE);
+            viewHolder1.refuseBtn.setVisibility(View.INVISIBLE);
             viewHolder1.stateText.setText("已拒绝");
             viewHolder1.msgText.setText(msg);
 
@@ -117,9 +123,10 @@ public class TeamApplicationAdapter extends BaseAdapter implements TeamApplicati
         return convertView;
     }
     public class ViewHolder {
-        ImageView mImageView;
-        TextView usernameText, msgText, stateText;
-        Button btn,btn1;
+        public TeamApplication mTeamApplication;
+        public ImageView mImageView;
+        public TextView usernameText, msgText, stateText;
+        public Button acceptBtn,refuseBtn;
     }
 
     public void setImg (ViewHolder viewHolder, String imgName) {
@@ -139,18 +146,5 @@ public class TeamApplicationAdapter extends BaseAdapter implements TeamApplicati
         }).start();
     }
 
-    @Override
-    public void updateTeamApplicationBack(boolean res, int state, ViewHolder viewHolder) {
-        mActivity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Toast.makeText(mActivity,  res ? "success" : "error", Toast.LENGTH_SHORT).show();
-                if (res) {
-                    viewHolder.btn.setVisibility(View.INVISIBLE);
-                    viewHolder.btn1.setVisibility(View.INVISIBLE);
-                    viewHolder.stateText.setText(state == 2 ? "已同意" : "已拒绝");
-                }
-            }
-        });
-    }
+
 }

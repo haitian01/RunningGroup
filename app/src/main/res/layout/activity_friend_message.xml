@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:id="@+id/back"
+        android:layout_width="match_parent"
+        android:layout_height="250dp">
+        <ImageView
+            android:id="@+id/userBackImg"
+            android:src="@drawable/backimg"
+            android:scaleType="centerCrop"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clickable="true"
+            />
+        <ImageView
+            android:id="@+id/back_img"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:clickable="true"
+            android:src="@drawable/back"
+            android:layout_marginTop="35dp"
+            android:layout_marginLeft="5dp"/>
+        <TextView
+            android:id="@+id/setting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="设置"
+            android:textColor="@color/white"
+            android:textSize="16dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="45dp"
+            android:layout_marginRight="10dp"
+            android:visibility="invisible"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/top"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_below="@+id/back"
+        android:layout_marginTop="-50dp"
+        >
+
+        <com.example.runninggroup.view.MyImageView
+            android:id="@+id/img"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/img_unload"
+            android:layout_marginLeft="20dp"
+            />
+        <TextView
+            android:id="@+id/alias"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:text="null"
+            android:textSize="20dp"
+            android:layout_toRightOf="@+id/img"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="20dp"
+            />
+        <TextView
+            android:id="@+id/mail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:text="mail:"
+            android:textSize="15dp"
+            android:layout_toRightOf="@+id/img"
+            android:layout_below="@+id/alias"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="20dp"
+            />
+        <TextView
+            android:id="@+id/registerNum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:text="null"
+            android:textSize="15dp"
+            android:layout_toRightOf="@+id/mail"
+            android:layout_below="@+id/alias"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            />
+
+    </RelativeLayout>
+    <ListView
+        android:id="@+id/friend_message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/top"
+        ></ListView>
+    <Button
+        android:id="@+id/add_friend"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="加好友"
+        android:textColor="@color/white"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="15dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@color/top"
+        android:visibility="invisible"
+        android:textSize="15dp"
+        />
+
+
+
+
+
+
+</RelativeLayout>

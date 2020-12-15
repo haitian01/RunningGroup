@@ -3,15 +3,12 @@ package com.example.runninggroup.viewAndController;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.view.KeyEvent;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -22,53 +19,43 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.viewpager.widget.ViewPager;
 
 import com.example.runninggroup.R;
 import com.example.runninggroup.cache.Cache;
 import com.example.runninggroup.controller.FileController;
 import com.example.runninggroup.controller.FriendRelationController;
+import com.example.runninggroup.controller.TeamController;
 import com.example.runninggroup.controller.UserController;
-import com.example.runninggroup.model.DaoFriend;
-import com.example.runninggroup.model.DaoUser;
 import com.example.runninggroup.pojo.FriendRelation;
+import com.example.runninggroup.pojo.Team;
 import com.example.runninggroup.util.ConstantUtil;
 import com.example.runninggroup.util.ImgNameUtil;
 import com.example.runninggroup.util.StatusBarUtils;
-import com.example.runninggroup.viewAndController.adapter.DynamicAdapter;
+import com.example.runninggroup.util.WindowsEventUtil;
 import com.example.runninggroup.viewAndController.adapter.FriendMessageAdapter;
-import com.example.runninggroup.viewAndController.adapter.MyPagerAdapter;
-import com.example.runninggroup.viewAndController.fragment.FragmentDynamic;
-import com.example.runninggroup.viewAndController.fragment.FragmentFriendManage;
-import com.example.runninggroup.viewAndController.fragment.FragmentPersonalCard;
-import com.example.runninggroup.viewAndController.helper.DynamicHelper;
-import com.google.android.material.tabs.TabLayout;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
-public class FriendMessage extends AppCompatActivity implements UserController.UserControllerInterface, View.OnClickListener, FriendRelationController.FriendRelationControllerInterface, FileController.FileControllerInterface {
+public class FriendMessage extends AppCompatActivity implements UserController.UserControllerInterface, View.OnClickListener, FriendRelationController.FriendRelationControllerInterface, FileController.FileControllerInterface, TeamController.TeamControllerInterface {
 
-    TextView aliasText,registerNumText,settingText;
-    ImageView mImageView, backImg, userBackImg;
+    private TextView aliasText,registerNumText,settingText;
+    private ImageView mImageView, backImg, userBackImg;
     private String alias;
     private UserController mUserController = new UserController(this);
     private FriendRelationController mFriendRelationController = new FriendRelationController(this);
     private FileController mFileController = new FileController(this);
+    private TeamController mTeamController = new TeamController(this);
     private ListView mListView;
     private Button addFriend;
-    private int fromActivity;
     private final int SELECT_PHOTO = 2;
-    private final int WRITE_EXTERNAL_STORAGE_REQUEST_CODE = 1;
     private final int REQUESTCODE_CUTTING = 3;
-    File file;
-    Uri mImageUri;
+    private File file;
+    private Uri mImageUri;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_friendmessage);
+        setContentView(R.layout.activity_friend_message);
         initView();
         initEvent();
     }
@@ -105,8 +92,6 @@ public class FriendMessage extends AppCompatActivity implements UserController.U
     }
 
     private void initView() {
-        alias = getIntent().getStringExtra("alias");
-        fromActivity = getIntent().getIntExtra("fromActivity", ConstantUtil.MAIN_INTERFACE);
        aliasText = findViewById(R.id.alias);
        registerNumText = findViewById(R.id.registerNum);
        backImg = findViewById(R.id.back_img);
@@ -120,15 +105,11 @@ public class FriendMessage extends AppCompatActivity implements UserController.U
         registerNumText.setText(Cache.friend.getRegisterNum() + "(" + Cache.friend.getUsername() + ")");
         //透明
         StatusBarUtils.setStatusBarFullTransparent(this);
-        String temp =Cache.friend.getHeadImg();
-        mUserController.getHeadImg(Cache.friend.getHeadImg());
+        mUserController.getHeadImg(ImgNameUtil.getUserHeadImgName(Cache.friend.getId()));
         if (Cache.friend.getId() != Cache.user.getId()) {
             mFriendRelationController.isMyFriend();
         }
 
-
-
-        setView();
     }
     private void initEvent() {
         mImageView.setImageResource(Cache.friend.getSex() == 1 ? R.drawable.default_head_m : R.drawable.default_head_w);
@@ -137,13 +118,42 @@ public class FriendMessage extends AppCompatActivity implements UserController.U
         addFriend.setOnClickListener(this);
         backImg.setOnClickListener(this);
         userBackImg.setOnClickListener(this);
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                //点击跑团相关的item
+                if (position == 1) {
+                    if (Cache.friend.getTeam() == null) {
+                        Toast.makeText(FriendMessage.this, "尚未加入跑团", Toast.LENGTH_SHORT).show();
+                    }else {
+                        Team team = new Team();
+                        team.setId(Cache.friend.getTeam().getId());
+                        mTeamController.getTeam(team);
+                    }
+                }
+            }
+        });
 
 
     }
-    private void setView(){
 
-
-
+    /**
+     * 点击team相关item，去加载team，并回调
+     * 获取team回调
+     * @param teams
+     */
+    @Override
+    public void getTeamBack(List<Team> teams) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (teams != null && teams.size() > 0) {
+                    Cache.team = teams.get(0);
+                    Intent intent = new Intent(FriendMessage.this, TeamIntroduction.class);
+                    startActivity(intent);
+                }
+            }
+        });
     }
 
     @Override
@@ -151,9 +161,8 @@ public class FriendMessage extends AppCompatActivity implements UserController.U
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                if (drawable != null)
-                mImageView.setImageDrawable(drawable);
-                else Toast.makeText(FriendMessage.this, "图片为空", Toast.LENGTH_SHORT).show();
+                if (drawable != null) mImageView.setImageDrawable(drawable);
+
             }
         });
     }
@@ -163,19 +172,7 @@ public class FriendMessage extends AppCompatActivity implements UserController.U
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.back_img:
-                Intent intent = null;
-                if (fromActivity == ConstantUtil.MAIN_INTERFACE) {
-                    intent = new Intent(FriendMessage.this, MainInterface.class);
-                    intent.putExtra("id",2);
-                }
-                else if (fromActivity == ConstantUtil.PERSON_SEARCH) {
-                    intent = new Intent(FriendMessage.this, SearchActivity.class);
-                }
-                else if (fromActivity == ConstantUtil.MEMBER_SORT) {
-                    intent = new Intent(FriendMessage.this, MemberSort.class);
-                }
-
-                startActivity(intent);
+                WindowsEventUtil.systemBack();
                 break;
             case R.id.setting:
                 break;
@@ -235,6 +232,11 @@ public class FriendMessage extends AppCompatActivity implements UserController.U
         startActivityForResult(intent, REQUESTCODE_CUTTING);
     }
 
+
+    /**
+     * 查看该用户于本人是否有好有关系
+     * @param friendRelationList
+     */
     @Override
     public void isMyFriendBack(List<FriendRelation> friendRelationList) {
         runOnUiThread(new Runnable() {
@@ -246,8 +248,9 @@ public class FriendMessage extends AppCompatActivity implements UserController.U
                     addFriend.setVisibility(View.VISIBLE);
                 }
                 else {
+                    settingText.setVisibility(View.VISIBLE);
                     if (friendRelationList.get(0).getAlias() != null) aliasText.setText(friendRelationList.get(0).getAlias());
-                 }
+                }
             }
         });
     }

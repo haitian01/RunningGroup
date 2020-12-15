@@ -11,7 +11,7 @@
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:layout_marginLeft="10dp"
-            android:src="@mipmap/friendshelper"
+            android:src="@drawable/img_unload"
             android:layout_marginTop="5dp"
             android:layout_centerVertical="true"
             android:layout_marginBottom="5dp"/>

@@ -1,19 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    >
 
-    <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:cardUseCompatPadding="true">
+
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white">
+            >
 
             <RelativeLayout
                 android:id="@+id/top"
@@ -34,41 +32,70 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_toRightOf="@id/headImg"
-                    android:text="最近还好吗" />
+                    android:text="最近还好吗"
+                   />
+                <RelativeLayout
+                    android:id="@+id/delete"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentRight="true"
+                    android:visibility="invisible">
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_centerInParent="true"
+                        android:src="@drawable/img_delete"/>
+                </RelativeLayout>
             </RelativeLayout>
 
 
-            <TextView
-                android:id="@+id/msg"
+            <RelativeLayout
+                android:id="@+id/middle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/top"
-                android:layout_alignLeft="@id/img_recy"
-                android:layout_alignRight="@id/img_recy"
-                android:textColor="@color/black" />
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/img_recy"
-                android:layout_width="360dp"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/msg"
-                android:layout_centerHorizontal="true"
                 >
+                <TextView
+                    android:id="@+id/msg"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@id/img_recy"
+                    android:layout_alignRight="@id/img_recy"
+                    android:layout_marginBottom="5dp"
+                    android:textColor="@color/black" />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/img_recy"
+                    android:layout_width="360dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/msg"
+                    android:layout_centerHorizontal="true"
+                    >
 
-            </androidx.recyclerview.widget.RecyclerView>
+                </androidx.recyclerview.widget.RecyclerView>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/img_recy_four"
+                    android:layout_width="240dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/msg"
+                    android:layout_marginLeft="30dp"
+                    >
 
-            <LinearLayout
+                </androidx.recyclerview.widget.RecyclerView>
+            </RelativeLayout>
+
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/img_recy"
-                android:orientation="horizontal"
-                android:layout_alignLeft="@+id/img_recy"
+                android:layout_below="@+id/middle"
+                android:layout_marginLeft="20dp"
                 >
 
                 <RelativeLayout
                     android:id="@+id/comment"
-                    android:layout_width="100dp"
+                    android:layout_width="60dp"
                     android:layout_height="40dp"
-                    android:layout_alignParentRight="true">
+                    android:layout_toLeftOf="@id/zan">
 
                     <TextView
                         android:id="@+id/comment_num"
@@ -77,21 +104,22 @@
                         android:layout_centerVertical="true"
                         android:layout_marginRight="20dp"
                         android:layout_toRightOf="@id/comment_img"
+                        android:visibility="gone"
                         android:text="144" />
 
                     <ImageView
                         android:id="@+id/comment_img"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
                         android:layout_centerVertical="true"
                         android:layout_alignParentLeft="true"
-                        android:src="@drawable/img_card" />
+                        android:src="@drawable/img_comment" />
 
                 </RelativeLayout>
 
                 <RelativeLayout
                     android:id="@+id/zan"
-                    android:layout_width="100dp"
+                    android:layout_width="60dp"
                     android:layout_height="40dp"
                     android:layout_alignParentRight="true">
 
@@ -100,23 +128,40 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_marginRight="20dp"
+                        android:layout_marginRight="10dp"
                         android:layout_toRightOf="@+id/zan_img"
-                        android:text="144" />
+                        android:text="999" />
 
                     <ImageView
                         android:id="@+id/zan_img"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
+                        android:layout_width="25dp"
+                        android:layout_height="25dp"
                         android:layout_centerVertical="true"
                         android:src="@drawable/zan" />
 
                 </RelativeLayout>
 
 
-            </LinearLayout>
+            </RelativeLayout>
         </RelativeLayout>
-    </androidx.cardview.widget.CardView>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            >
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/comment_recy"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:background="@color/white">
+
+            </androidx.recyclerview.widget.RecyclerView>
+        </RelativeLayout>
+
 
 
 

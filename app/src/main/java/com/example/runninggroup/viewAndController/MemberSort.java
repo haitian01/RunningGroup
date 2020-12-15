@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.runninggroup.R;
 import com.example.runninggroup.cache.Cache;
@@ -26,14 +27,18 @@ import com.example.runninggroup.util.ImgNameUtil;
 import com.example.runninggroup.viewAndController.adapter.MemberAdapter;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 
 public class MemberSort extends AppCompatActivity implements UserController.UserControllerInterface, FileController.FileControllerInterface {
-    TextView rankingTxt, usernameTxt, sortedTxt, firstNameTxt;
+    TextView rankingTxt, usernameTxt, sortedTxt, firstNameTxt, sortedTitleTxt;
     ImageView myHeadImg, firstHeadImg, backHeadImg;
     RelativeLayout titleRela;
     ListView memberList;
     List<User> mUsers = new ArrayList<>();
+    private MemberAdapter memeberAdapter;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
     private UserController mUserController = new UserController(this);
     private FileController mFileController = new FileController(this);
     @Override
@@ -53,9 +58,30 @@ public class MemberSort extends AppCompatActivity implements UserController.User
                 intent.putExtra("fromActivity", ConstantUtil.MEMBER_SORT);
                 startActivity(intent);
 
+            }
+        });
+
+        sortedTitleTxt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String sortedString = sortedTitleTxt.getText().toString();
+                if ("里程".equals(sortedString)) sortedTitleTxt.setText("分数");
+                else sortedTitleTxt.setText("里程");
+                selectUserByUserBack(mUsers);
 
             }
         });
+
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                selectTeamUser();
+            }
+        });
+
+
+
+
     }
 
     private void initView() {
@@ -68,17 +94,26 @@ public class MemberSort extends AppCompatActivity implements UserController.User
         memberList = findViewById(R.id.memberList);
         backHeadImg = findViewById(R.id.backImg);
         titleRela = findViewById(R.id.title);
+        mSwipeRefreshLayout = findViewById(R.id.refresh);
+        sortedTitleTxt = findViewById(R.id.sortedTitle);
 
-        //
 
-        memberList.setAdapter(new MemberAdapter(mUsers, this, "length"));
+        memeberAdapter = new MemberAdapter(mUsers, this, "length");
+        memberList.setAdapter(memeberAdapter);
+
+
+
+        selectTeamUser();
+
+    }
+
+    /**
+     * 查出同一跑团的所有成员
+     */
+    public void selectTeamUser () {
         User user = new User();
         user.setTeam(Cache.user.getTeam());
         mUserController.selectUserByUser(user);
-
-
-
-
     }
 
     @Override
@@ -86,20 +121,50 @@ public class MemberSort extends AppCompatActivity implements UserController.User
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                mSwipeRefreshLayout.setRefreshing(false);
                 if (users == null)
                     Toast.makeText(MemberSort.this, "网络故障", Toast.LENGTH_SHORT).show();
                 else if(users.size() == 0)
                     Toast.makeText(MemberSort.this, "跑团已经解散！", Toast.LENGTH_SHORT).show();
                 else {
-                    mUsers = users;
+                    /**
+                     * 排序
+                     */
+                    String sortedString = sortedTitleTxt.getText().toString();
+
+                    User[] myUsers = new User[users.size()];
+                    for (int i = 0; i < myUsers.length; i++) {
+                        myUsers[i] = users.get(i);
+                    }
+                    Arrays.sort(myUsers, new Comparator<User>() {
+                        @Override
+                        public int compare(User o1, User o2) {
+                            if ("里程".equals(sortedString)) {
+                                if (o1.getLength() == o2.getLength()) return 0;
+                                return o1.getLength() > o2.getLength() ? -1 : 1;
+                            }else {
+                                if (o1.getScore() == o2.getScore()) return 0;
+                                return o1.getScore() > o2.getScore() ? -1 : 1;
+                            }
+                        }
+                    });
+                    mUsers = new ArrayList<>();
+                    for (int i = 0; i < myUsers.length; i++) {
+                        mUsers.add(myUsers[i]);
+                    }
+
+
+                    //根据user数量，设置listview的长度
                     RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, DensityUtil.dip2px(MemberSort.this, mUsers.size() * 90));
                     layoutParams.addRule(RelativeLayout.BELOW, titleRela.getId());
                     memberList.setLayoutParams(layoutParams);
-                    memberList.setAdapter(new MemberAdapter(mUsers, MemberSort.this, "length"));
+                    memberList.setAdapter(new MemberAdapter(mUsers, MemberSort.this, sortedString));
+
                     //设置个人排名
                     rankingTxt.setText(getRanking(Cache.user.getId()) + "");
                     usernameTxt.setText(Cache.user.getUsername());
-                    sortedTxt.setText(Cache.user.getLength() + "m");
+                    if (sortedString.equals("里程")) sortedTxt.setText(Cache.user.getLength() + "公里");
+                    else sortedTxt.setText(Cache.user.getScore() + "分");
                     mUserController.getHeadImg(ImgNameUtil.getUserHeadImgName(Cache.user.getId()));
 
                     //设置封面

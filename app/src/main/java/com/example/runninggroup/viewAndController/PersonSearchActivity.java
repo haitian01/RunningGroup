@@ -23,6 +23,7 @@ import com.example.runninggroup.pojo.Team;
 import com.example.runninggroup.pojo.User;
 import com.example.runninggroup.util.ConstantUtil;
 import com.example.runninggroup.util.StringUtil;
+import com.example.runninggroup.util.WindowsEventUtil;
 import com.example.runninggroup.viewAndController.adapter.FriendsAdapter;
 import com.example.runninggroup.viewAndController.adapter.MemberAdapter;
 import com.example.runninggroup.viewAndController.adapter.SearchAdapter;
@@ -84,8 +85,7 @@ public class PersonSearchActivity extends AppCompatActivity implements UserContr
         cancelText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), SearchActivity.class);
-                startActivity(intent);
+                WindowsEventUtil.systemBack();
             }
         });
         searchListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

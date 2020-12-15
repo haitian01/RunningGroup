@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -27,15 +28,14 @@ import java.io.File;
 
 public class PersonalSetting extends AppCompatActivity implements UserController.UserControllerInterface {
     String username;
-    private String img_src;
     private final int SELECT_PHOTO = 2;
     private final int WRITE_EXTERNAL_STORAGE_REQUEST_CODE = 1;
     private final int REQUESTCODE_CUTTING = 3;
+    private Runtime mRuntime = Runtime.getRuntime();
     ListView mListView;
     ImageView backImg;
     File file;
     Uri mImageUri;
-    int viewPagerNum;
     UserController mUserController = new UserController(this);
     final int CHANGE_HEAD = 0;
     final int CHANGE_NAME = 1;
@@ -44,17 +44,12 @@ public class PersonalSetting extends AppCompatActivity implements UserController
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_personalsetting);
+        setContentView(R.layout.activity_personal_setting);
         initView();
         initEvent();
     }
 
-    @Override
-    protected void onNewIntent(Intent intent) {
-        super.onNewIntent(intent);
-        viewPagerNum = intent.getIntExtra("viewPagerNum", 0);
-        System.out.println("<--------------" + viewPagerNum);
-    }
+
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
@@ -169,9 +164,10 @@ public class PersonalSetting extends AppCompatActivity implements UserController
         backImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(PersonalSetting.this, MainInterface.class);
-                intent.putExtra("viewPagerNum", viewPagerNum);
-                startActivity(intent);
+                try {
+                    mRuntime.exec("input keyevent " + KeyEvent.KEYCODE_BACK);
+                } catch (Exception e) {
+                }
             }
         });
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -195,7 +191,7 @@ public class PersonalSetting extends AppCompatActivity implements UserController
                         break;
                     case CHANGE_NAME:
                         AlertDialog.Builder builder2 = new AlertDialog.Builder(PersonalSetting.this);
-                        View view2 = getLayoutInflater().inflate(R.layout.helper_changename,null);
+                        View view2 = getLayoutInflater().inflate(R.layout.helper_change_name,null);
                         EditText newNameEdt = view2.findViewById(R.id.newName);
                         builder2.setView(view2)
                                 .setPositiveButton("确定", new DialogInterface.OnClickListener() {
@@ -237,14 +233,6 @@ public class PersonalSetting extends AppCompatActivity implements UserController
                                 }).create().show();
                         break;
                 }
-            }
-        });
-    }
-    public void makeToast(String msg){
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Toast.makeText(PersonalSetting.this, msg, Toast.LENGTH_SHORT).show();
             }
         });
     }

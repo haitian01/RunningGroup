@@ -25,12 +25,11 @@ import com.example.runninggroup.viewAndController.adapter.TeamAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FragmentTeamSearch extends Fragment implements TeamController.TeamControllerInterface, UserController.UserControllerInterface {
+public class FragmentTeamSearch extends Fragment implements TeamController.TeamControllerInterface{
     View view;
     ListView mListView;
     List<Team> teamList = new ArrayList<>();
     TeamController mTeamController = new TeamController(this);
-    private UserController mUserController = new UserController(this);
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -17,16 +17,10 @@ public class ImgNameUtil {
     public static String getCircleImgName(int id, int position){
         return "circle_" + id + "_" + position;
     }
-    //获取跑团某条任务的图片
-    public static String getTaskImgName(String admin,long task_time){
-        return "task_"+admin+"_"+task_time;
+
+    //获取跑团公告
+    public static String getNoticeImgName(int id, int position){
+        return "notice_" + id + "_" + position;
     }
-    //获取跑团招募的图片
-    public static String getCallImgName(String admin,long task_time){
-        return "call_"+admin+"_"+task_time;
-    }
-    //获取打卡图片
-    public static String getCardImgName(String username,long begin_time){
-        return "call_"+username+"_"+begin_time;
-    }
+
 }

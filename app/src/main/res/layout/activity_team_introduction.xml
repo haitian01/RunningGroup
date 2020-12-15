@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent"
-    >
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <ImageView
         android:id="@+id/backImg"
         android:layout_width="match_parent"
@@ -10,10 +11,11 @@
         android:src="@drawable/backimg"/>
     <ImageView
         android:id="@+id/back"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
         android:src="@drawable/back"
-
+        android:layout_marginTop="35dp"
+        android:layout_marginLeft="5dp"
         />
     <RelativeLayout
         android:layout_width="wrap_content"
@@ -32,7 +34,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@id/teamImg"
-            android:text="祸害联盟"
+            android:text="teamName"
             android:textColor="@color/white"
             android:textSize="20dp"
             android:layout_marginLeft="5dp"
@@ -44,101 +46,140 @@
             android:layout_height="wrap_content"
             android:layout_toRightOf="@id/teamImg"
             android:textSize="15dp"
-            android:text="15630761"
+            android:text="teamRegisterNum"
             android:textColor="@color/white"
             android:layout_below="@id/teamName"
             android:layout_marginTop="5dp"
             android:layout_marginLeft="5dp"/>
     </RelativeLayout>
-    <LinearLayout
-        android:id="@+id/teamMsg"
+
+
+
+
+    <RelativeLayout
+        android:id="@+id/team"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_below="@id/backImg"
-        android:layout_marginBottom="10dp"
-        android:layout_marginTop="10dp">
+        android:minHeight="40dp"
+        android:clickable="true"
+        android:background="@drawable/selector_white_to_gray"
+        android:layout_below="@id/backImg">
         <TextView
-            android:id="@+id/leader"
+            android:id="@+id/msg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="leader"
+            android:text="跑团信息"
             android:textColor="@color/black"
+            android:textSize="16dp"
             android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
             />
-        <TextView
-            android:id="@+id/campus"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/teamMsg"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="campus"
-            android:textColor="@color/black"
-            android:layout_marginLeft="20dp"
-            />
-        <TextView
-            android:id="@+id/college"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="college"
-            android:textColor="@color/black"
-            android:layout_marginLeft="20dp"
-            />
-        <TextView
-            android:id="@+id/size"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="size"
-            android:textColor="@color/black"
-            android:layout_marginLeft="20dp"
-            />
-        <TextView
-            android:id="@+id/length"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="length"
-            android:textColor="@color/black"
-            android:layout_marginLeft="20dp"
-            />
-        <TextView
-            android:id="@+id/score"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="score"
-            android:textColor="@color/black"
-            android:layout_marginLeft="20dp"
-            />
-        <TextView
-            android:id="@+id/buildTime"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="buildTime"
-            android:textColor="@color/black"
-            android:layout_marginLeft="20dp"
-            />
-    </LinearLayout>
+            android:orientation="vertical"
+            android:layout_below="@id/msg"
+            android:layout_alignLeft="@id/msg"
+            android:layout_toLeftOf="@+id/msg_img"
+            >
+            <TextView
+                android:id="@+id/leader"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="leader"
+                android:layout_marginLeft="20dp"
+                />
+            <TextView
+                android:id="@+id/campus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="campus"
+                android:layout_marginLeft="20dp"
+                />
+            <TextView
+                android:id="@+id/college"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="college"
+                android:layout_marginLeft="20dp"
+                />
+            <TextView
+                android:id="@+id/size"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="size"
+                android:layout_marginLeft="20dp"
+                />
+            <TextView
+                android:id="@+id/length"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="length"
+                android:layout_marginLeft="20dp"
+                />
+            <TextView
+                android:id="@+id/score"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="score"
+                android:layout_marginLeft="20dp"
+                />
+            <TextView
+                android:id="@+id/buildTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="buildTime"
+                android:layout_marginLeft="20dp"
+                />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/msg_img"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/img_right"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"/>
+    </RelativeLayout>
 
     <LinearLayout
         android:id="@+id/teamFunction"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/teamMsg"
-        android:background="@color/white"
+        android:layout_below="@+id/team"
         android:orientation="vertical">
         <RelativeLayout
-            android:id="@+id/teamTask"
+            android:id="@+id/teamNotice"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="wrap_content"
+            android:minHeight="40dp"
             android:clickable="true"
             android:background="@drawable/selector_white_to_gray">
             <TextView
+                android:id="@+id/notice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="跑团公告"
                 android:textColor="@color/black"
                 android:textSize="16dp"
                 android:layout_marginLeft="20dp"
-                android:layout_centerVertical="true"
                 />
+            <TextView
+                android:id="@+id/notice_msg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@id/notice"
+                android:layout_toLeftOf="@id/img"
+                android:textSize="13dp"
+                android:maxLines="3"
+                android:ellipsize="end"
+                android:layout_marginLeft="20dp"
+                android:lineSpacingMultiplier="1.25"
+                android:layout_below="@id/notice"/>
             <ImageView
+                android:id="@+id/img"
                 android:layout_width="15dp"
                 android:layout_height="15dp"
                 android:layout_alignParentRight="true"

@@ -1,12 +1,15 @@
 package com.example.runninggroup.viewAndController.adapter;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -15,9 +18,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.runninggroup.R;
 import com.example.runninggroup.cache.Cache;
+import com.example.runninggroup.controller.CommentController;
+import com.example.runninggroup.pojo.Comment;
 import com.example.runninggroup.pojo.FriendCircle;
 import com.example.runninggroup.request.ImgGet;
 import com.example.runninggroup.util.ImgNameUtil;
+import com.example.runninggroup.viewAndController.CardPersonal;
+import com.example.runninggroup.viewAndController.FriendMessage;
 
 import java.util.List;
 
@@ -29,9 +36,29 @@ public class FriendCircleAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     ControllerOnClickListener controllerOnClickListener;
     private ImgBackListener imgBackListener;
     private Activity mActivity;
+    private CommentOnClickListener commentOnClickListener;
     public FriendCircleAdapter (List<FriendCircle> list, Activity activity) {
         mList = list;
         mActivity = activity;
+    }
+
+    /**
+     * 评论点击事件接口
+     */
+    public interface CommentOnClickListener {
+        //评论点击事件
+        void messageOnClick (Comment comment, InnerHolder innerHolder);
+        //评论长按
+        void messageOnLongClick (Comment comment, InnerHolder innerHolder);
+        //from
+        void fromOnClick(Comment comment, InnerHolder innerHolder);
+        //to
+        void toOnClick(Comment comment, InnerHolder innerHolder);
+
+
+    }
+    public void setCommentOnClickListener (CommentOnClickListener commentOnClickListener) {
+        this.commentOnClickListener = commentOnClickListener;
     }
 
     //上拉刷新
@@ -50,6 +77,12 @@ public class FriendCircleAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         default void zanOnClick(InnerHolder innerHolder){};
         //评论
         default void commentOnClick(InnerHolder innerHolder){};
+
+        /**
+         * 右上角叉号点击事件
+         * @param innerHolder
+         */
+        void deleteOnClick(InnerHolder innerHolder);
     }
     //设置控件点击事件
     public void setControllerOnClickListener (ControllerOnClickListener controllerOnClickListener) {
@@ -106,15 +139,20 @@ public class FriendCircleAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
 
-    public class InnerHolder extends RecyclerView.ViewHolder {
+
+    public class InnerHolder extends RecyclerView.ViewHolder implements CommentController.CommentControllerInterface{
         public FriendCircle mFriendCircle;
-        public RelativeLayout zan, comment;
+        public RelativeLayout zan, comment, delete;
         public ImageView headImg, zanImg;
         public TextView username;
         public TextView msg;
         public TextView commentNum;
         public TextView zanNum;
-        public RecyclerView imgRecy;
+        public RecyclerView imgRecy,commentRecy;
+        public RecyclerView imgRecyFour;
+        public List<Comment> mCommentList;
+        public CommentAdapter commentAdapter;
+        private CommentController mCommentController = new CommentController(this);
         public InnerHolder(@NonNull View itemView) {
             super(itemView);
             headImg = itemView.findViewById(R.id.headImg);
@@ -126,10 +164,79 @@ public class FriendCircleAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             comment = itemView.findViewById(R.id.comment);
             zanImg = itemView.findViewById(R.id.zan_img);
             imgRecy = itemView.findViewById(R.id.img_recy);
-
-
+            commentRecy = itemView.findViewById(R.id.comment_recy);
+            imgRecyFour = itemView.findViewById(R.id.img_recy_four);
+            delete = itemView.findViewById(R.id.delete);
+            /**
+             * 设置comment的RecycleView
+             */
+            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(mActivity);
+            commentRecy.setLayoutManager(layoutManager);
+            //设置边距
+            ItemDecoration itemDecoration = new ItemDecoration(10);
+            commentRecy.addItemDecoration(itemDecoration);
             initEvent();
 
+
+
+        }
+
+        private void initEvent() {
+            zan.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (controllerOnClickListener != null) controllerOnClickListener.zanOnClick(InnerHolder.this);
+                }
+            });
+
+            comment.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (controllerOnClickListener != null) controllerOnClickListener.commentOnClick(InnerHolder.this);
+                }
+            });
+            delete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (controllerOnClickListener != null) controllerOnClickListener.deleteOnClick(InnerHolder.this);
+                }
+            });
+        }
+
+        @Override
+        public void selectCommentByFriendCircleIdBack(List<Comment> commentList) {
+            mActivity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    mCommentList = commentList;
+                    commentAdapter = new CommentAdapter(mCommentList, mActivity);
+                    /**
+                     * 评论点击事件
+                     */
+                    commentAdapter.setCommentOnClickListener(new CommentAdapter.CommentOnClickListener() {
+                        @Override
+                        public void messageOnClick(Comment comment) {
+                            if (commentOnClickListener != null) commentOnClickListener.messageOnClick(comment, InnerHolder.this);
+                        }
+
+                        @Override
+                        public void messageOnLongClick(Comment comment) {
+                            if (commentOnClickListener != null) commentOnClickListener.messageOnLongClick(comment, InnerHolder.this);
+                        }
+
+                        @Override
+                        public void fromOnClick(Comment comment) {
+                            if (commentOnClickListener != null) commentOnClickListener.fromOnClick(comment, InnerHolder.this);
+                        }
+
+                        @Override
+                        public void toOnClick(Comment comment) {
+                            if (commentOnClickListener != null) commentOnClickListener.toOnClick(comment, InnerHolder.this);
+                        }
+                    });
+                    commentRecy.setAdapter(commentAdapter);
+                }
+            });
         }
 
         private void setZanImg(FriendCircle friendCircle) {
@@ -149,20 +256,17 @@ public class FriendCircleAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
         }
 
-        private void initEvent() {
-            zan.setOnClickListener(new View.OnClickListener() {
+        private void initEventWithData() {
+
+            headImg.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (controllerOnClickListener != null) controllerOnClickListener.zanOnClick(InnerHolder.this);
+                    Cache.friend = mFriendCircle.getUser();
+                    Intent intent = new Intent(mActivity, FriendMessage.class);
+                    mActivity.startActivity(intent);
                 }
             });
 
-            comment.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (controllerOnClickListener != null) controllerOnClickListener.commentOnClick(InnerHolder.this);
-                }
-            });
         }
 
         public void setData(FriendCircle friendCircle) {
@@ -175,9 +279,22 @@ public class FriendCircleAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             setHeadImg(friendCircle);
 
 
+            /**
+             * 如果用户id == 动态id deleteImg显示
+             */
+            if (Cache.user.getId() == friendCircle.getUser().getId()) delete.setVisibility(View.VISIBLE);
+
+
+            //获取评论
+            mCommentController.selectCommentByFriendCircleId(friendCircle);
+
+
+            /**
+             * 动态图片的adapter设置 CircleImgAdapter
+             */
+
             //设置adapter
             CircleImgAdapter circleImgAdapter = new CircleImgAdapter(mFriendCircle, mActivity);
-            imgRecy.setAdapter(circleImgAdapter);
             GridLayoutManager gridLayoutManager = null;
             int num = friendCircle.getImgNum();
 
@@ -185,10 +302,33 @@ public class FriendCircleAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             //2-3张  3*n
             //4张  2*2
             //5 - 9 3*n
-            if (num <= 3 || (num >= 5 && num <= 9)) gridLayoutManager = new GridLayoutManager(mActivity, 3);
-            else if (num == 4) gridLayoutManager = new GridLayoutManager(mActivity, 2);
-            imgRecy.setLayoutManager(gridLayoutManager);
+            if (num == 4) {
+                gridLayoutManager = new GridLayoutManager(mActivity, 2);
+                imgRecyFour.setAdapter(circleImgAdapter);
+                imgRecyFour.setLayoutManager(gridLayoutManager);
+                imgRecyFour.setVisibility(View.VISIBLE);
+                imgRecy.setVisibility(View.GONE);
+            }
+            else {
+                imgRecy.setAdapter(circleImgAdapter);
+                if ((num <= 3 && num > 1) || (num >= 5 && num <= 9)) gridLayoutManager = new GridLayoutManager(mActivity, 3);
+                else if (num == 1) gridLayoutManager = new GridLayoutManager(mActivity, 1);
+                imgRecy.setLayoutManager(gridLayoutManager);
+                imgRecy.setAdapter(circleImgAdapter);
+                imgRecyFour.setVisibility(View.GONE);
+                imgRecy.setVisibility(View.VISIBLE);
+            }
+
+
+
+
+            initEventWithData();
         }
+
+
+
+
+
 
         private void setHeadImg(FriendCircle friendCircle) {
             headImg.setImageResource(friendCircle.getUser().getSex() == 1 ? R.drawable.default_head_m : R.drawable.default_head_w);
@@ -197,7 +337,15 @@ public class FriendCircleAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 public void run() {
                     Drawable drawable = null;
                     if (friendCircle != null && friendCircle.getUser() != null)
-                        drawable = ImgGet.getImg(ImgNameUtil.getUserHeadImgName(friendCircle.getUser().getId()));
+                        for (int i = 0; i < 10; i++) {
+                            if (drawable != null) break;
+                            drawable = ImgGet.getImg(ImgNameUtil.getUserHeadImgName(friendCircle.getUser().getId()));
+                            try {
+                                Thread.sleep(10);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
                     imgBackListener.imgBack(drawable, InnerHolder.this);
 
                 }
@@ -239,6 +387,25 @@ public class FriendCircleAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 loadFail.setVisibility(View.VISIBLE);
             }else if (type == NORMAL) {
                 out.setVisibility(View.GONE);
+            }
+        }
+    }
+    /**
+     * RecycleView设置间距
+     */
+    public class ItemDecoration extends RecyclerView.ItemDecoration {
+        public int it;
+        public ItemDecoration(int it){
+            this.it=it;
+        }
+
+        @Override
+        public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+            outRect.left=it;
+            outRect.right=it;
+            outRect.bottom=it;
+            if(parent.getChildAdapterPosition(view)==0){
+                outRect.top=it;
             }
         }
     }

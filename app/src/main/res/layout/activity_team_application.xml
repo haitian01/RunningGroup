@@ -9,7 +9,7 @@
         >
         <ImageView
             android:id="@+id/back"
-            android:layout_width="50dp"
+            android:layout_width="35dp"
             android:layout_height="wrap_content"
             android:src="@drawable/back"
             />
@@ -31,11 +31,17 @@
             android:textColor="@color/white"
             android:layout_marginRight="10dp"/>
     </RelativeLayout>
-    <ListView
-        android:id="@+id/application"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/top"
-        ></ListView>
+   <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+       android:id="@+id/refresh"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:layout_below="@id/top">
+       <ListView
+           android:id="@+id/application"
+           android:layout_width="match_parent"
+           android:layout_height="match_parent"
+           android:layout_below="@+id/top"
+           ></ListView>
+   </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 </RelativeLayout>

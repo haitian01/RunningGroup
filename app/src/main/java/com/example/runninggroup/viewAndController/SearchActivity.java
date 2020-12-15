@@ -1,16 +1,10 @@
 package com.example.runninggroup.viewAndController;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -23,9 +17,8 @@ import com.example.runninggroup.cache.Cache;
 import com.example.runninggroup.controller.UserController;
 import com.example.runninggroup.pojo.User;
 import com.example.runninggroup.util.StatusBarUtils;
-import com.example.runninggroup.util.StringUtil;
+import com.example.runninggroup.util.WindowsEventUtil;
 import com.example.runninggroup.viewAndController.adapter.MyPagerAdapter;
-import com.example.runninggroup.viewAndController.adapter.SearchAdapter;
 import com.example.runninggroup.viewAndController.fragment.FragmentPersonSearch;
 import com.example.runninggroup.viewAndController.fragment.FragmentTeamSearch;
 
@@ -33,6 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SearchActivity extends AppCompatActivity implements View.OnClickListener, UserController.UserControllerInterface {
+    private ImageView backImg;
     RadioButton personBtn,teamBtn;
     RadioGroup tabGroup;
     ViewPager mViewPager;
@@ -52,12 +46,12 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 if (group.getCheckedRadioButtonId() == R.id.team_tab) {
-                    teamBtn.setBackground(getDrawable(R.drawable.btn_style10));
-                    personBtn.setBackground(null);
+                    teamBtn.setBackground(getDrawable(R.drawable.search_activity_right_btn_checked));
+                    personBtn.setBackground(getDrawable(R.drawable.search_activity_left_btn_unchecked));
                     mViewPager.setCurrentItem(1);
                 }else {
-                    personBtn.setBackground(getDrawable(R.drawable.btn_style9));
-                    teamBtn.setBackground(null);
+                    personBtn.setBackground(getDrawable(R.drawable.search_activity_left_btn_checked));
+                    teamBtn.setBackground(getDrawable(R.drawable.search_activity_right_btn_unchecked));
                     mViewPager.setCurrentItem(0);
                 }
             }
@@ -82,6 +76,13 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
             }
         });
 
+        backImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                WindowsEventUtil.systemBack();
+            }
+        });
+
 
     }
 
@@ -90,6 +91,7 @@ public class SearchActivity extends AppCompatActivity implements View.OnClickLis
         teamBtn = findViewById(R.id.team_tab);
         tabGroup = findViewById(R.id.tabs_rg);
         mViewPager = findViewById(R.id.viewPager);
+        backImg = findViewById(R.id.back);
 
         frgList = new ArrayList<>();
         frgList.add(new FragmentPersonSearch());

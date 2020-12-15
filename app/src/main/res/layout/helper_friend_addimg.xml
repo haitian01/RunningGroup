@@ -9,7 +9,7 @@
             android:id="@+id/add_img"
             android:layout_width="110dp"
             android:layout_height="110dp"
-            android:src="@drawable/gridview_addpic"
+            android:src="@drawable/write_add"
             android:scaleType="centerCrop"
             android:layout_centerInParent="true"
             />

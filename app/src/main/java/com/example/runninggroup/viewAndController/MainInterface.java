@@ -6,11 +6,10 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Rect;
+import android.graphics.Point;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.KeyEvent;
-import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,15 +34,15 @@ import androidx.viewpager.widget.ViewPager;
 import com.example.runninggroup.R;
 import com.example.runninggroup.cache.Cache;
 import com.example.runninggroup.controller.UserController;
-import com.example.runninggroup.pojo.FriendApplication;
 import com.example.runninggroup.pojo.User;
+import com.example.runninggroup.util.ImgNameUtil;
 import com.example.runninggroup.util.StatusBarUtils;
+import com.example.runninggroup.view.WaringDialogWithTwoButton;
 import com.example.runninggroup.viewAndController.adapter.MyPagerAdapter;
 import com.example.runninggroup.viewAndController.fragment.FragmentCard;
 import com.example.runninggroup.viewAndController.fragment.FragmentData;
 import com.example.runninggroup.viewAndController.fragment.FragmentFriendCircle;
 import com.example.runninggroup.viewAndController.fragment.FragmentFriends;
-import com.example.runninggroup.viewAndController.fragment.FragmentGroup;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
@@ -51,12 +50,11 @@ import java.util.List;
 
 public class MainInterface extends AppCompatActivity implements View.OnClickListener, UserController.UserControllerInterface {
     private ViewPager mViewPager;
-    private TabLayout mTabLayout;
     private ImageView mImg_rightSideSetting;
     private ImageView mImg_sideSetting;
     private Button mBtn_exit;
-    private ConstraintLayout mPesonalSetting,mRightSetting;
-    private LinearLayout mLineraLayout;
+    private ConstraintLayout mPersonalSetting,mRightSetting;
+    private LinearLayout mLinearLayout;
     private ListView mListView,mRightList;
     private ImageView personalHead,bigPersonalHead;
     private TextView usernameIn,usernameOut;
@@ -69,6 +67,10 @@ public class MainInterface extends AppCompatActivity implements View.OnClickList
     ArrayList<String> list_Title;
     String username = Cache.user.getUsername();
     UserController mUserController = new UserController(this);
+    /**
+     * 点击位置信息
+     */
+    public Point point = new Point();
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,6 +78,21 @@ public class MainInterface extends AppCompatActivity implements View.OnClickList
         initView();
         initEvent();
     }
+
+    /**
+     * 点击事件拿到point
+     * @param ev
+     * @return
+     */
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        if(ev.getAction() == MotionEvent.ACTION_DOWN){
+            point.x = (int) ev.getRawX();
+            point.y = (int) ev.getRawY();
+        }
+        return super.dispatchTouchEvent(ev);
+    }
+
     //获得头像之后的回调
     @Override
     public void getHeadImgBack(Drawable drawable) {
@@ -137,7 +154,7 @@ public class MainInterface extends AppCompatActivity implements View.OnClickList
         mDialog = new Dialog(MainInterface.this, R.style.Theme_AppCompat_Light_Dialog_Alert);
         personalHead.setImageResource(Cache.user.getSex() == 1 ? R.drawable.default_head_m : R.drawable.default_head_w);
         bigPersonalHead.setImageResource(Cache.user.getSex() == 1 ? R.drawable.default_head_m : R.drawable.default_head_w);
-        mUserController.getHeadImg(Cache.user.getHeadImg());
+        mUserController.getHeadImg(ImgNameUtil.getUserHeadImgName(Cache.user.getId()));
         usernameIn.setText(Cache.user.getUsername());
         usernameOut.setText(Cache.user.getUsername());
     }
@@ -164,15 +181,19 @@ public class MainInterface extends AppCompatActivity implements View.OnClickList
         return super.onKeyDown(keyCode, event);
     }
 
+    @Override
+    public void startActivityForResult(Intent intent, int requestCode) {
+        super.startActivityForResult(intent, requestCode);
+    }
 
     private void initView() {
         mViewPager = findViewById(R.id.viewPager);
         mImg_sideSetting = findViewById(R.id.sideSetting);
         mBtn_exit = findViewById(R.id.button_quit);
         mImg_rightSideSetting = findViewById(R.id.rightSightSetting);
-        mPesonalSetting = findViewById(R.id.personalSetting);
+        mPersonalSetting = findViewById(R.id.personalSetting);
         mRightSetting = findViewById(R.id.rightSetting);
-        mLineraLayout = findViewById(R.id.ll_container);
+        mLinearLayout = findViewById(R.id.ll_container);
         mListView = findViewById(R.id.personalListView);
         mRightList = findViewById(R.id.rightList);
         personalHead = findViewById(R.id.personalImage);
@@ -183,31 +204,44 @@ public class MainInterface extends AppCompatActivity implements View.OnClickList
         cardTab = findViewById(R.id.card_tab);
         friendTab = findViewById(R.id.friend_tab);
         circleTab = findViewById(R.id.circle_tab);
+
+
+
         bigPersonalHead = getImageView(getDrawable(Cache.user.getSex() == 1 ? R.drawable.default_head_m : R.drawable.default_head_w));
         StatusBarUtils.setWindowStatusBarColor(this, R.color.top);
         initFragment();
+        setDrawableTop(getResources().getDrawable(R.drawable.img_data_selected), getResources().getDrawable(R.drawable.img_card), getResources().getDrawable(R.drawable.img_friend), getResources().getDrawable(R.drawable.img_circle));
 
     }
 
-    public void setDrawableTop () {
+
+    public void setDrawableTop (Drawable drawableData, Drawable drawableCard,  Drawable drawableFriend, Drawable drawableTeam) {
 
         RadioButton[] rbs = new RadioButton[4];
         rbs[0] =  (RadioButton) findViewById(R.id.data_tab);
         rbs[1] = (RadioButton)findViewById(R.id.card_tab) ;
         rbs[2] = (RadioButton)findViewById(R.id.friend_tab);
         rbs[3] = (RadioButton)findViewById(R.id.circle_tab);
-        for (RadioButton rb : rbs) {
-            //给每个RadioButton加入drawable限制边距控制显示大小
-            Drawable[] drawables = rb.getCompoundDrawables();
-            //获取drawables
-            Rect rt = new Rect(0, 0, drawables[1].getMinimumWidth()*2/3, drawables[1].getMinimumHeight()*2/3);
-            //定义一个Rect边界
-            drawables[1].setBounds(rt);
 
-            //添加限制给控件
-            rb.setCompoundDrawables(null,drawables[1],null,null);
-        }
+        //定义底部标签图片大小
+        drawableData.setBounds(0, 3, 70, 70);//第一0是距左右边距离，第二0是距上下边距离，第三69长度,第四宽度
+        rbs[0].setCompoundDrawables(null, drawableData, null, null);//只放上面
+
+        drawableCard.setBounds(0, 3, 70, 70);
+        rbs[1].setCompoundDrawables(null,drawableCard, null, null);
+
+        drawableFriend.setBounds(0, 3, 70,70);
+        rbs[2].setCompoundDrawables(null, drawableFriend, null, null);
+
+        drawableTeam.setBounds(0, 3, 70,70);
+        rbs[3].setCompoundDrawables(null, drawableTeam, null, null);
+
     }
+
+
+
+
+
 
     @SuppressLint("ClickableViewAccessibility")
     private void initEvent() {
@@ -215,16 +249,16 @@ public class MainInterface extends AppCompatActivity implements View.OnClickList
         mBtn_exit.setOnClickListener(this);
         mImg_rightSideSetting.setOnClickListener(this);
         personalHead.setOnClickListener(this);
-        mLineraLayout.setOnTouchListener(new View.OnTouchListener() {
+        mLinearLayout.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                mPesonalSetting.setVisibility(View.INVISIBLE);
+                mPersonalSetting.setVisibility(View.INVISIBLE);
                 mRightSetting.setVisibility(View.INVISIBLE);
-                mLineraLayout.setVisibility(View.INVISIBLE);
+                mLinearLayout.setVisibility(View.INVISIBLE);
                 return true;
             }
         });
-        mPesonalSetting.setOnTouchListener(new View.OnTouchListener() {
+        mPersonalSetting.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 return true;
@@ -235,6 +269,11 @@ public class MainInterface extends AppCompatActivity implements View.OnClickList
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 for (int i = 0; i < group.getChildCount(); i++) {
                     if (group.getChildAt(i).getId() == checkedId) {
+                        if (i == 0) setDrawableTop(getResources().getDrawable(R.drawable.img_data_selected), getResources().getDrawable(R.drawable.img_card), getResources().getDrawable(R.drawable.img_friend), getResources().getDrawable(R.drawable.img_circle));
+                        else if (i == 1) setDrawableTop(getResources().getDrawable(R.drawable.img_data), getResources().getDrawable(R.drawable.img_card_selected), getResources().getDrawable(R.drawable.img_friend), getResources().getDrawable(R.drawable.img_circle));
+                        else if (i == 2) setDrawableTop(getResources().getDrawable(R.drawable.img_data), getResources().getDrawable(R.drawable.img_card), getResources().getDrawable(R.drawable.img_friend_selected), getResources().getDrawable(R.drawable.img_circle));
+                        else if (i == 3) setDrawableTop(getResources().getDrawable(R.drawable.img_data), getResources().getDrawable(R.drawable.img_card), getResources().getDrawable(R.drawable.img_friend), getResources().getDrawable(R.drawable.img_circle_selected));
+
                         mViewPager.setCurrentItem(i);
                         return;
                     }
@@ -325,43 +364,40 @@ public class MainInterface extends AppCompatActivity implements View.OnClickList
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.sideSetting:
-                mPesonalSetting.setVisibility(View.VISIBLE);
-                mLineraLayout.setVisibility(View.VISIBLE);
+                mPersonalSetting.setVisibility(View.VISIBLE);
+                mLinearLayout.setVisibility(View.VISIBLE);
                 //设置头像
 
 
                 break;
             case R.id.button_quit:
-                AlertDialog.Builder builder = new AlertDialog.Builder(MainInterface.this);
-                builder.setTitle("退出登录提示：");
-                builder.setMessage("您确定要退出登录状态，并返回到登录界面吗？");
-                builder.setCancelable(false);
-                builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                WaringDialogWithTwoButton waringDialogWithTwoButton = new WaringDialogWithTwoButton(MainInterface.this, "确定退出当前账号吗？", "取消", "确认");
+                waringDialogWithTwoButton.setOnButtonClickListener(new WaringDialogWithTwoButton.OnButtonClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        SharedPreferences sp = getSharedPreferences("user", Context.MODE_PRIVATE);
-                        SharedPreferences.Editor editor = sp.edit();
-                        editor.clear();
-                        editor.apply();
+                    public void right() {
+//                        SharedPreferences sp = getSharedPreferences("user", Context.MODE_PRIVATE);
+//                        SharedPreferences.Editor editor = sp.edit();
+//                        editor.clear();
+//                        editor.apply();
+                        waringDialogWithTwoButton.dismiss();
                         Intent intent = new Intent(MainInterface.this, Login.class);
                         startActivity(intent);
                     }
-                });
-                builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Toast.makeText(MainInterface.this, "运动就是坚持！！", Toast.LENGTH_SHORT).show();
+                    public void left() {
+                        waringDialogWithTwoButton.dismiss();
                     }
                 });
-                builder.show();
+                waringDialogWithTwoButton.show();
                 break;
             case R.id.rightSightSetting:
-                if (mRightSetting.getVisibility() == View.INVISIBLE && mLineraLayout.getVisibility() == View.INVISIBLE) {
+                if (mRightSetting.getVisibility() == View.INVISIBLE && mLinearLayout.getVisibility() == View.INVISIBLE) {
                     mRightSetting.setVisibility(View.VISIBLE);
-                    mLineraLayout.setVisibility(View.VISIBLE);
+                    mLinearLayout.setVisibility(View.VISIBLE);
                 }else {
                     mRightSetting.setVisibility(View.INVISIBLE);
-                    mLineraLayout.setVisibility(View.INVISIBLE);
+                    mLinearLayout.setVisibility(View.INVISIBLE);
                 }
                 break;
 
@@ -380,7 +416,7 @@ public class MainInterface extends AppCompatActivity implements View.OnClickList
         //imageView设置图片
         if (drawable != null)
         iv.setImageDrawable(drawable);
-        else iv.setImageResource(R.mipmap.defaultpic);
+        else iv.setImageResource(R.drawable.img_unload);
         return iv;
     }
     private void makeToast(String msg){
@@ -401,21 +437,23 @@ public class MainInterface extends AppCompatActivity implements View.OnClickList
                 else {
                     Cache.user = users.get(0);
                     if (Cache.user.getTeam() == null) {
-                        android.app.AlertDialog.Builder alertDialog3 = new android.app.AlertDialog.Builder(MainInterface.this);
-                        alertDialog3.setMessage("尚未加入跑团").setPositiveButton("去加入", new DialogInterface.OnClickListener() {
+                        WaringDialogWithTwoButton waringDialogWithTwoButton = new WaringDialogWithTwoButton(MainInterface.this, "尚未加入任何跑团", "去加入", "去创建");
+                        waringDialogWithTwoButton.setOnButtonClickListener(new WaringDialogWithTwoButton.OnButtonClickListener() {
                             @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                Intent intent = new Intent(MainInterface.this, SearchActivity.class);
-                                intent.putExtra("id", 1);
-                                startActivity(intent);
-                            }
-                        }).setNegativeButton("去创建", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
+                            public void right() {
+                                waringDialogWithTwoButton.dismiss();
                                 Intent intent = new Intent(MainInterface.this, GroupBuild.class);
                                 startActivity(intent);
                             }
-                        }).create().show();
+
+                            @Override
+                            public void left() {
+                                waringDialogWithTwoButton.dismiss();
+                                Intent intent = new Intent(MainInterface.this, SearchActivity.class);
+                                startActivity(intent);
+                            }
+                        });
+                       waringDialogWithTwoButton.show();
                     }else {
                         Cache.team = Cache.user.getTeam();
                         Intent intent1 = new Intent(MainInterface.this, TeamIntroduction.class);

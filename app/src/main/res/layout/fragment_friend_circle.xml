@@ -4,16 +4,54 @@
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/reload"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/friend_circle_list"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/gray"
+            android:layout_height="wrap_content"
+            android:background="@color/white1"
             >
 
         </androidx.recyclerview.widget.RecyclerView>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+    <RelativeLayout
+        android:id="@+id/comment_rela"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/gray"
+        android:visibility="gone"
+        >
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/gray"
+            android:layout_centerInParent="true">
+            <EditText
+                android:id="@+id/message"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:paddingBottom="8dp"
+                android:paddingTop="8dp"
+                android:paddingLeft="10dp"
+                android:hint="评论"
+                android:textSize="15dp"
+                android:maxLines="8"
+                android:background="@drawable/comment_edit_style"
+                android:layout_centerVertical="true"/>
+            <Button
+                android:id="@+id/send"
+                android:layout_width="60dp"
+                android:layout_height="35dp"
+                android:text="发送"
+                android:textColor="@color/white"
+                android:layout_toRightOf="@id/message"
+                android:layout_centerVertical="true"
+                android:background="@drawable/comment_send_btn_selector"
+                android:layout_marginLeft="5dp"
+                style="?android:attr/borderlessButtonStyle"/>
+        </RelativeLayout>
+    </RelativeLayout>
 
 
 </RelativeLayout>

@@ -2,7 +2,6 @@ package com.example.runninggroup.viewAndController.adapter;
 
 import android.app.Activity;
 import android.graphics.drawable.Drawable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,17 +9,11 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.recyclerview.widget.RecyclerView;
-
-import com.example.runninggroup.controller.UserController;
 import com.example.runninggroup.dao.FileDao;
-import com.example.runninggroup.dao.UserDao;
-import com.example.runninggroup.model.DaoUser;
 import com.example.runninggroup.pojo.FriendRelation;
-import com.example.runninggroup.viewAndController.helper.FriendsHelper;
 import com.example.runninggroup.R;
+import com.example.runninggroup.util.ImgNameUtil;
 
-import java.util.HashMap;
 import java.util.List;
 
 public class FriendsAdapter extends BaseAdapter {
@@ -56,7 +49,7 @@ public class FriendsAdapter extends BaseAdapter {
         //判断converView是否为空
         ViewHolder viewHolder;
         if (convertView==null){
-            convertView=mInflater.inflate(R.layout.helper_friendshelper,null);
+            convertView=mInflater.inflate(R.layout.helper_friend,null);
             viewHolder=new ViewHolder();
             viewHolder.img=convertView.findViewById(R.id.img);
             viewHolder.name=convertView.findViewById(R.id.name);
@@ -70,7 +63,7 @@ public class FriendsAdapter extends BaseAdapter {
 
 
         viewHolder.img.setImageResource(mList.get(position).getFriend().getSex() == 1 ? R.drawable.default_head_m : R.drawable.default_head_w);
-        setImg(viewHolder, mList.get(position).getFriend().getHeadImg());
+        setImg(viewHolder, ImgNameUtil.getUserHeadImgName(mList.get(position).getFriend().getId()));
         viewHolder.name.setText(mList.get(position).getAlias() != null ? mList.get(position).getAlias() : mList.get(position).getFriend().getUsername());
         viewHolder.group.setText(mList.get(position).getFriend().getTeam() == null ? "无" : mList.get(position).getFriend().getTeam().getTeamName());
 

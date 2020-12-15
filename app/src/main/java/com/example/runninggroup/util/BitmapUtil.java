@@ -1,7 +1,9 @@
 package com.example.runninggroup.util;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -12,11 +14,19 @@ import android.graphics.PorterDuffXfermode;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Environment;
+import android.provider.MediaStore;
+import android.util.Log;
+import android.widget.ImageView;
+
+import com.example.runninggroup.cache.Cache;
+import com.example.runninggroup.viewAndController.MainInterface;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 
 public class BitmapUtil {
@@ -206,38 +216,115 @@ public class BitmapUtil {
         return path;
     }
 
+    public static Bitmap copyFile (String path) {
 
-    /**
-     * 图片按比例大小压缩方法
-     * @param srcPath （根据路径获取图片并压缩）
-     * @return
-     */
-    public static Bitmap getimage(String srcPath) {
-
-        BitmapFactory.Options newOpts = new BitmapFactory.Options();
-        // 开始读入图片，此时把options.inJustDecodeBounds 设回true了
-        newOpts.inJustDecodeBounds = true;
-        Bitmap bitmap = BitmapFactory.decodeFile(srcPath, newOpts);// 此时返回bm为空
-        newOpts.inJustDecodeBounds = false;
-        int w = newOpts.outWidth;
-        int h = newOpts.outHeight;
-        // 现在主流手机比较多是800*480分辨率，所以高和宽我们设置为
-        float hh = 800f;// 这里设置高度为800f
-        float ww = 480f;// 这里设置宽度为480f
-        // 缩放比。由于是固定比例缩放，只用高或者宽其中一个数据进行计算即可
-        int be = 1;// be=1表示不缩放
-        if (w > h && w > ww) {// 如果宽度大的话根据宽度固定大小缩放
-            be = (int) (newOpts.outWidth / ww);
-        } else if (w < h && h > hh) {// 如果高度高的话根据宽度固定大小缩放
-            be = (int) (newOpts.outHeight / hh);
-        }
-        if (be <= 0)
-            be = 1;
-        newOpts.inSampleSize = be;// 设置缩放比例
-        // 重新读入图片，注意此时已经把options.inJustDecodeBounds 设回false了
-        bitmap = BitmapFactory.decodeFile(srcPath, newOpts);
-        return compressImage(bitmap);// 压缩好比例大小后再进行质量压缩
+// 设置参数
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true; // 只获取图片的大小信息，而不是将整张图片载入在内存中，避免内存溢出
+        BitmapFactory.decodeFile(path, options);
+        int height = options.outHeight;
+        int width= options.outWidth;
+//        options.inSampleSize = inSampleSize; // 设置为刚才计算的压缩比例
+//        options.inSampleSize = calculateInSampleSize(options, 480, 800);
+        int min = Math.min(height, width);
+        int inSampleSize = min / 500;
+        options.inSampleSize = inSampleSize;
+        options.inJustDecodeBounds = false; // 计算好压缩比例后，这次可以去加载原图了
+        Bitmap bm = BitmapFactory.decodeFile(path, options); // 解码文件
+        return bm;
     }
+
+
+
+    public static File copyFile(Activity activity, String path, String imgName) {
+        FileOutputStream fs = null;
+        InputStream inStream = null;
+        try {
+            String newPath = activity.getExternalCacheDir().toString() + "/GuanGuan";
+            File file = new File(newPath);
+            System.out.println(file.getPath());
+            if (! file.exists()) { //文件不存在时
+                file.mkdir();
+            }
+            file = new File(newPath, imgName + ".jpg");
+            System.out.println(file.length());
+
+            inStream = new FileInputStream(path); //读入原文件
+            fs = new FileOutputStream(file);
+
+
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inJustDecodeBounds = true; // 只获取图片的大小信息，而不是将整张图片载入在内存中，避免内存溢出
+            BitmapFactory.decodeStream(inStream, null, options);
+            int height = options.outHeight;
+            int width= options.outWidth;
+//            int inSampleSize = 2; // 默认像素压缩比例，压缩为原图的1/2
+//            int minLen = Math.min(height, width); // 原图的最小边长
+//            if(minLen > 100) { // 如果原始图像的最小边长大于100dp（此处单位我认为是dp，而非px）
+//                float ratio = (float)minLen / 100.0f; // 计算像素压缩比例
+//                inSampleSize = (int)ratio;
+//            }
+//            options.inSampleSize = inSampleSize; // 设置为刚才计算的压缩比例
+            if (Math.min(height, width) > 480) options.inSampleSize = calculateInSampleSize(options, width / 8, height / 8);
+            options.inJustDecodeBounds = false; // 计算好压缩比例后，这次可以去加载原图了
+            options.inJustDecodeBounds = false; // 计算好压缩比例后，这次可以去加载原图了
+            Bitmap bm = BitmapFactory.decodeFile(path, options); // 解码文件
+
+           bm.compress(Bitmap.CompressFormat.JPEG, 100, fs);
+
+            return file;
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return null;
+
+        }finally {
+            try {
+                if (fs != null) fs.close();
+                if (inStream != null)  inStream.close();
+            }catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+
+    }
+    public static File copyFile(Activity activity, Bitmap bm, String imgName) {
+        FileOutputStream fs = null;
+        try {
+            String newPath = activity.getExternalCacheDir().toString() + "/GuanGuan";
+            File file = new File(newPath);
+            System.out.println(file.getPath());
+            if (! file.exists()) { //文件不存在时
+                file.mkdir();
+            }
+            file = new File(newPath, imgName + ".jpg");
+            System.out.println(file.length());
+            fs = new FileOutputStream(file);
+            bm.compress(Bitmap.CompressFormat.JPEG, 100, fs);
+            return file;
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return null;
+
+        }finally {
+            try {
+                if (fs != null) fs.close();
+            }catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+
+    }
+
+
+
+
+
 
 
 

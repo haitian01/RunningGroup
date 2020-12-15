@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/notice_item"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp"
+    android:background="@color/white">
+    <RelativeLayout
+        android:id="@+id/top"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+        <TextView
+            android:id="@+id/notice_msg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="新同学你好，我是北邮考研群管理员学长，请配合修改群名片。如果你目前打死，名片格式是：21 计算机*/21网安*；如果你目前大三，名片格式"
+            android:textColor="@color/black"
+            android:lineSpacingMultiplier="1.25"
+            android:textSize="16dp"
+            android:maxLines="3"
+            android:ellipsize="end"
+            android:layout_toLeftOf="@id/notice_img"
+            />
+        <ImageView
+            android:id="@+id/notice_img"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:src="@drawable/img_unload"
+            android:scaleType="centerCrop"
+            android:layout_alignParentRight="true"
+            android:visibility="visible"
+            android:layout_marginLeft="10dp"/>
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/top"
+        android:layout_marginTop="10dp">
+        <TextView
+            android:id="@+id/notice_username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="油条学长（一对一辅导）"
+            android:textSize="12dp"
+            />
+        <TextView
+            android:id="@+id/notice_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2020年10月16日 19:27"
+            android:textSize="12dp"
+            android:layout_toRightOf="@id/notice_username"
+            android:layout_marginLeft="20dp"/>
+    </RelativeLayout>
+
+
+</RelativeLayout>

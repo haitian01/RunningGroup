@@ -102,16 +102,9 @@ public class UserController {
             public void run() {
                 int id = Cache.user.getId();
                 String imgName = ImgNameUtil.getUserHeadImgName(id);
+                boolean res = FileDao.upload(file, imgName);
+                mUserControllerInterface.changeHeadImgBack(res);
 
-                User user = new User();
-                user.setId(id);
-                user.setHeadImg(imgName);
-                boolean res1 = UserDao.updateUser(user);
-                boolean res2 = FileDao.upload(file, imgName);
-                if (res1 && res2) {
-                    Cache.user.setHeadImg(imgName);
-                    mUserControllerInterface.changeHeadImgBack(true);
-                }else mUserControllerInterface.changeHeadImgBack(false);
             }
         }).start();
 
@@ -123,7 +116,11 @@ public class UserController {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                Drawable drawable = FileDao.getImg(imgName);
+                Drawable drawable = null;
+                for (int i = 0; i < 10; i++) {
+                    if (drawable != null) break;
+                    else  drawable = FileDao.getImg(imgName);
+                }
                 mUserControllerInterface.getHeadImgBack(drawable);
             }
         }).start();

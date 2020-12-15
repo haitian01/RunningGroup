@@ -18,8 +18,15 @@ android {
     }
     buildTypes {
         release {
+            //在此添加：
+            lintOptions {
+                checkReleaseBuilds false
+                abortOnError false
+            }
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            shrinkResources false
+            zipAlignEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         debug{}
     }
@@ -69,6 +76,7 @@ dependencies {
     implementation group: 'org.clojars.cbilson', name: 'pinyin4j', version: '2.5.0'
     //图片选择器
     implementation 'com.github.donkingliang:ImageSelector:1.6.0'
+    implementation 'com.noober.floatmenu:common:1.0.2'
 
 
 
