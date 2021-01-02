@@ -41,6 +41,11 @@ android {
     packagingOptions {
         pickFirst 'META-INF/LICENSE.txt' // picks the JavaMail license file
     }
+    sourceSets {
+        main {
+            jniLibs.srcDir 'libs'
+        }
+    }
 }
 repositories {
     jcenter()
@@ -62,7 +67,7 @@ dependencies {
     implementation 'com.alibaba:fastjson:1.1.70.android'
     implementation 'androidx.navigation:navigation-fragment:2.2.2'
     implementation 'androidx.navigation:navigation-ui:2.2.2'
-    implementation files('libs/BaiduLBS_Android.jar')
+
 //    邮件服务
     implementation 'com.sun.mail:android-mail:1.5.5'
     implementation 'com.sun.mail:android-activation:1.5.5'
@@ -77,6 +82,15 @@ dependencies {
     //图片选择器
     implementation 'com.github.donkingliang:ImageSelector:1.6.0'
     implementation 'com.noober.floatmenu:common:1.0.2'
+    //侧滑置顶删除
+    implementation 'com.android.support:recyclerview-v7:21.0.0'
+    implementation 'com.android.support:support-v4:20.+'
+    implementation "com.daimajia.swipelayout:library:1.2.0@aar"
+
+    implementation files('libs\\AMap3DMap_7.7.0_AMapNavi_7.7.1_AMapSearch_7.7.0_AMapTrack_1.3.0_AMapLocation_5.2.0_20201113.jar')
+//    implementation 'com.haibin:calendarview:3.6.8'
+    implementation 'com.haibin:calendarview:3.7.0'
+
 
 
 

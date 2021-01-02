@@ -16,6 +16,7 @@ public class Act implements Serializable {
     private User user;
     private Timestamp beginTime;
     private Timestamp endTime;
+    private String totalTime;
     private Double runLen;
     private String runType;
     private String place;

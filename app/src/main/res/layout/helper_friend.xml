@@ -3,6 +3,7 @@
     android:layout_width="match_parent" android:layout_height="wrap_content"
     android:orientation="vertical">
     <RelativeLayout
+        android:id="@+id/friend_item"
         android:layout_width="match_parent"
         android:layout_height="70dp"
        >
@@ -19,11 +20,22 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="姓名"
-            android:textSize="15dp"
+            android:textSize="16dp"
             android:textColor="#000"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="13dp"
             android:layout_toRightOf="@+id/img"
             android:layout_marginLeft="10dp"/>
+        <TextView
+            android:id="@+id/signature"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="13dp"
+            android:layout_toRightOf="@id/img"
+            android:layout_marginLeft="10dp"
+            android:text="个性签名"
+            android:layout_alignBottom="@id/img"
+            android:layout_marginBottom="4dp"
+            />
         <TextView
             android:id="@+id/group"
             android:layout_width="wrap_content"

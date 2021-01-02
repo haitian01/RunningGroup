@@ -28,10 +28,12 @@ import com.example.runninggroup.controller.TeamController;
 import com.example.runninggroup.controller.UserController;
 import com.example.runninggroup.pojo.FriendRelation;
 import com.example.runninggroup.pojo.Team;
+import com.example.runninggroup.pojo.User;
 import com.example.runninggroup.util.ConstantUtil;
 import com.example.runninggroup.util.ImgNameUtil;
 import com.example.runninggroup.util.StatusBarUtils;
 import com.example.runninggroup.util.WindowsEventUtil;
+import com.example.runninggroup.view.MyDialog;
 import com.example.runninggroup.viewAndController.adapter.FriendMessageAdapter;
 
 import java.io.File;
@@ -41,7 +43,6 @@ public class FriendMessage extends AppCompatActivity implements UserController.U
 
     private TextView aliasText,registerNumText,settingText;
     private ImageView mImageView, backImg, userBackImg;
-    private String alias;
     private UserController mUserController = new UserController(this);
     private FriendRelationController mFriendRelationController = new FriendRelationController(this);
     private FileController mFileController = new FileController(this);
@@ -52,6 +53,7 @@ public class FriendMessage extends AppCompatActivity implements UserController.U
     private final int REQUESTCODE_CUTTING = 3;
     private File file;
     private Uri mImageUri;
+    private MyDialog mMyDialog;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,7 +65,31 @@ public class FriendMessage extends AppCompatActivity implements UserController.U
     @Override
     protected void onResume() {
         super.onResume();
-        mFileController.getImg(ImgNameUtil.getUserBackImgName(Cache.friend.getId()));
+        if (Cache.user != null && Cache.friend != null) {
+            FriendRelation friendRelation = new FriendRelation();
+            User user = new User();
+            User friend = new User();
+            user.setId(Cache.user.getId());
+            friend.setId(Cache.friend.getId());
+            friendRelation.setUser(user);
+            friendRelation.setFriend(friend);
+            mFriendRelationController.getFriendRelation(friendRelation);
+            mFriendRelationController.isMyFriend();
+            mFileController.getImg(ImgNameUtil.getUserBackImgName(Cache.friend.getId()));
+        }
+
+    }
+    @Override
+    public void getFriendRelationBack(List<FriendRelation> friendRelationList) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (friendRelationList != null && friendRelationList.size() > 0 && Cache.friend != null) {
+                    String  alias = friendRelationList.get(0).getAlias();
+                    aliasText.setText(alias == null ? Cache.friend.getUsername() : alias);
+                }
+            }
+        });
     }
 
     @Override
@@ -100,8 +126,8 @@ public class FriendMessage extends AppCompatActivity implements UserController.U
         mImageView = findViewById(R.id.img);
         userBackImg = findViewById(R.id.userBackImg);
         mListView = findViewById(R.id.friend_message);
+        mMyDialog = new MyDialog(this);
         mListView.setAdapter(new FriendMessageAdapter(getLayoutInflater(), Cache.friend));
-        aliasText.setText(alias == null ? Cache.friend.getUsername() : alias);
         registerNumText.setText(Cache.friend.getRegisterNum() + "(" + Cache.friend.getUsername() + ")");
         //透明
         StatusBarUtils.setStatusBarFullTransparent(this);
@@ -118,6 +144,25 @@ public class FriendMessage extends AppCompatActivity implements UserController.U
         addFriend.setOnClickListener(this);
         backImg.setOnClickListener(this);
         userBackImg.setOnClickListener(this);
+        mMyDialog.setOnButtonClickListener(new MyDialog.OnButtonClickListener() {
+            @Override
+            public void camera() {
+                mMyDialog.dismiss();
+            }
+
+            @Override
+            public void gallery() {
+                mMyDialog.dismiss();
+                Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
+                startActivityForResult(intent, SELECT_PHOTO);
+            }
+
+            @Override
+            public void cancel() {
+                mMyDialog.dismiss();
+            }
+        });
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -175,6 +220,8 @@ public class FriendMessage extends AppCompatActivity implements UserController.U
                 WindowsEventUtil.systemBack();
                 break;
             case R.id.setting:
+                Intent intent = new Intent(FriendMessage.this, FriendSettingActivity.class);
+                startActivity(intent);
                 break;
 
             case R.id.add_friend:
@@ -184,19 +231,7 @@ public class FriendMessage extends AppCompatActivity implements UserController.U
             case R.id.userBackImg:
 
                 if (Cache.friend.getId() == Cache.user.getId()) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(FriendMessage.this);
-                    builder.setTitle("请选择头像：");
-                    builder.setMessage("可以通过相机或者相册选取头像。");
-                    builder.setPositiveButton("相册选取", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                            intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
-                            startActivityForResult(intent, SELECT_PHOTO);
-                        }
-                    });
-                    builder.create();
-                    builder.show();
+                    mMyDialog.show();
                 }
                 break;
         }
@@ -246,10 +281,11 @@ public class FriendMessage extends AppCompatActivity implements UserController.U
                     Toast.makeText(FriendMessage.this, "网络故障", Toast.LENGTH_SHORT).show();
                 else if (friendRelationList.size() == 0)  {
                     addFriend.setVisibility(View.VISIBLE);
+                    settingText.setVisibility(View.INVISIBLE);
                 }
                 else {
-                    settingText.setVisibility(View.VISIBLE);
-                    if (friendRelationList.get(0).getAlias() != null) aliasText.setText(friendRelationList.get(0).getAlias());
+                    if (Cache.user != null && Cache.friend != null && Cache.user.getId() != Cache.friend.getId()) settingText.setVisibility(View.VISIBLE);
+                     if (friendRelationList.get(0).getAlias() != null) aliasText.setText(friendRelationList.get(0).getAlias());
                 }
             }
         });

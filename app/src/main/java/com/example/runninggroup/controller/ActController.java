@@ -57,12 +57,12 @@ public class ActController {
     /**
      * 删除Act
      */
-    public void deleteAct (Act act) {
+    public void deleteAct (Act act, int position) {
         new Thread(new Runnable() {
             @Override
             public void run() {
                 boolean res = ActDao.deleteAct(act);
-                mActControllerInterface.deleteActBack(res);
+                mActControllerInterface.deleteActBack(res, position);
             }
         }).start();
     }
@@ -71,6 +71,6 @@ public class ActController {
         default void selectActBack (List<Act> acts){};
         default void addActBack (boolean res){};
         default void updateActBack (boolean res){};
-        default void deleteActBack (boolean res){};
+        default void deleteActBack (boolean res, int position){};
     }
 }

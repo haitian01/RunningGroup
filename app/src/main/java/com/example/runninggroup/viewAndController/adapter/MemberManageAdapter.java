@@ -19,14 +19,12 @@ import com.example.runninggroup.R;
 import com.example.runninggroup.cache.Cache;
 import com.example.runninggroup.controller.TeamController;
 import com.example.runninggroup.controller.UserController;
-import com.example.runninggroup.model.DaoGroup;
-import com.example.runninggroup.model.DaoUser;
 import com.example.runninggroup.pojo.User;
 import com.example.runninggroup.request.ImgGet;
 import com.example.runninggroup.util.ImgNameUtil;
 import com.example.runninggroup.util.PinYinUtil;
 import com.example.runninggroup.viewAndController.MemberManage;
-import com.example.runninggroup.viewAndController.helper.MemberManageHelper;
+
 
 import java.util.Arrays;
 import java.util.Comparator;

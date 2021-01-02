@@ -17,6 +17,10 @@ public class ImgNameUtil {
     public static String getCircleImgName(int id, int position){
         return "circle_" + id + "_" + position;
     }
+    //获取跑团背景图片
+    public static String getTeamBackImgName (int id) {
+        return "team_back_" + id;
+    }
 
     //获取跑团公告
     public static String getNoticeImgName(int id, int position){

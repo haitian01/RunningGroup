@@ -11,6 +11,8 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.runninggroup.R;
@@ -20,6 +22,7 @@ import com.example.runninggroup.controller.TeamApplicationController;
 import com.example.runninggroup.pojo.FriendApplication;
 import com.example.runninggroup.pojo.Team;
 import com.example.runninggroup.pojo.TeamApplication;
+import com.example.runninggroup.view.WaringDialogWithTwoButton;
 import com.example.runninggroup.viewAndController.adapter.FriendApplicationAdapter;
 import com.example.runninggroup.viewAndController.adapter.TeamApplicationAdapter;
 
@@ -27,7 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TeamApplicationActivity extends AppCompatActivity implements TeamApplicationController.TeamApplicationControllerInterface {
-    private ListView applicationList;
+    private RecyclerView applicationList;
     private TeamApplicationController mTeamApplicationController = new TeamApplicationController(this);
     private List<TeamApplication> mTeamApplications = new ArrayList<>();
     private ImageView backImg;
@@ -53,11 +56,19 @@ public class TeamApplicationActivity extends AppCompatActivity implements TeamAp
         clearTxt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                TeamApplication teamApplication = new TeamApplication();
-                Team team = new Team();
-                team.setId(Cache.user.getTeam().getId());
-                teamApplication.setTeam(team);
-                mTeamApplicationController.deleteTeamApplication(teamApplication);
+                WaringDialogWithTwoButton waringDialogWithTwoButton = new WaringDialogWithTwoButton(TeamApplicationActivity.this, "您确定删除所有申请消息吗？", "取消", "确定");
+                waringDialogWithTwoButton.setOnButtonClickListener(new WaringDialogWithTwoButton.OnButtonClickListener() {
+                    @Override
+                    public void right() {
+                        mTeamApplicationController.deleteAllTeamApplication();
+                    }
+
+                    @Override
+                    public void left() {
+                        waringDialogWithTwoButton.dismiss();
+                    }
+                });
+                waringDialogWithTwoButton.show();
             }
         });
 
@@ -85,17 +96,26 @@ public class TeamApplicationActivity extends AppCompatActivity implements TeamAp
          */
         mTeamApplicationAdapter.setBtnOnClickListener(new TeamApplicationAdapter.BtnOnClickListener() {
             @Override
-            public void acceptOnClick(TeamApplicationAdapter.ViewHolder viewHolder) {
+            public void acceptOnClick(TeamApplicationAdapter.InnerHolder viewHolder) {
                 TeamApplication teamApplication = viewHolder.mTeamApplication;
                 mTeamApplicationController.updateTeamApplication(teamApplication.getId(), 2, teamApplication.getUser().getId(), viewHolder);
             }
 
             @Override
-            public void refuseOnClick(TeamApplicationAdapter.ViewHolder viewHolder) {
+            public void refuseOnClick(TeamApplicationAdapter.InnerHolder viewHolder) {
                 TeamApplication teamApplication = viewHolder.mTeamApplication;
                 mTeamApplicationController.updateTeamApplication(teamApplication.getId(), 3, teamApplication.getUser().getId(), viewHolder);
             }
+
+            @Override
+            public void deleteOnClick(int position) {
+                TeamApplication teamApplication = mTeamApplications.get(position);
+                mTeamApplicationController.deleteTeamApplication(teamApplication, position);
+            }
+
         });
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+        applicationList.setLayoutManager(layoutManager);
         applicationList.setAdapter(mTeamApplicationAdapter);
         mTeamApplicationController.getTeamApplication();
 
@@ -110,7 +130,7 @@ public class TeamApplicationActivity extends AppCompatActivity implements TeamAp
      */
 
     @Override
-    public void updateTeamApplicationBack(boolean res, int state, TeamApplicationAdapter.ViewHolder viewHolder) {
+    public void updateTeamApplicationBack(boolean res, int state, TeamApplicationAdapter.InnerHolder viewHolder) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -135,22 +155,44 @@ public class TeamApplicationActivity extends AppCompatActivity implements TeamAp
             public void run() {
                 mSwipeRefreshLayout.setRefreshing(false);
                 if (teamApplications == null) Toast.makeText(TeamApplicationActivity.this, "网络故障", Toast.LENGTH_SHORT).show();
-                else  {
+                else{
+                    if (teamApplications.size() > 0) clearTxt.setVisibility(View.VISIBLE);
                     mTeamApplications.clear();
                     mTeamApplications.addAll(teamApplications);
-                    applicationList.setAdapter(mTeamApplicationAdapter);
+                    mTeamApplicationAdapter.notifyDataSetChanged();
+                }
+            }
+        });
+    }
+
+
+
+    @Override
+    public void deleteTeamApplicationBack(boolean res, int position) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(TeamApplicationActivity.this, res ? "已删除" : "删除失败" , Toast.LENGTH_SHORT).show();
+                if (res)  {
+                    mTeamApplications.remove(position);
+                    mTeamApplicationAdapter.notifyItemRemoved(position);
+                    if (position != mTeamApplications.size()) {
+                        mTeamApplicationAdapter.notifyItemRangeChanged(position, mTeamApplications.size() - position);
+                    }
                 }
             }
         });
     }
 
     @Override
-    public void deleteTeamApplicationBack(boolean res) {
+    public void deleteAllTeamApplicationBack(boolean res) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Toast.makeText(TeamApplicationActivity.this, res ? "success" : "fail" , Toast.LENGTH_SHORT).show();
-                if (res)  mTeamApplicationController.getTeamApplication();
+                Toast.makeText(TeamApplicationActivity.this, res ? "已清空" : "清空失败" , Toast.LENGTH_SHORT).show();
+                if (res)  {
+                    mTeamApplicationController.getTeamApplication();
+                }
             }
         });
     }

@@ -2,6 +2,7 @@ package com.example.runninggroup.cache;
 
 import android.graphics.drawable.Drawable;
 
+import com.example.runninggroup.pojo.Act;
 import com.example.runninggroup.pojo.FriendRelation;
 import com.example.runninggroup.pojo.Team;
 import com.example.runninggroup.pojo.TeamNotice;
@@ -18,4 +19,5 @@ public class Cache {
     public static Team team = new Team();
     public static ConcurrentHashMap<Integer ,Drawable> sDrawables = new ConcurrentHashMap<>();
     public static TeamNotice teamNotice = new TeamNotice();
+    public static Act act;
 }

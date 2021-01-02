@@ -18,9 +18,11 @@ import com.example.runninggroup.controller.FileController;
 import com.example.runninggroup.controller.FriendApplicationController;
 import com.example.runninggroup.controller.TeamApplicationController;
 import com.example.runninggroup.controller.UserController;
+import com.example.runninggroup.util.ConstantUtil;
 import com.example.runninggroup.util.ImgNameUtil;
 import com.example.runninggroup.util.StringUtil;
 import com.example.runninggroup.util.WindowsEventUtil;
+import com.example.runninggroup.view.KyLoadingBuilder;
 
 public class AddTeamActivity extends AppCompatActivity implements View.OnClickListener, FileController.FileControllerInterface, TeamApplicationController.TeamApplicationControllerInterface {
     private ImageView teamImg;
@@ -28,6 +30,9 @@ public class AddTeamActivity extends AppCompatActivity implements View.OnClickLi
     private EditText msgEdt;
     private FileController mFileController = new FileController(this);
     private TeamApplicationController mTeamApplicationController = new TeamApplicationController(this);
+    private KyLoadingBuilder mKyLoadingBuilder;
+    private long startTime;
+    private long endTime;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,7 +81,19 @@ public class AddTeamActivity extends AppCompatActivity implements View.OnClickLi
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Toast.makeText(AddTeamActivity.this, res ? "success" : "网络故障，或者跑团已经不存在！", Toast.LENGTH_SHORT).show();
+                try {
+                    endTime = System.currentTimeMillis();
+                    if (endTime - startTime < ConstantUtil.MAX_KYLOADING_WAIT_TIME) Thread.sleep(ConstantUtil.MAX_KYLOADING_WAIT_TIME - (endTime - startTime));
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                mKyLoadingBuilder.setText(res ? "发送成功" : "发送失败");
+                try {
+                    Thread.sleep(ConstantUtil.MAX_KYLOADING_SHOW_TIME);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                mKyLoadingBuilder.dismiss();
                 if (res) {
                     Intent intent = new Intent(AddTeamActivity.this, TeamIntroduction.class);
                     startActivity(intent);
@@ -89,6 +106,10 @@ public class AddTeamActivity extends AppCompatActivity implements View.OnClickLi
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.send:
+                mKyLoadingBuilder = new KyLoadingBuilder(this);
+                mKyLoadingBuilder.setText("正在发送中...");
+                mKyLoadingBuilder.show();
+                startTime = System.currentTimeMillis();
                 mTeamApplicationController.addTeamApplication(StringUtil.isStringNull(msgEdt.getText().toString()) ? "请求加入跑团" : msgEdt.getText().toString());
                 break;
 

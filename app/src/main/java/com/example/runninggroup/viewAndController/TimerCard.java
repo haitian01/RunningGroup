@@ -1,537 +1,384 @@
 package com.example.runninggroup.viewAndController;
 
-import android.annotation.SuppressLint;
-import android.content.ContentResolver;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
+import android.graphics.Color;
+import android.location.Location;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.Spinner;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.loader.content.CursorLoader;
 
-import com.baidu.location.BDAbstractLocationListener;
-import com.baidu.location.BDLocation;
-import com.baidu.location.BDLocationListener;
-import com.baidu.location.LocationClient;
-import com.baidu.location.LocationClientOption;
-import com.baidu.mapapi.SDKInitializer;
-import com.baidu.mapapi.map.BaiduMap;
-import com.baidu.mapapi.map.BitmapDescriptor;
-import com.baidu.mapapi.map.BitmapDescriptorFactory;
-import com.baidu.mapapi.map.MapStatusUpdate;
-import com.baidu.mapapi.map.MapStatusUpdateFactory;
-import com.baidu.mapapi.map.MapView;
-import com.baidu.mapapi.map.MyLocationData;
-import com.baidu.mapapi.model.LatLng;
-import com.baidu.mapapi.utils.DistanceUtil;
+import com.amap.api.location.AMapLocation;
+import com.amap.api.location.AMapLocationClient;
+import com.amap.api.location.AMapLocationClientOption;
+import com.amap.api.location.AMapLocationListener;
+import com.amap.api.maps.AMap;
+import com.amap.api.maps.AMapUtils;
+import com.amap.api.maps.MapView;
+import com.amap.api.maps.model.LatLng;
+import com.amap.api.maps.model.MyLocationStyle;
+import com.amap.api.maps.model.Polyline;
+import com.amap.api.maps.model.PolylineOptions;
 import com.example.runninggroup.R;
-import com.baidu.mapapi.map.MyLocationConfiguration;
-import com.example.runninggroup.model.DaoAct;
-import com.example.runninggroup.model.DaoUser;
-import com.example.runninggroup.request.ImgUpload;
-import com.example.runninggroup.util.BitmapUtil;
-import com.example.runninggroup.util.CharacterUtil;
+
+import com.example.runninggroup.cache.Cache;
+import com.example.runninggroup.controller.ActController;
+import com.example.runninggroup.pojo.Act;
+import com.example.runninggroup.pojo.User;
+import com.example.runninggroup.util.ConstantUtil;
+import com.example.runninggroup.util.StatusBarUtils;
+import com.example.runninggroup.util.StringUtil;
 import com.example.runninggroup.util.TimerUtil;
+import com.example.runninggroup.view.KyLoadingBuilder;
+import com.example.runninggroup.view.WaringDialogWithTwoButton;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
-public class TimerCard extends AppCompatActivity implements View.OnClickListener {
-    private MapView mMapView;
-    private LocationClient locationClient;
-    private LocationClientOption locationOption;
-    private BaiduMap baiduMap;
-    private boolean firstLocation;
-    private MyLocationConfiguration config;
-    Button mButton,startBtn,stopBtn;
-    TextView startText,stopText,lengthText,timeText;
-    ImageView mImageView;
-    //纬度
-    double latitude;
-    //经度
-    double longitude;
-    String addr;    //获取详细地址信息
-    String country;    //获取国家
-    String province;    //获取省份
-    String city;    //获取城市
-    String district;    //获取区县
-    String street;   //获取街道信息
-    String adcode;    //获取adcode
-    String town;    //获取乡镇信息
-    LatLng mLatLng;
-    double distance;
+
+public class TimerCard extends AppCompatActivity implements AMapLocationListener, ActController.ActControllerInterface {
+    private ActController mActController = new ActController(this);
+    private MapView mMapView = null;
+    private TextView timeTxt;
+    private TextView speedTxt; //配速
+    private TextView distanceTxt;
+    private AMap aMap; //地图控制器对象
+    private  MyLocationStyle myLocationStyle;//定位
+    private double mLatitude; //经度
+    private double mLongitude; //经度
+    private double distance; //跑步距离
+    public AMapLocationClient mLocationClient; //声明mlocationClient对象
+    public AMapLocationClientOption mLocationOption; //声明mLocationOption对象
     boolean start = false;
-    TimeThread timeThread;
-    String username;
-    long beginTime;
-    long endTime;
-    String begin_place;
-    String end_place;
-    Spinner spinner;
-    private String[] act_type={"常规跑步","全马/半马","校比赛"};
-    private double score = 0;
-    String type;
-    String sex;
-    long length;
-    File mFile;
-    Bitmap bitmap;
-    private String img_src;
-    private final int SELECT_PHOTO = 2;
+    private long second = 0;
+    private Button startBtn, endBtn;
+    boolean end = false;
+    TimerUtil mTimerUtil;
+    private KyLoadingBuilder kyLoadingBuilder;
+    private long sTime;
+    private long eTime;
+    private Timestamp startTime = new Timestamp(System.currentTimeMillis());
+    private Timestamp endTime = new Timestamp(System.currentTimeMillis());//结束时间
+    private String totalTime = "00:00:00"; // 总时间
+    private double runLen = 0;
+    private String place = "未记录"; // 地点
+
+
+
+
+
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        SDKInitializer.initialize(getApplicationContext());
         setContentView(R.layout.activity_timercard);
-        initView();
-        initvent();
+
+
+        initView(savedInstanceState);
+        initEvent();
     }
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-        super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode) {
-            case SELECT_PHOTO:
-                switch (resultCode) {
-                    case RESULT_OK:
-                        new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                Uri uri = data.getData();
-                                img_src = uri.getPath();//这是本机的图片路径
-
-                                ContentResolver cr = getContentResolver();
-                                try {
-                                    InputStream inputStream = cr.openInputStream(uri);
-                                    bitmap = BitmapFactory.decodeStream(inputStream);
-                                    inputStream.close();
-
-                                    String[] proj = {MediaStore.Images.Media.DATA};
-                                    CursorLoader loader = new CursorLoader(TimerCard.this, uri, proj, null, null, null);
-                                    Cursor cursor = loader.loadInBackground();
-                                    if (cursor != null) {
-                                        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-                                        cursor.moveToFirst();
-
-                                        img_src = cursor.getString(column_index);//图片实际路径
-
-                                    }
-                                    cursor.close();
-                                    runOnUiThread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            mImageView.setImageBitmap(bitmap);
-                                        }
-                                    });
-
-
-                                } catch (FileNotFoundException e) {
-                                    Log.e("Exception", e.getMessage(), e);
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }
-
-                            }
-                        }).start();
-
-                        break;
-                }
-                break;
-
-
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        if (event.getKeyCode() == KeyEvent.KEYCODE_BACK ) {
+            //do something.
+            return true;
+        } else {
+            return super.dispatchKeyEvent(event);
         }
-
     }
 
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
+    public void addActBack(boolean res) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(TimerCard.this, res ? "打卡成功" : "打卡失败", Toast.LENGTH_SHORT).show();
+                if (res) {
+                    try {
+                        eTime = System.currentTimeMillis();
+                        if (eTime - sTime < ConstantUtil.MAX_KYLOADING_WAIT_TIME) Thread.sleep(ConstantUtil.MAX_KYLOADING_WAIT_TIME - (eTime - sTime));
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    kyLoadingBuilder.dismiss();
+                    Intent intent = new Intent(TimerCard.this, MainInterface.class);
+                    startActivity(intent);
+                }
 
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            Intent intent = new Intent(TimerCard.this,MainInterface.class);
-            intent.putExtra("id",1);
-            intent.putExtra("username",username);
-            startActivity(intent);
-            return true;
-        }
-        return super.onKeyDown(keyCode, event);
+            }
+        });
     }
 
-    private void initvent() {
-        mButton.setOnClickListener(this);
+    private void initEvent() {
 
-        startBtn.setOnClickListener(this);
-        Drawable sbtn = getResources().getDrawable(R.drawable.kaishi);
-        sbtn.setBounds(16,0,100,100);
-        startBtn.setCompoundDrawables(sbtn,null,null,null);
-
-        stopBtn.setOnClickListener(this);
-        Drawable pbtn = getResources().getDrawable(R.drawable.jieshu);
-        pbtn.setBounds(20,0,100,100);
-        stopBtn.setCompoundDrawables(pbtn,null,null,null);
-
-        Drawable rbtn = getResources().getDrawable(R.drawable.houtaituichufanhuichu);
-        rbtn.setBounds(30,0,110,100);
-
-
-        mImageView.setOnClickListener(this);
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        startBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                type = act_type[position];
+            public void onClick(View v) {
+                start = !start;
+                if (start) {
+                    if (! end) {
+                        if (startBtn.getText().toString().equals("开始")) {
+                            startTime = new Timestamp(System.currentTimeMillis());
+                        }
+                        startBtn.setText("暂停");
+                        startTimer();
+                    }
+                }
+                else {
+
+                    if (! end) {
+                        startBtn.setText("继续");
+                        stopTimer();
+                    }
+                }
+
+
             }
-
+        });
+        endBtn.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                type = act_type[0];
+            public void onClick(View v) {
+                endTime = new Timestamp(System.currentTimeMillis());
+                totalTime = timeTxt.getText().toString();
+                runLen = Double.parseDouble(distanceTxt.getText().toString());
+                if (runLen == 0) {
+                    WaringDialogWithTwoButton waringDialogWithTwoButton = new WaringDialogWithTwoButton(TimerCard.this,"运动里程过短，结束将不计入跑步记录", "继续跑步", "确认结束");
+                    waringDialogWithTwoButton.setOnButtonClickListener(new WaringDialogWithTwoButton.OnButtonClickListener() {
+                        @Override
+                        public void right() {
+                            waringDialogWithTwoButton.dismiss();
+                            end = true;
+                            stopTimer();
+                            stopLocation();
+                            Intent intent = new Intent(TimerCard.this, MainInterface.class);
+                            startActivity(intent);
+                        }
+
+                        @Override
+                        public void left() {
+                            waringDialogWithTwoButton.dismiss();
+                        }
+                    });
+                    waringDialogWithTwoButton.show();
+                }
+                else {
+                    if (Cache.user != null) {
+                        end = true;
+                        stopTimer();
+                        stopLocation();
+
+                        sTime = System.currentTimeMillis();
+                        kyLoadingBuilder = new KyLoadingBuilder(TimerCard.this);
+                        kyLoadingBuilder.setText("发表中...");
+                        kyLoadingBuilder.show();
+
+                        Act act = new Act();
+                        User user = new User();
+                        user.setId(Cache.user.getId());
+                        act.setBeginTime(startTime);
+                        act.setEndTime(endTime);
+                        act.setRunLen(runLen);
+                        act.setPlace(place);
+                        act.setTotalTime(timeTxt.getText().toString());
+                        act.setUser(user);
+                        mActController.addAct(act);
+                    }
+                }
             }
         });
 
+
     }
 
-    private void initView() {
-        username = getIntent().getStringExtra("username");
-        //性别
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                sex = DaoUser.getSex(username);
-            }
-        }).start();
-        spinner = findViewById(R.id.act_type);
-        mButton = findViewById(R.id.card_personal);
-        startBtn = findViewById(R.id.start_run);
-        startText = findViewById(R.id.start_position);
-        stopText = findViewById(R.id.stop_position);
-        lengthText = findViewById(R.id.length);
-        timeText = findViewById(R.id.act_time);
-        stopBtn = findViewById(R.id.stop_run);
-        mMapView = findViewById(R.id.map);
-        mImageView = findViewById(R.id.img);
-        baiduMap = mMapView.getMap();
-        // 定位初始化
-        locationClient = new LocationClient(this);
-        firstLocation =true;
-        // 设置定位的相关配置
-        LocationClientOption option = new LocationClientOption();
-        option.setIsNeedAddress(true);
-        option.setLocationMode(LocationClientOption.LocationMode.Hight_Accuracy);
-        option.setOpenGps(true);
-        option.setCoorType("bd09ll"); // 设置坐标类型
-        option.setScanSpan(1000);
-        locationClient.setLocOption(option);
-
-        // 设置自定义图标
-//        BitmapDescriptor myMarker = BitmapDescriptorFactory
-//                .fromResource(R.drawable.navi_map);
-//        MyLocationConfigeration config = new MyLocationConfigeration(
-//                MyLocationConfigeration.LocationMode.FOLLOWING, true, myMarker);
+    private void initView(@Nullable Bundle savedInstanceState) {
+        startBtn = findViewById(R.id.startBtn);
+        endBtn = findViewById(R.id.endBtn);
+        timeTxt = findViewById(R.id.time);
+        distanceTxt = findViewById(R.id.distance);
+        speedTxt = findViewById(R.id.speed);
+        //全屏显示
+        StatusBarUtils.setStatusBarFullTransparent(this);
 
 
-        locationClient.registerLocationListener(new MyLocationListener());
-    }
 
-    @Override
-    protected void onStart()
-    {
-        // 如果要显示位置图标,必须先开启图层定位
-        baiduMap.setMyLocationEnabled(true);
-        if (!locationClient.isStarted())
-        {
-            locationClient.start();
+
+        mMapView =  findViewById(R.id.map);  //获取地图控件引用
+        mMapView.onCreate(savedInstanceState); //在activity执行onCreate时执行mMapView.onCreate(savedInstanceState)，创建地图
+        mMapView = findViewById(R.id.map); //定义了一个地图view
+        mMapView.onCreate(savedInstanceState);// 此方法须覆写，虚拟机需要在很多情况下保存地图绘制的当前状态。
+        //初始化地图控制器对象
+        //        AMap aMap;
+        if (aMap == null) {
+            aMap = mMapView.getMap();
         }
-        super.onStart();
+
+
+        mLocationClient = new AMapLocationClient(this);
+
+        mLocationOption = new AMapLocationClientOption(); //初始化定位参数
+
+        mLocationClient.setLocationListener(this); //设置定位监听
+        mLocationOption.setLocationMode(AMapLocationClientOption.AMapLocationMode.Hight_Accuracy);//设置定位模式为高精度模式，Battery_Saving为低功耗模式，Device_Sensors是仅设备模式
+        mLocationOption.setInterval(2000);//设置定位间隔,单位毫秒,默认为2000ms
+        mLocationClient.setLocationOption(mLocationOption);//设置定位参数
+        // 此方法为每隔固定时间会发起一次定位请求，为了减少电量消耗或网络流量消耗，
+        // 注意设置合适的定位时间的间隔（最小间隔支持为1000ms），并且在合适时间调用stopLocation()方法来取消定位请求
+        // 在定位结束后，在合适的生命周期调用onDestroy()方法
+        // 在单次定位情况下，定位无论成功与否，都无需调用stopLocation()方法移除请求，定位sdk内部会移除
+        //启动定位
+        mLocationClient.startLocation();
+
+
+
+
+
+        myLocationStyle = new MyLocationStyle();//初始化定位蓝点样式类myLocationStyle.myLocationType(MyLocationStyle.LOCATION_TYPE_LOCATION_ROTATE);//连续定位、且将视角移动到地图中心点，定位点依照设备方向旋转，并且会跟随设备移动。（1秒1次定位）如果不设置myLocationType，默认也会执行此种模式。
+        myLocationStyle.interval(2000); //设置连续定位模式下的定位间隔，只在连续定位模式下生效，单次定位模式下不会生效。单位为毫秒。
+        aMap.setMyLocationStyle(myLocationStyle);//设置定位蓝点的Style
+        //aMap.getUiSettings().setMyLocationButtonEnabled(true);设置默认定位按钮是否显示，非必需设置。
+        aMap.setMyLocationEnabled(true);// 设置为true表示启动显示定位蓝点，false表示隐藏定位蓝点并不进行定位，默认是false。
+
+
+
+
+
+
+
+
+
     }
 
     @Override
-    protected void onStop()
-    {
-        // 关闭图层定位
-        baiduMap.setMyLocationEnabled(false);
-        locationClient.stop();
-        super.onStop();
-    }
-
-    @Override
-    protected void onDestroy()
-    {
-        if(timeThread != null){
-            timeThread.stopThread();
-        }
+    protected void onDestroy() {
         super.onDestroy();
-        // 在activity执行onDestroy时执行mMapView.onDestroy()
         mMapView.onDestroy();
-        mMapView = null;
+        stopTimer();
+        stopLocation();
     }
 
     @Override
-    protected void onResume()
-    {
+    protected void onResume() {
         super.onResume();
-        // 在activity执行onResume时执行mMapView. onResume ()
         mMapView.onResume();
     }
 
     @Override
-    protected void onPause()
-    {
+    protected void onPause() {
         super.onPause();
-        // 在activity执行onPause时执行mMapView. onPause ()
         mMapView.onPause();
     }
-
-
-
-
-
-
-
-
-
-
-
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        //在activity执行onSaveInstanceState时执行mMapView.onSaveInstanceState (outState)，保存地图当前的状态
+        mMapView.onSaveInstanceState(outState);
+    }
 
     @Override
-    public void onClick(View v) {
-        switch (v.getId()){
-            case R.id.card_personal:
-//                Toast.makeText(this, "纬度："+latitude+"\n"+"经度："+longitude+"\n"+"位置："+addr, Toast.LENGTH_SHORT).show();
-//                Toast.makeText(this, test.getText().toString(), Toast.LENGTH_SHORT).show();
-                try {
-                    begin_place = startText.getText().toString();
-                    end_place = stopText.getText().toString();
-                    length = Long.parseLong(lengthText.getText().toString().substring(0,lengthText.getText().toString().lastIndexOf(".")));
-                    //分数
-                    switch (type) {
-                        case "常规跑步":
-                            score = length / 1500.00;
-                            break;
-                        case "全马/半马":
-                            score = length/1000.00;
-                            break;
-                        case "校比赛":
-                            score = length/1000.00;
-                            break;
-                    }
-                    score = ("男".equals(sex)) ? score : 1.5*score;
-                    //插入活动记录
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            //发表动态
-                            try {
-                                String path = BitmapUtil.saveMyBitmap(TimerCard.this,bitmap,DaoUser.getCardImgName(username,beginTime));
-                                mFile = new File(path);
-                                ImgUpload.uploadFile(mFile,DaoUser.getCardImgName(username,beginTime));
-                            }catch (Exception e){
-                                makeToast("图片未发表");
-                            }
-                            if(DaoAct.insertAct(username,beginTime,endTime,length,score,type,begin_place,end_place)){
-                                runOnUiThread(new Runnable() {
-                                    @SuppressLint("ResourceType")
-                                    @Override
-                                    public void run() {
-                                        android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(TimerCard.this);
-
-                                        builder.setMessage("打卡成功").setPositiveButton("返回主页", new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialog, int which) {
-                                                Intent intent = new Intent(TimerCard.this,MainInterface.class);
-                                                intent.putExtra("id",0);
-                                                intent.putExtra("username",username);
-                                                startActivity(intent);
-                                            }
-                                        }).setNegativeButton("继续打卡", new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialog, int which) {
-
-                                            }
-                                        }).create().show();
-                                    }
-                                });
-
-
-                            }else {
-                                makeToast("打卡失败");
-                            }
-                        }
-                    }).start();
-                } catch (NumberFormatException e) {
-                    e.printStackTrace();
+    public void onLocationChanged(AMapLocation amapLocation) {
+        if (amapLocation != null && !end) {
+            if (amapLocation.getErrorCode() == 0) {
+                //定位成功回调信息，设置相关消息
+                amapLocation.getLocationType();//获取当前定位结果来源，如网络定位结果，详见定位类型表
+                place = amapLocation.getStreet()  + amapLocation.getStreetNum();
+//                amapLocation.getStreet();//街道信息
+//                amapLocation.getStreetNum();//街道门牌号信息
+                //首次定位
+                if (mLongitude == 0 && mLatitude == 0) {
+                    mLatitude =  amapLocation.getLatitude();
+                    mLongitude = amapLocation.getLongitude();
+                    return;
                 }
-                break;
-            case R.id.start_run:
-                if(! start){
-                    timeThread = new TimeThread();
-                    timeThread.start();
-                    beginTime = System.currentTimeMillis();
-                    start = true;
-                    mLatLng = new LatLng(latitude,longitude);
-                    Toast.makeText(this, "开始计时\n"+"纬度："+latitude+"\n"+"经度："+longitude, Toast.LENGTH_SHORT).show();
-                    startText.setText(addr);
-                }else {
-                    Toast.makeText(this, "已经开始计时", Toast.LENGTH_SHORT).show();
+                double latitude = amapLocation.getLatitude();//获取纬度
+                double longitude = amapLocation.getLongitude(); // 获取经度
+                amapLocation.getLongitude();//获取经度
+                amapLocation.getAccuracy();//获取精度信息
+
+                double mDistance = AMapUtils.calculateLineDistance(new LatLng(latitude, longitude), new LatLng(mLatitude,  mLongitude));//与上一次的距离差
+
+                //只有处于开始状态的时候，才增加距离，更新配速和里程
+                if (start) {
+                    distance += mDistance;
+                    if (distance != 0) distanceTxt.setText((distance/1000 + "").substring(0, (distance/1000 + "").lastIndexOf(".") + 3)); // distance != 0设置，单位公里
+                    if (mDistance == 0) speedTxt.setText("- -"); // 距离差是0则配速不记录
+                    else speedTxt.setText(StringUtil.getSpeed(2000l, mDistance/1000)); //实时配速
+                    drawLines(mLatitude, mLongitude, latitude, longitude); // 画轨迹
                 }
+                //赋值给mL
+                mLatitude =  amapLocation.getLatitude();
+                mLongitude = amapLocation.getLongitude();
 
-                break;
-            case R.id.stop_run:
-                if (start){
-                    timeThread.stopThread();
-                    start = false;
-                    endTime = System.currentTimeMillis();
-                    Toast.makeText(this, "结束计时\n"+"纬度："+latitude+"\n"+"经度："+longitude+"\n"+distance, Toast.LENGTH_SHORT).show();
-                    stopText.setText(addr);
-                }else {
-                    Toast.makeText(this, "尚未开始计时", Toast.LENGTH_SHORT).show();
-                }
-
-                break;
-
-            case R.id.img:
-                AlertDialog.Builder builder = new AlertDialog.Builder(TimerCard.this);
-                builder.setTitle("请选择头像：");
-                builder.setMessage("可以通过相机或者相册选取头像。");
-                builder.setPositiveButton("相册选取", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                        intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
-                        startActivityForResult(intent, SELECT_PHOTO);
-                    }
-                });
-                builder.create();
-                builder.show();
-                break;
-        }
-    }
-
-
-    //注册监听函数
-    public class MyLocationListener extends BDAbstractLocationListener{
-        @Override
-        public void onReceiveLocation(BDLocation location){
-//            // map view 销毁后不在处理新接收的位置
-//            if (location == null || mMapView == null)
-//                return;
-//            // 构造定位数据
-//            MyLocationData locData = new MyLocationData.Builder()
-//                    .accuracy(location.getRadius())
-//                    // 此处设置开发者获取到的方向信息，顺时针0-360
-//                    .direction(100).latitude(location.getLatitude())
-//                    .longitude(location.getLongitude()).build();
-//            // 设置定位数据
-//            baiduMap.setMyLocationData(locData);
-//
-//            // 第一次定位时，将地图位置移动到当前位置
-            if (firstLocation)
-            {
-                firstLocation = false;
-                LatLng xy = new LatLng(location.getLatitude(),
-                        location.getLongitude());
-                MapStatusUpdate status = MapStatusUpdateFactory.newLatLng(xy);
-                baiduMap.animateMapStatus(status);
-            }
-
-
-            //此处的BDLocation为定位结果信息类，通过它的各种get方法可获取定位相关的全部结果
-            //以下只列举部分获取经纬度相关（常用）的结果信息
-            //更多结果信息获取说明，请参照类参考中BDLocation类中的说明
-
-            latitude = location.getLatitude();    //获取纬度信息
-            longitude = location.getLongitude();    //获取经度信息
-            float radius = location.getRadius();    //获取定位精度，默认值为0.0f
-
-            String coorType = location.getCoorType();
-            //获取经纬度坐标类型，以LocationClientOption中设置过的坐标类型为准
-
-            int errorCode = location.getLocType();
-            //获取定位类型、定位错误返回码，具体信息可参照类参考中BDLocation类中的说明
-
-
-            addr = location.getAddrStr();    //获取详细地址信息
-            country = location.getCountry();    //获取国家
-            province = location.getProvince();    //获取省份
-            city = location.getCity();    //获取城市
-            district = location.getDistrict();    //获取区县
-            street = location.getStreet();    //获取街道信息
-            adcode = location.getAdCode();    //获取adcode
-            town = location.getTown();    //获取乡镇信息
-            if (start) {
-                distance = DistanceUtil.getDistance(new LatLng(latitude,longitude),mLatLng);
-                lengthText.setText((distance+"").substring(0,(distance+"").lastIndexOf(".")+2));
+            } else {
+                //显示错误信息ErrCode是错误码，errInfo是错误信息，详见错误码表。
+                Log.e("AmapError","location Error, ErrCode:"
+                        + amapLocation.getErrorCode() + ", errInfo:"
+                        + amapLocation.getErrorInfo());
             }
         }
     }
 
-    class TimeThread extends Thread{
-        boolean running = true;
-        TimerUtil mTimerUtil = new TimerUtil();
-        @Override
-        public void run() {
-            mTimerUtil.start();
-            while (running){
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        timeText.setText(mTimerUtil.getCurrentTime());
-                    }
-                });
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
+    /**
+     * 停止定位
+     * @return
+     */
+    public void stopLocation () {
+        if (null != mLocationClient) {
+            mLocationClient.stopLocation();
+            mLocationClient.unRegisterLocationListener(this);
+            mLocationClient.onDestroy();
+            mLocationClient = null;
         }
+    }
 
-        public void stopThread(){
-            running = false;
+    /**
+     * 开启计时
+     */
+    public void startTimer () {
+        mTimerUtil = new TimerUtil(this, second);
+        mTimerUtil.start();
+    }
+
+    /**
+     * 停止计时
+     */
+    public void stopTimer () {
+        if (mTimerUtil != null) {
+            second = mTimerUtil.getSecond();
             mTimerUtil.stopThread();
+            mTimerUtil = null;
         }
-
-
-
-    }
-
-    private void makeToast(final String msg){
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Toast.makeText(TimerCard.this, msg, Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 
 
+    /**
+     *  划线
+     * @param m1 上一个点的la
+     * @param m2 上一个点的lon
+     * @param m3 这个
+     * @param m4
+     */
+    public void drawLines(double m1, double m2, double m3, double m4) {
+
+        PolylineOptions options = new PolylineOptions();
+        //上一个点的经纬度
+        options.add(new LatLng(m1, m2));
+        //当前的经纬度
+        options.add(new LatLng(m3, m4));
+        options.width(10).geodesic(true).color(Color.GREEN);
+        aMap.addPolyline(options);
 
 
-
-
-
-
-
-
-
-
-
+    }
 
 }

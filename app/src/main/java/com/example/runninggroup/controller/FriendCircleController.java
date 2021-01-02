@@ -65,12 +65,12 @@ public class FriendCircleController {
     }
 
     //删除动态
-    public void deleteFriendCircle (FriendCircleAdapter.InnerHolder innerHolder) {
+    public void deleteFriendCircle (FriendCircleAdapter.InnerHolder innerHolder, int position) {
         new Thread(new Runnable() {
             @Override
             public void run() {
                 boolean res = FriendCircleDao.deleteFriendCircle(innerHolder.mFriendCircle);
-                mFriendCircleControllerInterface.deleteFriendCircleBack(res);
+                mFriendCircleControllerInterface.deleteFriendCircleBack(res, position);
             }
         }).start();
     }
@@ -80,6 +80,6 @@ public class FriendCircleController {
         default void getFriendCircleBack( List<FriendCircle> friendCircleList, FriendCircleAdapter.LoadHolder loadHolder){};
         default void addFriendCircleBack (String res) {};
         default void updateZanBack (boolean res, FriendCircleAdapter.InnerHolder innerHolder){};
-        default void deleteFriendCircleBack (boolean res){};
+        default void deleteFriendCircleBack (boolean res, int position){};
     }
 }

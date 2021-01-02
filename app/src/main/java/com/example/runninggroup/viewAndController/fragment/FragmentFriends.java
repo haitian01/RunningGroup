@@ -1,50 +1,36 @@
 package com.example.runninggroup.viewAndController.fragment;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Looper;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.runninggroup.R;
 import com.example.runninggroup.cache.Cache;
 import com.example.runninggroup.controller.FriendRelationController;
-import com.example.runninggroup.model.DaoFriend;
-import com.example.runninggroup.model.DaoUser;
 import com.example.runninggroup.pojo.FriendRelation;
-import com.example.runninggroup.util.ConstantUtil;
-import com.example.runninggroup.util.DensityUtil;
 import com.example.runninggroup.viewAndController.FriendMessage;
 import com.example.runninggroup.viewAndController.FriendSearchActivity;
-import com.example.runninggroup.viewAndController.Login;
 import com.example.runninggroup.viewAndController.adapter.FriendsAdapter;
-import com.example.runninggroup.viewAndController.adapter.MomentAdapter;
-import com.example.runninggroup.viewAndController.helper.FriendsHelper;
-import com.example.runninggroup.viewAndController.helper.MomentHelper;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class FragmentFriends extends Fragment implements FriendRelationController.FriendRelationControllerInterface {
-    public ListView mListView;
+    public RecyclerView friendListRecy;
     public List<FriendRelation> list = new ArrayList<>();
     public View view;
     private RelativeLayout loadImg_out, searchRela;
@@ -52,6 +38,7 @@ public class FragmentFriends extends Fragment implements FriendRelationControlle
     private Animation animation;
     private ImageView loadImg;
     private SwipeRefreshLayout mSwipeRefreshLayout;
+    private FriendsAdapter mFriendsAdapter;
     String username;
     @Nullable
     @Override
@@ -69,18 +56,7 @@ public class FragmentFriends extends Fragment implements FriendRelationControlle
 
     private void initEvent() {
         handleDownPullUpdate();
-        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                Cache.friend = list.get(position).getFriend();
-
-                Intent intent = new Intent(getActivity(), FriendMessage.class);
-                intent.putExtra("alias", list.get(position).getAlias());
-                intent.putExtra("fromActivity", ConstantUtil.MAIN_INTERFACE);
-                startActivity(intent);
-            }
-        });
 
         searchRela.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,10 +75,22 @@ public class FragmentFriends extends Fragment implements FriendRelationControlle
         loadImg_out = view.findViewById(R.id.loadImg_out);
         searchRela = view.findViewById(R.id.search);
         //find
-        mListView=view.findViewById(R.id.listView);
-        setListViewLayout();
+        friendListRecy=view.findViewById(R.id.friend_list);
+        mFriendsAdapter = new FriendsAdapter(this.getLayoutInflater(),list, getActivity());
+        mFriendsAdapter.setOnItemClickListener(new FriendsAdapter.OnItemClickListener() {
+            @Override
+            public void click(int position) {
+                if (list != null && list.size() > position) {
+                    Cache.friend = list.get(position).getFriend();
+                    Intent intent = new Intent(getActivity(), FriendMessage.class);
+                    startActivity(intent);
+                }
+            }
+        });
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         //设置适配器
-        mListView.setAdapter(new FriendsAdapter(this.getLayoutInflater(),list, getActivity()));
+        friendListRecy.setAdapter(mFriendsAdapter);
+        friendListRecy.setLayoutManager(layoutManager);
 
 
 
@@ -117,15 +105,15 @@ public class FragmentFriends extends Fragment implements FriendRelationControlle
 
     }
 
-    /**
-     * 设置listview布局
-     */
-    public void setListViewLayout() {
-        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, DensityUtil.dip2px(getActivity(), 70 * list.size()));
-        layoutParams.addRule(RelativeLayout.BELOW, R.id.search);
-        mListView.setLayoutParams(layoutParams);
-
-    }
+//    /**
+//     * 设置listview布局
+//     */
+//    public void setListViewLayout() {
+//        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, DensityUtil.dip2px(getActivity(), 70 * list.size()));
+//        layoutParams.addRule(RelativeLayout.BELOW, R.id.search);
+//        mListView.setLayoutParams(layoutParams);
+//
+//    }
 
     /**
      * 下拉刷新
@@ -151,9 +139,9 @@ public class FragmentFriends extends Fragment implements FriendRelationControlle
                 mSwipeRefreshLayout.setRefreshing(false);
                 if (friendRelationList == null) Toast.makeText(getActivity(), "网络故障", Toast.LENGTH_SHORT).show();
                 else  {
-                    list = friendRelationList;
-                    setListViewLayout();
-                    mListView.setAdapter(new FriendsAdapter(getActivity().getLayoutInflater(),friendRelationList,getActivity()));
+                    list.clear();
+                    list.addAll(friendRelationList);
+                    mFriendsAdapter.notifyDataSetChanged();
                 }
             }
         });

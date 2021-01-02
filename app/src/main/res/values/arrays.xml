@@ -27,10 +27,9 @@
         <item>好友管理 \u3000 \u3000 \u3000 \u3000 \u3000 ></item>
     </string-array>
     <string-array name="personalsetting">
-        <item>更换头像</item>
-        <item>更换昵称</item>
+        <item>编辑资料</item>
         <item>更换密码</item>
-        <item>更换性别</item>
+
     </string-array>
     <string-array name="act_type">
         <item>常规跑步</item>

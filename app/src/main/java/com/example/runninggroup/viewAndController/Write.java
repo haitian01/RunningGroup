@@ -46,8 +46,9 @@ public class Write extends AppCompatActivity implements View.OnClickListener, Fr
     private FileController mFileController = new FileController(this);
     private ArrayList<String> selected = new ArrayList<>();
     private MyDialog mMyDialog;
-    private Runtime runtime = Runtime.getRuntime();
     private KyLoadingBuilder kyLoadingBuilder;
+    private long startTime;
+    private long endTime;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -135,6 +136,7 @@ public class Write extends AppCompatActivity implements View.OnClickListener, Fr
                 if (StringUtil.isStringNull(circleMsg) && mBitmaps.size() == 0)
                     Toast.makeText(this, "内容不可以为空", Toast.LENGTH_SHORT).show();
                 else {
+                    startTime = System.currentTimeMillis();
                     kyLoadingBuilder = new KyLoadingBuilder(Write.this);
                     kyLoadingBuilder.setText("发表中...");
                     kyLoadingBuilder.show();
@@ -187,9 +189,15 @@ public class Write extends AppCompatActivity implements View.OnClickListener, Fr
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                try {
+                    endTime = System.currentTimeMillis();
+                    if (endTime - startTime < ConstantUtil.MAX_KYLOADING_WAIT_TIME) Thread.sleep(ConstantUtil.MAX_KYLOADING_WAIT_TIME - (endTime - startTime));
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 kyLoadingBuilder.setText(res ? "发表成功" : "发表失败");
                 try {
-                    Thread.sleep(2000);
+                    Thread.sleep(ConstantUtil.MAX_KYLOADING_SHOW_TIME);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

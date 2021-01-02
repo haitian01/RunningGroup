@@ -32,7 +32,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.runninggroup.R;
 import com.example.runninggroup.cache.Cache;
 import com.example.runninggroup.controller.UserController;
-import com.example.runninggroup.model.DaoUser;
 import com.example.runninggroup.pojo.User;
 
 import com.example.runninggroup.util.ConstantUtil;
@@ -59,8 +58,10 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Us
     ImageView downImg, headImg;
     Set<String> keySet = new HashSet<>();
     private Intent mIntent;
-    private KyLoadingBuilder builder;
+    private KyLoadingBuilder kyLoadingBuilder;
     private WaringDialog mWaringDialog;
+    private long startTime;
+    private long endTime;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -244,13 +245,14 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Us
                 if (StringUtil.isStringNull(registerNum) || StringUtil.isStringNull(password)) {
                     Toast.makeText(this, "输入不合法", Toast.LENGTH_SHORT).show();
                 }else {
+                    startTime = System.currentTimeMillis();
                     WindowsEventUtil.hideSoftInput(Login.this, loginBtn);
                     upToBottom();
-                    builder = new KyLoadingBuilder(this);
-                    builder.setText("正在登录...");
+                    kyLoadingBuilder = new KyLoadingBuilder(this);
+                    kyLoadingBuilder.setText("正在登录...");
                     //builder.setOutsideTouchable(false);//点击空白区域是否关闭
                     //builder.setBackTouchable(true);//按返回键是否关闭
-                    builder.show();
+                    kyLoadingBuilder.show();
                     mUserController.isLoad(registerNum, password);
 
                 }
@@ -282,20 +284,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Us
                         .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                String user = userEdt.getText().toString();
-                                String mail = mailEdt.getText().toString();
-                                new Thread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        String pwd = DaoUser.getPassword(user,mail);
-                                        if("".equals(pwd)){
 
-                                        }else {
-                                            MailSend.sendMssage("北邮跑团密码找回","请妥善保管您的密码："+pwd,mail);
-
-                                        }
-                                    }
-                                }).start();
 
 
                             }
@@ -321,13 +310,20 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Us
             @Override
             public void run() {
                 try {
-                    Thread.sleep(1000);
+                    endTime = System.currentTimeMillis();
+                    if (endTime - startTime < ConstantUtil.MAX_KYLOADING_WAIT_TIME) Thread.sleep(ConstantUtil.MAX_KYLOADING_WAIT_TIME - (endTime - startTime));
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
 
 
                 if (user != null) {
+                    kyLoadingBuilder.setText("登录成功");
+                    try {
+                        Thread.sleep(ConstantUtil.MAX_KYLOADING_SHOW_TIME);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                     //写入账号密码
                     SharedPreferences sp = getSharedPreferences("login", Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = sp.edit();
@@ -350,7 +346,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Us
                     });
                     mWaringDialog.show();
                 }
-                builder.dismiss();//关闭
+                kyLoadingBuilder.dismiss();//关闭
             }
         });
     }

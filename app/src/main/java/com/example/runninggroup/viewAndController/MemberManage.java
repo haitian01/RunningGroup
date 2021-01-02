@@ -17,14 +17,11 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.example.runninggroup.R;
 import com.example.runninggroup.cache.Cache;
 import com.example.runninggroup.controller.UserController;
-import com.example.runninggroup.model.DaoGroup;
-import com.example.runninggroup.model.DaoUser;
 import com.example.runninggroup.pojo.Team;
 import com.example.runninggroup.pojo.User;
 import com.example.runninggroup.util.WindowsEventUtil;
-import com.example.runninggroup.viewAndController.adapter.MemberAdapter;
 import com.example.runninggroup.viewAndController.adapter.MemberManageAdapter;
-import com.example.runninggroup.viewAndController.helper.MemberManageHelper;
+
 
 import java.util.ArrayList;
 import java.util.List;

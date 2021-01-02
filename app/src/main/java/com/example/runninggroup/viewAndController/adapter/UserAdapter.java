@@ -6,7 +6,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.runninggroup.R;
 import com.example.runninggroup.pojo.User;
@@ -15,22 +19,45 @@ import com.example.runninggroup.util.ImgNameUtil;
 
 import java.util.List;
 
-public class UserAdapter extends BaseAdapter {
+public class UserAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     List<User> mList;
     Activity mActivity;
-
+    private OnItemClickListener mOnItemClickListener;
     public UserAdapter(List<User> list, Activity activity) {
             mList = list;
             mActivity = activity;
     }
+    public interface OnItemClickListener {
+        void onItemClick(int position);
+    }
+    public void setOnItemClickListener (OnItemClickListener onItemClickListener) {
+        mOnItemClickListener = onItemClickListener;
+    }
+
+
+    @NonNull
     @Override
-    public int getCount() {
-        return mList.size();
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = mActivity.getLayoutInflater().inflate(R.layout.helper_user, parent, false);
+        return new InnerHolder(view);
     }
 
     @Override
-    public Object getItem(int position) {
-        return mList.get(position);
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        if (holder instanceof InnerHolder) {
+            InnerHolder viewHolder = (InnerHolder) holder;
+            User user = mList.get(position);
+            viewHolder.msg.setText(mList.get(position).getUsername() + "(" + mList.get(position).getRegisterNum() + ")");
+            viewHolder.img.setImageResource(user.getSex() == 1 ? R.drawable.default_head_m : R.drawable.default_head_w);
+            viewHolder.userItem.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mOnItemClickListener != null) mOnItemClickListener.onItemClick(position);
+                }
+            });
+            setImg(viewHolder, user.getId());
+        }
+
     }
 
     @Override
@@ -39,25 +66,28 @@ public class UserAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        ViewHolder viewHolder = new ViewHolder();
-        User user = mList.get(position);
-        convertView = mActivity.getLayoutInflater().inflate(R.layout.helper_user, null);
-        viewHolder.img = convertView.findViewById(R.id.img);
-        viewHolder.msg = convertView.findViewById(R.id.msg);
-
-        viewHolder.msg.setText(mList.get(position).getUsername() + "(" + mList.get(position).getRegisterNum() + ")");
-        viewHolder.img.setImageResource(user.getSex() == 1 ? R.drawable.default_head_m : R.drawable.default_head_w);
-        setImg(viewHolder, user.getId());
-        return convertView;
+    public int getItemCount() {
+        return mList == null ? 0 : mList.size();
     }
-    class ViewHolder {
+
+
+    private class InnerHolder extends RecyclerView.ViewHolder {
 
         ImageView img;
         TextView msg;
+        private RelativeLayout userItem;
 
+        public InnerHolder(@NonNull View itemView) {
+            super(itemView);
+            initView();
+        }
+        public void initView() {
+            img = itemView.findViewById(R.id.img);
+            msg = itemView.findViewById(R.id.msg);
+            userItem = itemView.findViewById(R.id.user_item);
+        }
     }
-    public void setImg (ViewHolder viewHolder, int id) {
+    public void setImg (InnerHolder viewHolder, int id) {
         new Thread(new Runnable() {
             @Override
             public void run() {

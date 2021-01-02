@@ -9,7 +9,9 @@ public class ConstantUtil {
     //app后端版本（对应不同的后端）
     public final static int VERSION = 1;
 //    public final static String URL = "http://192.168.43.222:8080";
-    public final static String URL = "http://10.28.170.186:8080";
+//    public final static String URL = "http://10.28.170.186:8080";
+    public final static String URL = "http://39.97.66.19:8080";
+//    public final static String URL = "http://192.168.1.152:8080";
     //用户表controller
     public final static String ADD_USER = "/user/addUser";
     public final static String UPDATE_USER = "/user/updateUser";
@@ -27,7 +29,8 @@ public class ConstantUtil {
     //好友表controller
     public final static String ADD_FRIENDR_RELATION = "/friendRelation/addFriendRelation";
     public final static String UPDATE_FRIENDR_RELATION = "/friendRelation/updateFriendRelation";
-    public final static String GET_FRIENDR_RELATION = "/friendRelation/getFriendRelation";
+    public final static String GET_FRIEND_RELATION = "/friendRelation/getFriendRelation";
+    public static final String DELETE_FRIEND_RELATION = "/friendRelation/deleteFriendRelation";
 
     //好友申请表
     public final static String ADD_FRIENDR_APPLICATION = "/friendApplication/addFriendApplication";
@@ -75,6 +78,7 @@ public class ConstantUtil {
     public final static String ADD_TEAM_NOTICE= "/teamNotice/addTeamNotice";
     public static final String GET_TEAM_NOTICE = "/teamNotice/getTeamNotice";
     public static final String GET_TEAM_NOTICE_LIMIT = "/teamNotice/getTeamNoticeLimit";
+    public static final String DELETE_TEAM_NOTICE = "/teamNotice/deleteTeamNotice";
 
     //文件上传
     public final static String UPLOAD = "/file/upload";
@@ -95,6 +99,10 @@ public class ConstantUtil {
 
     //最大加载次数
     public static final int MAX_LOAD_TIME = 10;
+    //发表类平均耗时（毫秒）
+    public static final long MAX_KYLOADING_WAIT_TIME = 1000;
+    //发表成功or失败展示时间（毫秒）
+    public static final long MAX_KYLOADING_SHOW_TIME = 200;
 
 
 

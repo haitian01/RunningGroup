@@ -1,5 +1,6 @@
 package com.example.runninggroup.util;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -36,7 +37,7 @@ public class StringUtil {
     }
 
     /**
-     *
+     *  获取配速
      * @param millisecond 跑步时间的毫秒数
      * @param runLen 跑步里程 单位公里
      * @return
@@ -47,6 +48,18 @@ public class StringUtil {
         long minute = (allSecond - hour * 3600) / 60;
         long second = allSecond - hour * 3600 - minute * 60;
         return getTimeHelper(minute) + "\'" + getTimeHelper(second) + "\"";
+
+    }
+
+    /**
+     * 获取速度（公里/小时）
+     * @param millisecond
+     * @param runLen
+     * @return
+     */
+    public static String getSpeed1 (Long millisecond, Double runLen) {
+        double num = (double)millisecond / (double)(60*60*1000);
+        return (runLen / num + "").substring(0, Math.min((runLen / num + "").lastIndexOf(".") + 3, (runLen / num + "").length()));
 
     }
 
@@ -72,6 +85,18 @@ public class StringUtil {
             }
             return res;
         }
+    }
+
+    /**
+     * 格式化double
+     * @param d
+     * @return
+     */
+    public static String formatDouble4(double d) {
+        DecimalFormat df = new DecimalFormat("#0.0");
+
+
+        return df.format(d);
     }
     // index1  0     4
     // index2   0   4

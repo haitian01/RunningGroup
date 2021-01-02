@@ -7,7 +7,7 @@
         android:id="@+id/backImg"
         android:layout_width="match_parent"
         android:layout_height="270dp"
-        android:scaleType="fitXY"
+        android:scaleType="centerCrop"
         android:src="@drawable/backimg"/>
     <ImageView
         android:id="@+id/back"

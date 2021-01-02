@@ -22,7 +22,10 @@ public class User implements Serializable {
     private Integer sex;
     private String mail;
     private Double length;
+    private Double teamLength;
     private Double score;
+    private Double teamScore;
+    private String signature;
     private Timestamp createTime;
     private Timestamp updateTime;
 

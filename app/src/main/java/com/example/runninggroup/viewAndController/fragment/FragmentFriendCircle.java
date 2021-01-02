@@ -35,6 +35,7 @@ import com.example.runninggroup.pojo.Comment;
 import com.example.runninggroup.pojo.FriendCircle;
 import com.example.runninggroup.pojo.User;
 import com.example.runninggroup.util.ConstantUtil;
+import com.example.runninggroup.util.NetworkUtils;
 import com.example.runninggroup.util.StringUtil;
 import com.example.runninggroup.util.WindowsEventUtil;
 import com.example.runninggroup.viewAndController.FriendMessage;
@@ -59,6 +60,7 @@ public class FragmentFriendCircle extends Fragment implements FriendCircleContro
     private FriendCircleController mFriendCircleController = new FriendCircleController(this);
     private CommentController mCommentController = new CommentController(this);
     private Activity mActivity;
+    private RelativeLayout network;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -76,7 +78,7 @@ public class FragmentFriendCircle extends Fragment implements FriendCircleContro
         mSwipeRefreshLayout = mView.findViewById(R.id.reload);
         messageEdt = mView.findViewById(R.id.message);
         sendBtn = mView.findViewById(R.id.send);
-
+        network = mView.findViewById(R.id.network);
         commentRela = mView.findViewById(R.id.comment_rela);
 
 
@@ -217,7 +219,7 @@ public class FragmentFriendCircle extends Fragment implements FriendCircleContro
                         if (position == 0) {
                             if (innerHolder != null && innerHolder.mFriendCircle != null) {
                                 mInnerHolder = innerHolder;
-                                mFriendCircleController.deleteFriendCircle(innerHolder);
+                                mFriendCircleController.deleteFriendCircle(innerHolder, position);
                             }
                         }
                     }
@@ -248,6 +250,18 @@ public class FragmentFriendCircle extends Fragment implements FriendCircleContro
 
 
     private void initEvent () {
+        //监听网络状况
+        listenNetwork();
+
+        /**
+         * 点击跳转到设置
+         */
+        network.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(mActivity, "click", Toast.LENGTH_SHORT).show();
+            }
+        });
         //下拉刷新
         handleDownPullUpdate();
 
@@ -296,6 +310,34 @@ public class FragmentFriendCircle extends Fragment implements FriendCircleContro
     }
 
     /**
+     * 监听网络
+     */
+    public void listenNetwork () {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (true) {
+                    boolean res = NetworkUtils.isNetworkAvailable(mActivity);
+
+                    mActivity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (res) network.setVisibility(View.GONE);
+                            else network.setVisibility(View.VISIBLE);
+                        }
+                    });
+
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }).start();
+    }
+
+    /**
      * 复制内容到剪切板
      */
     public void onClickCopy(String msg) {
@@ -329,14 +371,18 @@ public class FragmentFriendCircle extends Fragment implements FriendCircleContro
      * @param res
      */
     @Override
-    public void deleteFriendCircleBack(boolean res) {
+    public void deleteFriendCircleBack(boolean res, int position) {
         mActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Toast.makeText(mActivity, res ? "success" : "fail", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mActivity, res ? "已删除" : "删除失败", Toast.LENGTH_SHORT).show();
                 if (res && mInnerHolder != null) {
+
                     mFriendCircleList.remove(mInnerHolder.mFriendCircle);
-                    friendCircleAdapter.notifyDataSetChanged();
+                    friendCircleAdapter.notifyItemRemoved(position);
+                    if (position != mFriendCircleList.size()) {
+                        friendCircleAdapter.notifyItemRangeChanged(position, mFriendCircleList.size() - position);
+                    }
                 }
             }
         });
@@ -351,14 +397,16 @@ public class FragmentFriendCircle extends Fragment implements FriendCircleContro
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Toast.makeText(getActivity(), "success", Toast.LENGTH_SHORT).show();
-                mInnerHolder.mCommentList.add(comment);
-                mInnerHolder.commentAdapter.notifyDataSetChanged();
+                Toast.makeText(getActivity(), res ? "发表成功" : "发表失败", Toast.LENGTH_SHORT).show();
+                if (res) {
+                    mInnerHolder.mCommentList.add(comment);
+                    mInnerHolder.commentAdapter.notifyItemInserted(mInnerHolder.mCommentList.size());
+                    //隐藏评论框、隐藏键盘,清空输入框
+                    messageEdt.setText("");
+                    commentRela.setVisibility(View.GONE);
+                    WindowsEventUtil.hideSoftInput(getContext(), messageEdt);
+                }
 
-                //隐藏评论框、隐藏键盘,清空输入框
-                messageEdt.setText("");
-                commentRela.setVisibility(View.GONE);
-                WindowsEventUtil.hideSoftInput(getContext(), messageEdt);
             }
         });
     }

@@ -62,8 +62,8 @@ public class MemberAdapter extends BaseAdapter {
         viewHolder.username.setText(user.getUsername());
         int pos = position + 1;
         viewHolder.ranking.setText(pos + "");
-        if ("里程".equals(mSorted)) viewHolder.sorted.setText(user.getLength() + "公里");
-        else if ("分数".equals(mSorted)) viewHolder.sorted.setText(user.getScore() + "分");
+        if ("里程".equals(mSorted)) viewHolder.sorted.setText(user.getTeamLength() + "公里");
+        else if ("分数".equals(mSorted)) viewHolder.sorted.setText(user.getTeamScore() + "分");
         setImg(viewHolder, user.getId());
         return convertView;
     }

@@ -7,6 +7,7 @@ import android.os.Build;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -33,7 +34,8 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.InnerHolder> {
         mActivity = activity;
     }
     public interface OperateImgOnClickListener {
-        void shareImgOnClick(Act act);
+        void onClick(int position);
+        void onLongClick(int position);
     }
     public void setOperateImgOnClickListener (OperateImgOnClickListener operateImgOnClickListener) {
         mOperateImgOnClickListener = operateImgOnClickListener;
@@ -50,14 +52,12 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.InnerHolder> {
     @Override
     public void onBindViewHolder(@NonNull InnerHolder holder, int position) {
         Act act = mActs.get(position);
-        holder.place.setText(act.getPlace());
         holder.runLen.setText(act.getRunLen() + "");
-        holder.username.setText(Cache.user.getUsername());
         /**
          * 获取开始时间，精确到分钟2020-12-02 22：17：24.0
          */
-        String time = new SimpleDateFormat("yyyy/MM/dd HH:mm").format(act.getBeginTime());
-        holder.beginTime.setText(time);
+//        String time = new SimpleDateFormat("yyyy/MM/dd HH:mm").format(act.getBeginTime());
+//        holder.beginTime.setText(time);
 
         /**
          * 获取用时
@@ -65,23 +65,27 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.InnerHolder> {
          */
         Long milliSecond = act.getEndTime().getTime() - act.getBeginTime().getTime();
         String runTime = StringUtil.getTime(milliSecond);
-        String speed = StringUtil.getSpeed(milliSecond, act.getRunLen());
-        holder.speed.setText(speed);
-        holder.runTime.setText(runTime);
-        holder.energy.setText(act.getRunLen() * 60 + "");
-
-
-
-        /**
-         * 点击事件，shareImg
-         */
-
-        holder.operateImg.setOnClickListener(new View.OnClickListener() {
+//        String speed = StringUtil.getSpeed(milliSecond, act.getRunLen());
+//        holder.speed.setText(speed);
+        holder.runTime.setText(act.getTotalTime() == null ? runTime : act.getTotalTime());
+        holder.energy.setText(StringUtil.formatDouble4(act.getRunLen() * 60));
+        holder.cardItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mOperateImgOnClickListener != null) mOperateImgOnClickListener.shareImgOnClick(act);
+                if (mOperateImgOnClickListener != null) mOperateImgOnClickListener.onClick(position);
             }
         });
+        holder.cardItem.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if (mOperateImgOnClickListener != null) mOperateImgOnClickListener.onLongClick(position);
+                return true;
+            }
+        });
+
+
+
+
 
 
     }
@@ -92,8 +96,9 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.InnerHolder> {
     }
 
     class InnerHolder extends RecyclerView.ViewHolder {
-        private TextView place, runLen, username, beginTime, speed, runTime, energy;
-        private ImageView operateImg;
+        private TextView runLen, runTime, energy;
+        private RelativeLayout cardItem;
+
 
         public InnerHolder(@NonNull View itemView) {
             super(itemView);
@@ -102,14 +107,12 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.InnerHolder> {
 
 
         private void initView() {
-            place = itemView.findViewById(R.id.place);
+
             runLen = itemView.findViewById(R.id.run_len);
-            username = itemView.findViewById(R.id.username);
-            beginTime = itemView.findViewById(R.id.begin_time);
-            speed = itemView.findViewById(R.id.speed);
             runTime = itemView.findViewById(R.id.run_time);
             energy = itemView.findViewById(R.id.energy);
-            operateImg = itemView.findViewById(R.id.share);
+            cardItem = itemView.findViewById(R.id.card_item);
+
         }
     }
 }

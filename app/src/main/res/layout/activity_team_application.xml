@@ -29,19 +29,20 @@
             android:textSize="17dp"
             android:layout_centerVertical="true"
             android:textColor="@color/white"
-            android:layout_marginRight="10dp"/>
+            android:layout_marginRight="10dp"
+            android:visibility="invisible"/>
     </RelativeLayout>
    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
        android:id="@+id/refresh"
        android:layout_width="match_parent"
        android:layout_height="wrap_content"
        android:layout_below="@id/top">
-       <ListView
+       <androidx.recyclerview.widget.RecyclerView
            android:id="@+id/application"
            android:layout_width="match_parent"
            android:layout_height="match_parent"
            android:layout_below="@+id/top"
-           ></ListView>
+           ></androidx.recyclerview.widget.RecyclerView>
    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 </RelativeLayout>

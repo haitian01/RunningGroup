@@ -32,14 +32,18 @@ public class TeamController {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                Team team = new Team();
-                team.setRegisterNum(msg);
-                List<Team> teams = TeamDao.getTeam(team);
-
                 Team team1 = new Team();
-                team1.setTeamName(msg);
-                teams.addAll(TeamDao.getTeam(team1));
-                mTeamControllerInterface.getTeamByMagBack(teams);
+                team1.setRegisterNum(msg);
+                List<Team> teamList1 = TeamDao.getTeam(team1);
+
+                Team team2 = new Team();
+                team2.setTeamName(msg);
+                List<Team> teamList2  = TeamDao.getTeam(team2);
+                if (teamList1 != null && teamList2 != null) {
+                    teamList1.addAll(teamList2);
+                    mTeamControllerInterface.getTeamByMsgBack(teamList1);
+                }else if (teamList1 != null) mTeamControllerInterface.getTeamByMsgBack(teamList1);
+                else mTeamControllerInterface.getTeamByMsgBack(teamList2);
             }
         }).start();
     }
@@ -108,7 +112,7 @@ public class TeamController {
         default void buildTeamBack (boolean res){}
         default void updateTeamSloganBack (boolean res){};
        default void deleteTeamBack(boolean res){};
-       default void getTeamByMagBack(List<Team> teams){};
+       default void getTeamByMsgBack(List<Team> teams){};
        default void removeUserFromTeamBack(boolean res){};
     }
 }

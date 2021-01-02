@@ -17,6 +17,7 @@ import android.widget.Toast;
 import androidx.fragment.app.Fragment;
 
 import com.example.runninggroup.R;
+import com.example.runninggroup.util.WindowsEventUtil;
 import com.example.runninggroup.viewAndController.MainInterface;
 import com.github.chrisbanes.photoview.OnPhotoTapListener;
 import com.github.chrisbanes.photoview.PhotoViewAttacher;
@@ -29,7 +30,6 @@ public class FragmentImageDetail extends Fragment {
     private ImageView mImageView;
     private RelativeLayout back;
     private View v;
-    private  Runtime runtime = Runtime.getRuntime();
 
     public FragmentImageDetail(Drawable drawable) {
         mDrawable = drawable;
@@ -50,10 +50,7 @@ public class FragmentImageDetail extends Fragment {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                try {
-                    runtime.exec("input keyevent " + KeyEvent.KEYCODE_BACK);
-                } catch (Exception e) {
-                }
+                WindowsEventUtil.systemBack();
             }
         });
 

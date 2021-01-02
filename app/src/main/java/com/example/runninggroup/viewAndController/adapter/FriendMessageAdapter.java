@@ -50,6 +50,7 @@ public class FriendMessageAdapter extends BaseAdapter {
                 convertView.setTag(viewHolder1);
                 String sex = mUser.getSex() == 1 ? "男" : "女";
                 viewHolder1.mTextView.setText(sex);
+                viewHolder1.mImageView.setImageResource(R.drawable.friend_message_sex);
                 break;
             case 1:
                 convertView = mInflater.inflate(R.layout.helper_friend_message, null);
@@ -59,7 +60,7 @@ public class FriendMessageAdapter extends BaseAdapter {
                 convertView.setTag(viewHolder1);
                 Team team = mUser.getTeam();
                 viewHolder1.mTextView.setText(team == null ? "尚未加入跑团" : team.getCampus() + " " + team.getCollege() + " | " + team.getTeamName());
-
+                viewHolder1.mImageView.setImageResource(R.drawable.friend_message_campus);
 
                 break;
 
@@ -70,7 +71,7 @@ public class FriendMessageAdapter extends BaseAdapter {
                 viewHolder1.mTextView = convertView.findViewById(R.id.msg);
                 convertView.setTag(viewHolder1);
                 viewHolder1.mTextView.setText(mUser.getLength() + "km" + " | " + mUser.getScore() + "分");
-
+                viewHolder1.mImageView.setImageResource(R.drawable.friend_message_length);
                 break;
 
 

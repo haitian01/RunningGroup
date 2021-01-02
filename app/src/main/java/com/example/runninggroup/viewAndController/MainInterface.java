@@ -51,7 +51,7 @@ import java.util.List;
 public class MainInterface extends AppCompatActivity implements View.OnClickListener, UserController.UserControllerInterface {
     private ViewPager mViewPager;
     private ImageView mImg_rightSideSetting;
-    private ImageView mImg_sideSetting;
+    private ImageView mImg_sideSetting, icon_sport;
     private Button mBtn_exit;
     private ConstraintLayout mPersonalSetting,mRightSetting;
     private LinearLayout mLinearLayout;
@@ -131,6 +131,9 @@ public class MainInterface extends AppCompatActivity implements View.OnClickList
 
     }
 
+
+
+
     public void initFragment () {
 
         fragmentList = new ArrayList<>();
@@ -167,18 +170,28 @@ public class MainInterface extends AppCompatActivity implements View.OnClickList
 
     }
 
-
+    //声明一个long类型变量：用于存放上一点击“返回键”的时刻
+    private long mExitTime;
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            Intent home = new Intent(Intent.ACTION_MAIN);
-            home.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            home.addCategory(Intent.CATEGORY_HOME);
-            startActivity(home);
+            //与上次点击返回键时刻作差
+            if ((System.currentTimeMillis() - mExitTime) > 2000) {
+                //大于2000ms则认为是误操作，使用Toast进行提示
+                Toast.makeText(this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
+                //并记录下本次点击“返回键”的时刻，以便下次进行判断
+                mExitTime = System.currentTimeMillis();
+            } else {
+                //小于2000ms则认为是用户确实希望退出程序-调用System.exit()方法进行退出
+                Intent home = new Intent(Intent.ACTION_MAIN);
+                home.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                home.addCategory(Intent.CATEGORY_HOME);
+                startActivity(home);
+            }
             return true;
         }
-        return super.onKeyDown(keyCode, event);
+
+            return super.onKeyDown(keyCode, event);
     }
 
     @Override
@@ -191,6 +204,7 @@ public class MainInterface extends AppCompatActivity implements View.OnClickList
         mImg_sideSetting = findViewById(R.id.sideSetting);
         mBtn_exit = findViewById(R.id.button_quit);
         mImg_rightSideSetting = findViewById(R.id.rightSightSetting);
+        icon_sport = findViewById(R.id.icon_sport);
         mPersonalSetting = findViewById(R.id.personalSetting);
         mRightSetting = findViewById(R.id.rightSetting);
         mLinearLayout = findViewById(R.id.ll_container);
@@ -258,6 +272,34 @@ public class MainInterface extends AppCompatActivity implements View.OnClickList
                 return true;
             }
         });
+        icon_sport.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //打卡
+                final String[] items3 = new String[]{"计时跑步", "手动录入"};//创建item
+                android.app.AlertDialog alertDialog3 = new android.app.AlertDialog.Builder(MainInterface.this)
+                        .setTitle("选择您的打卡方式")
+                        .setIcon(R.drawable.paobu)
+                        .setItems(items3, new DialogInterface.OnClickListener() {//添加列表
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                switch (i){
+                                    case 0:
+                                        Intent intent1 = new Intent(MainInterface.this, TimerCard.class);
+                                        startActivity(intent1);
+
+                                        break;
+                                    case 1:
+                                        Intent intent = new Intent(MainInterface.this, CardPersonal.class);
+                                        startActivity(intent);
+                                        break;
+                                }
+                            }
+                        })
+                        .create();
+                alertDialog3.show();
+            }
+        });
         mPersonalSetting.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -273,7 +315,13 @@ public class MainInterface extends AppCompatActivity implements View.OnClickList
                         else if (i == 1) setDrawableTop(getResources().getDrawable(R.drawable.img_data), getResources().getDrawable(R.drawable.img_card_selected), getResources().getDrawable(R.drawable.img_friend), getResources().getDrawable(R.drawable.img_circle));
                         else if (i == 2) setDrawableTop(getResources().getDrawable(R.drawable.img_data), getResources().getDrawable(R.drawable.img_card), getResources().getDrawable(R.drawable.img_friend_selected), getResources().getDrawable(R.drawable.img_circle));
                         else if (i == 3) setDrawableTop(getResources().getDrawable(R.drawable.img_data), getResources().getDrawable(R.drawable.img_card), getResources().getDrawable(R.drawable.img_friend), getResources().getDrawable(R.drawable.img_circle_selected));
-
+                        if (i == 1) {
+                            icon_sport.setVisibility(View.VISIBLE);
+                            mImg_rightSideSetting.setVisibility(View.INVISIBLE);
+                        }else {
+                            icon_sport.setVisibility(View.INVISIBLE);
+                            mImg_rightSideSetting.setVisibility(View.VISIBLE);
+                        }
                         mViewPager.setCurrentItem(i);
                         return;
                     }
@@ -348,6 +396,9 @@ public class MainInterface extends AppCompatActivity implements View.OnClickList
                         User user = new User();
                         user.setId(Cache.user.getId());
                         mUserController.selectUserByUser(user);
+                        break;
+                    case 4 :
+
                         break;
                 }
             }

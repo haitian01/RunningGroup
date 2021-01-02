@@ -59,13 +59,13 @@
                                 android:layout_toLeftOf="@id/searchTxt"/>
                         </RelativeLayout>
                     </RelativeLayout>
-                    <ListView
-                        android:id="@+id/listView"
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/friend_list"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:divider="@null"
                         android:layout_below="@id/search"
-                        ></ListView>
+                        ></androidx.recyclerview.widget.RecyclerView>
                 </RelativeLayout>
             </ScrollView>
 

@@ -9,8 +9,12 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.runninggroup.R;
 import com.example.runninggroup.cache.Cache;
@@ -24,7 +28,7 @@ import com.example.runninggroup.util.ImgNameUtil;
 
 import java.util.List;
 
-public class TeamApplicationAdapter extends BaseAdapter {
+public class TeamApplicationAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     LayoutInflater mInflater;
     List<TeamApplication> mList;
     private Activity mActivity;
@@ -36,20 +40,82 @@ public class TeamApplicationAdapter extends BaseAdapter {
     }
 
     public interface BtnOnClickListener {
-        void acceptOnClick (ViewHolder viewHolder);
-        void refuseOnClick(ViewHolder  viewHolder);
+        void acceptOnClick (InnerHolder viewHolder);
+        void refuseOnClick(InnerHolder  viewHolder);
+        void deleteOnClick (int position);
     }
     public void setBtnOnClickListener (BtnOnClickListener btnOnClickListener) {
         mBtnOnClickListener = btnOnClickListener;
     }
+
+
+    @NonNull
     @Override
-    public int getCount() {
-        return mList.size();
+    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = mInflater.inflate(R.layout.helper_friend_application, parent, false);
+        return new InnerHolder(view);
     }
 
     @Override
-    public Object getItem(int position) {
-        return mList.get(position);
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        if (holder instanceof InnerHolder) {
+            InnerHolder viewHolder1 = (InnerHolder) holder;
+            int state = mList.get(position).getState();
+            User user = mList.get(position).getUser();
+            String msg = mList.get(position).getApplicationMsg();
+            viewHolder1.mImageView.setImageResource(user.getSex() == 1 ? R.drawable.default_head_m : R.drawable.default_head_w);
+            viewHolder1.mTeamApplication = mList.get(position);
+            setImg(viewHolder1, ImgNameUtil.getUserHeadImgName(user.getId()));
+            if (state == 1) {
+                //未处理
+                viewHolder1.usernameText.setText(user.getUsername());
+                viewHolder1.acceptBtn.setVisibility(View.VISIBLE);
+                viewHolder1.refuseBtn.setVisibility(View.VISIBLE);
+                viewHolder1.msgText.setText(msg);
+
+
+            }else if (state == 2) {
+                //已经同意的
+                viewHolder1.usernameText.setText(user.getUsername());
+                viewHolder1.acceptBtn.setVisibility(View.INVISIBLE);
+                viewHolder1.refuseBtn.setVisibility(View.INVISIBLE);
+                viewHolder1.stateText.setText("已同意");
+                viewHolder1.msgText.setText(msg);
+
+            }else if (state == 3) {
+                //已拒绝
+                viewHolder1.usernameText.setText(user.getUsername());
+                viewHolder1.acceptBtn.setVisibility(View.INVISIBLE);
+                viewHolder1.refuseBtn.setVisibility(View.INVISIBLE);
+                viewHolder1.stateText.setText("已拒绝");
+                viewHolder1.msgText.setText(msg);
+
+            }
+            //按钮事件
+            viewHolder1.acceptBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mBtnOnClickListener != null) mBtnOnClickListener.acceptOnClick(viewHolder1);
+
+                }
+            });
+            viewHolder1.refuseBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mBtnOnClickListener != null) mBtnOnClickListener.refuseOnClick(viewHolder1);
+
+                }
+            });
+            viewHolder1.delete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mBtnOnClickListener != null) mBtnOnClickListener.deleteOnClick(position);
+                }
+            });
+        }
+
+
+
     }
 
     @Override
@@ -58,78 +124,33 @@ public class TeamApplicationAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        int state = mList.get(position).getState();
-        User user = mList.get(position).getUser();
-
-        String msg = mList.get(position).getApplicationMsg();
-        convertView = mInflater.inflate(R.layout.helper_friend_application, null);
-        ViewHolder viewHolder1 = new ViewHolder();
-        viewHolder1.mImageView = convertView.findViewById(R.id.img);
-        viewHolder1.usernameText = convertView.findViewById(R.id.username);
-        viewHolder1.msgText = convertView.findViewById(R.id.msg);
-        viewHolder1.stateText = convertView.findViewById(R.id.state);
-        viewHolder1.acceptBtn = convertView.findViewById(R.id.acceptBtn);
-        viewHolder1.refuseBtn = convertView.findViewById(R.id.refuseBtn);
-        //按钮事件
-        viewHolder1.acceptBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mBtnOnClickListener != null) mBtnOnClickListener.acceptOnClick(viewHolder1);
-
-            }
-        });
-        viewHolder1.refuseBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mBtnOnClickListener != null) mBtnOnClickListener.refuseOnClick(viewHolder1);
-
-            }
-        });
-        convertView.setTag(viewHolder1);
-
-
-        viewHolder1.mImageView.setImageResource(user.getSex() == 1 ? R.drawable.default_head_m : R.drawable.default_head_w);
-        viewHolder1.mTeamApplication = mList.get(position);
-        setImg(viewHolder1, ImgNameUtil.getUserHeadImgName(user.getId()));
-        if (state == 1) {
-            //未处理
-            viewHolder1.usernameText.setText(user.getUsername());
-            viewHolder1.acceptBtn.setVisibility(View.VISIBLE);
-            viewHolder1.refuseBtn.setVisibility(View.VISIBLE);
-            viewHolder1.msgText.setText(msg);
-
-
-        }else if (state == 2) {
-            //已经同意的
-            viewHolder1.usernameText.setText(user.getUsername());
-            viewHolder1.acceptBtn.setVisibility(View.INVISIBLE);
-            viewHolder1.refuseBtn.setVisibility(View.INVISIBLE);
-            viewHolder1.stateText.setText("已同意");
-            viewHolder1.msgText.setText(msg);
-
-        }else if (state == 3) {
-            //已拒绝
-            viewHolder1.usernameText.setText(user.getUsername());
-            viewHolder1.acceptBtn.setVisibility(View.INVISIBLE);
-            viewHolder1.refuseBtn.setVisibility(View.INVISIBLE);
-            viewHolder1.stateText.setText("已拒绝");
-            viewHolder1.msgText.setText(msg);
-
-        }
-
-
-
-        return convertView;
+    public int getItemCount() {
+        return mList == null ? 0 : mList.size();
     }
-    public class ViewHolder {
+
+    public class InnerHolder extends RecyclerView.ViewHolder {
         public TeamApplication mTeamApplication;
         public ImageView mImageView;
         public TextView usernameText, msgText, stateText;
+        public LinearLayout delete;
         public Button acceptBtn,refuseBtn;
+
+        public InnerHolder(@NonNull View itemView) {
+            super(itemView);
+            initView();
+        }
+        public void initView () {
+            mImageView = itemView.findViewById(R.id.img);
+            usernameText = itemView.findViewById(R.id.username);
+            msgText = itemView.findViewById(R.id.msg);
+            stateText = itemView.findViewById(R.id.state);
+            acceptBtn = itemView.findViewById(R.id.acceptBtn);
+            refuseBtn = itemView.findViewById(R.id.refuseBtn);
+            delete = itemView.findViewById(R.id.delete);
+        }
     }
 
-    public void setImg (ViewHolder viewHolder, String imgName) {
+    public void setImg (InnerHolder viewHolder, String imgName) {
         new Thread(new Runnable() {
             @Override
             public void run() {

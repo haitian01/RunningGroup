@@ -5,6 +5,7 @@ import com.example.runninggroup.dao.FriendApplicationDao;
 import com.example.runninggroup.dao.FriendRelationDao;
 import com.example.runninggroup.pojo.FriendApplication;
 import com.example.runninggroup.pojo.FriendRelation;
+import com.example.runninggroup.pojo.User;
 
 import java.util.List;
 
@@ -30,12 +31,26 @@ public class FriendApplicationController {
         }).start();
     }
     //删除好友申请
-    public void deleteFriendApplication (FriendApplication friendApplication) {
+    public void deleteFriendApplication (FriendApplication friendApplication, int position) {
         new Thread(new Runnable() {
             @Override
             public void run() {
                 boolean res = FriendApplicationDao.deleteFriendApplication(friendApplication);
-                mFriendApplicationControllerInterface.deleteFriendApplicationBack(res);
+                mFriendApplicationControllerInterface.deleteFriendApplicationBack(res, position, friendApplication);
+            }
+        }).start();
+    }
+    //删除所有申请
+    public void deleteAllFriendApplication () {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                FriendApplication friendApplication = new FriendApplication();
+                User user = new User();
+                user.setId(Cache.user.getId());
+                friendApplication.setUser(user);
+                boolean res = FriendApplicationDao.deleteFriendApplication(friendApplication);
+                mFriendApplicationControllerInterface.deleteAllFriendApplicationBack(res);
             }
         }).start();
     }
@@ -54,12 +69,12 @@ public class FriendApplicationController {
     }
 
     //同意或者拒绝
-    public void agreeToRefuse (FriendApplication friendApplication) {
+    public void agreeToRefuse (FriendApplication friendApplication, int position) {
         new Thread(new Runnable() {
             @Override
             public void run() {
                 boolean res = FriendApplicationDao.agreeToRefuse(friendApplication);
-                mFriendApplicationControllerInterface.agreeToRefuseBack(res);
+                mFriendApplicationControllerInterface.agreeToRefuseBack(res, position);
             }
         }) .start();
     }
@@ -73,8 +88,9 @@ public class FriendApplicationController {
         default void sendFriendApplicationBack(boolean res) {}
         //查询所有申请记录
         default void getApplicationBack(List<FriendApplication> friendApplicationList) {}
-        default void agreeToRefuseBack (boolean res) {}
-        default void deleteFriendApplicationBack (boolean res) {};
+        default void agreeToRefuseBack (boolean res, int position) {}
+        default void deleteAllFriendApplicationBack (boolean res) {}
+        default void deleteFriendApplicationBack (boolean res, int position, FriendApplication friendApplication) {}
 
     }
 }

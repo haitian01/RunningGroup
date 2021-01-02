@@ -140,11 +140,11 @@ public class MemberSort extends AppCompatActivity implements UserController.User
                         @Override
                         public int compare(User o1, User o2) {
                             if ("里程".equals(sortedString)) {
-                                if (o1.getLength() == o2.getLength()) return 0;
-                                return o1.getLength() > o2.getLength() ? -1 : 1;
+                                if (o1.getTeamLength() == o2.getTeamLength()) return 0;
+                                return o1.getTeamLength() > o2.getTeamLength() ? -1 : 1;
                             }else {
-                                if (o1.getScore() == o2.getScore()) return 0;
-                                return o1.getScore() > o2.getScore() ? -1 : 1;
+                                if (o1.getTeamScore() == o2.getTeamScore()) return 0;
+                                return o1.getTeamScore() > o2.getTeamScore() ? -1 : 1;
                             }
                         }
                     });
@@ -163,8 +163,8 @@ public class MemberSort extends AppCompatActivity implements UserController.User
                     //设置个人排名
                     rankingTxt.setText(getRanking(Cache.user.getId()) + "");
                     usernameTxt.setText(Cache.user.getUsername());
-                    if (sortedString.equals("里程")) sortedTxt.setText(Cache.user.getLength() + "公里");
-                    else sortedTxt.setText(Cache.user.getScore() + "分");
+                    if (sortedString.equals("里程")) sortedTxt.setText(Cache.user.getTeamLength() + "公里");
+                    else sortedTxt.setText(Cache.user.getTeamScore() + "分");
                     mUserController.getHeadImg(ImgNameUtil.getUserHeadImgName(Cache.user.getId()));
 
                     //设置封面

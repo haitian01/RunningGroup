@@ -1,10 +1,20 @@
 package com.example.runninggroup.util;
 
+import android.app.Activity;
 import android.util.Log;
+import android.widget.TextView;
+
+import com.example.runninggroup.R;
+import com.example.runninggroup.pojo.Act;
 
 public class TimerUtil extends Thread{
-    private long second = 0;
+    private long second;
     boolean running = true;
+    private Activity mActivity;
+    public TimerUtil (Activity activity, long second) {
+        mActivity = activity;
+        this.second = second;
+    }
     @Override
     public void run() {
         while(running){
@@ -14,7 +24,15 @@ public class TimerUtil extends Thread{
                 e.printStackTrace();
             }
             second++;
-            System.out.println(("时间：" + getCurrentTime()));
+            if (mActivity != null) {
+                TextView timeTxt = (TextView)mActivity.findViewById(R.id.time);
+                mActivity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        timeTxt.setText(getCurrentTime());
+                    }
+                });
+            }
         }
     }
 
@@ -34,5 +52,7 @@ public class TimerUtil extends Thread{
         running = false;
     }
 
-
+    public long getSecond() {
+        return second;
+    }
 }

@@ -44,17 +44,18 @@ public class UserController {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                User user = new User();
-                user.setUsername(msg);
-                List<User> users = UserDao.getUser(user);
-
                 User user1 = new User();
-                user1.setRegisterNum(msg);
-                users.addAll(UserDao.getUser(user1));
-                if (users == null) mUserControllerInterface.selectUserBack(null);
-                else {
-                    mUserControllerInterface.selectUserBack(users);
-                }
+                user1.setUsername(msg);
+                List<User> userList1 = UserDao.getUser(user1);
+
+                User user2 = new User();
+                user2.setRegisterNum(msg);
+                List<User> userList2 = UserDao.getUser(user2);
+               if (userList1 != null && userList2 != null) {
+                   userList1.addAll(userList2);
+                   mUserControllerInterface.selectUserBack(userList1);
+               }else if (userList1 != null) mUserControllerInterface.selectUserBack(userList1);
+               else mUserControllerInterface.selectUserBack(userList2);
             }
         }).start();
     }
@@ -69,6 +70,21 @@ public class UserController {
                     else break;
                 }
                 mUserControllerInterface.selectUserByUserBack(users);
+
+            }
+        }).start();
+    }
+    //查找用户
+    public void  selectUserByUserWithType(User user, int type) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                List<User> users = null;
+                for (int i = 0; i < 10; i++) {
+                    if (users == null) users = UserDao.getUser(user);
+                    else break;
+                }
+                mUserControllerInterface.selectUserByUserWithTypeBack(users, type);
 
             }
         }).start();
@@ -142,39 +158,17 @@ public class UserController {
             }
         }).start();
     }
-
-    //修改昵称
-    public void changeName (String newName) {
+    //更新用户信息
+    public void updateUser (User user) {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                User user = new User();
-                user.setId(Cache.user.getId());
-                user.setUsername(newName);
-                if (UserDao.updateUser(user)) {
-                    Cache.user.setUsername(newName);
-                    mUserControllerInterface.changeNameBack(true);
-                }else mUserControllerInterface.changeNameBack(false);
-
+                boolean res = UserDao.updateUser(user);
+                mUserControllerInterface.updateUserBack(res, user);
             }
         }).start();
     }
-    //修改性别
-    public void changeSex () {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                User user = new User();
-                user.setId(Cache.user.getId());
-                user.setSex(Cache.user.getSex() == 1 ? 2 : 1);
-                if (UserDao.updateUser(user)) {
-                    Cache.user.setSex(Cache.user.getSex() == 1 ? 2 : 1);
-                    mUserControllerInterface.changeSexBack(true);
-                }else mUserControllerInterface.changeSexBack(false);
 
-            }
-        }).start();
-    }
     //修改密码
     public void changePwd (String newPwd) {
         new Thread(new Runnable() {
@@ -231,10 +225,8 @@ public class UserController {
         default void changeHeadImgBack (boolean res){}
         //获得头像
         default void getHeadImgBack (Drawable drawable) {}
-        //修改昵称
-        default void changeNameBack (boolean res) {}
-        //修改性别
-        default void changeSexBack (boolean res) {}
+       //更新用户信息
+        default void updateUserBack (boolean res, User user) {};
         //修改密码
         default void changePwdBack(boolean res) {};
         default void getImgByRegisterNumBack (Drawable drawable){}
@@ -242,5 +234,7 @@ public class UserController {
         default void signOutTeamBack(boolean res){};
         //修改用户权限
         default void administratorsBack(boolean res){};
+
+        default void selectUserByUserWithTypeBack(List<User> users, int type){};
     }
 }

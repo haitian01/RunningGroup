@@ -25,8 +25,10 @@ import com.example.runninggroup.pojo.Team;
 import com.example.runninggroup.pojo.TeamNotice;
 import com.example.runninggroup.pojo.User;
 import com.example.runninggroup.util.BitmapUtil;
+import com.example.runninggroup.util.ConstantUtil;
 import com.example.runninggroup.util.StringUtil;
 import com.example.runninggroup.util.WindowsEventUtil;
+import com.example.runninggroup.view.KyLoadingBuilder;
 import com.example.runninggroup.view.MyDialog;
 import com.example.runninggroup.viewAndController.adapter.WriteAdapter;
 
@@ -47,8 +49,9 @@ public class WriteNotice extends AppCompatActivity implements View.OnClickListen
     private FileController mFileController = new FileController(this);
     private ArrayList<String> selected = new ArrayList<>();
     private MyDialog mMyDialog;
-    private Runtime runtime = Runtime.getRuntime();
-
+    private KyLoadingBuilder kyLoadingBuilder;
+    private long startTime;
+    private long endTime;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -135,6 +138,10 @@ public class WriteNotice extends AppCompatActivity implements View.OnClickListen
                 if (StringUtil.isStringNull(noticeMsg))
                     Toast.makeText(this, "内容不可以为空", Toast.LENGTH_SHORT).show();
                 else {
+                    startTime = System.currentTimeMillis();
+                    kyLoadingBuilder = new KyLoadingBuilder(WriteNotice.this);
+                    kyLoadingBuilder.setText("发表中...");
+                    kyLoadingBuilder.show();
 
                     /**
                      * 添加一个通知类型的公告，由管理员发布
@@ -168,10 +175,6 @@ public class WriteNotice extends AppCompatActivity implements View.OnClickListen
             }
             writeAdapter.notifyDataSetChanged();
         }
-
-
-
-
     }
 
     public void selectImg() {
@@ -201,10 +204,23 @@ public class WriteNotice extends AppCompatActivity implements View.OnClickListen
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Toast.makeText(WriteNotice.this, res ? "success" : "fail", Toast.LENGTH_SHORT).show();
                 if (res) {
-                    Intent intent = new Intent(WriteNotice.this, MainInterface.class);
+                    try {
+                        endTime = System.currentTimeMillis();
+                        if (endTime - startTime < ConstantUtil.MAX_KYLOADING_WAIT_TIME) Thread.sleep(ConstantUtil.MAX_KYLOADING_WAIT_TIME - (endTime - startTime));
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    kyLoadingBuilder.setText(res ? "发表成功" : "发表失败");
+                    try {
+                        Thread.sleep(ConstantUtil.MAX_KYLOADING_SHOW_TIME);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    kyLoadingBuilder.dismiss();
+                    Intent intent = new Intent(WriteNotice.this, TeamIntroduction.class);
                     startActivity(intent);
+
                 }
             }
         });

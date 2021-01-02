@@ -59,11 +59,27 @@ public class WaringDialogWithTwoButton extends Dialog implements OnClickListener
         void right();
         void left();
     }
+    public class OnButtonClickListenerAdapter implements OnButtonClickListener {
+
+        @Override
+        public void right() {
+            dismiss();
+        }
+
+        @Override
+        public void left() {
+            dismiss();
+        }
+    }
     private OnButtonClickListener onButtonClickListener;
+    private OnButtonClickListenerAdapter onButtonClickListenerAdapter;
     public OnButtonClickListener getOnButtonClickListener() {
         return onButtonClickListener;
     }
     public void setOnButtonClickListener(OnButtonClickListener onButtonClickListener) {
         this.onButtonClickListener = onButtonClickListener;
+    }
+    public void setOnButtonClickListenerAdapter(OnButtonClickListenerAdapter onButtonClickListenerAdapter) {
+        this.onButtonClickListenerAdapter = onButtonClickListenerAdapter;
     }
 }

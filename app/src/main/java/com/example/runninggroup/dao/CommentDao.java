@@ -17,7 +17,7 @@ public class CommentDao {
 
     public static Integer insertComment (Comment comment) {
         String json = JsonPostRequest.postRequest(ConstantUtil.URL + ConstantUtil.ADD_COMMENT, JSON.toJSONString(comment));
-        return json.equals("null") ? null : Integer.valueOf(json);
+        return json == null || "null".equals(json) ? null : Integer.valueOf(json);
     }
     public static boolean deleteComment (Comment comment) {
         String json = JsonPostRequest.postRequest(ConstantUtil.URL + ConstantUtil.DELETE_COMMENT, JSON.toJSONString(comment));

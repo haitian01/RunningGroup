@@ -7,17 +7,20 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.runninggroup.R;
 import com.example.runninggroup.cache.Cache;
 import com.example.runninggroup.controller.UserController;
 import com.example.runninggroup.util.ConstantUtil;
+import com.example.runninggroup.util.WindowsEventUtil;
 
 
 public class ChangePassword extends AppCompatActivity implements View.OnClickListener, UserController.UserControllerInterface {
-    private Button mBtn_return,mBtn_resetData;
+    private Button mBtn_resetData;
     private Button mBtn_changeData;
+    private ImageView backIng;
     private EditText mEd_oldPas;
     private EditText mEd_newPas;
     private EditText mEd_newPas_repeat;
@@ -42,23 +45,22 @@ public class ChangePassword extends AppCompatActivity implements View.OnClickLis
         mEd_oldPas = findViewById(R.id.oldPassword);
         mEd_newPas = findViewById(R.id.newPassword);
         mEd_newPas_repeat = findViewById(R.id.repeatPassword);
-        mBtn_return = findViewById(R.id.returnToMain);
         mBtn_resetData = findViewById(R.id.resetData);
+        backIng = findViewById(R.id.back);
 
     }
 
     private void initEvent(){
-        mBtn_return.setOnClickListener(this);
         mBtn_resetData.setOnClickListener(this);
+        backIng.setOnClickListener(this);
 
     }
 
 
     public void onClick(View v){
         switch (v.getId()){
-            case R.id.returnToMain:
-                final Intent intent = new Intent(ChangePassword.this, MainInterface.class);
-                startActivity(intent);
+            case R.id.back:
+                WindowsEventUtil.systemBack();
                 break;
             case R.id.resetData:
                 String oldPwd = mEd_oldPas.getText().toString();

@@ -57,9 +57,20 @@ public class TeamNoticeController {
         }).start();
     }
 
+    public void deleteTeamNotice (TeamNotice teamNotice, int position) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                boolean res = TeamNoticeDao.deleteTeamNotice(teamNotice);
+                mTeamNoticeControllerInterface.deleteTeamNoticeBack(res, teamNotice, position);
+            }
+        }).start();
+    }
+
     public interface TeamNoticeControllerInterface {
         default void addTeamNoticeBack (String res){};
         default void getTeamNoticeBack (List<TeamNotice> teamNoticeList){};
         default void getTeamNoticeLimitBack (List<TeamNotice> teamNoticeList){};
+        default void deleteTeamNoticeBack (boolean res, TeamNotice teamNotice, int position){};
     }
 }

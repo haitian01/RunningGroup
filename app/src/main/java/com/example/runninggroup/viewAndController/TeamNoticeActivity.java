@@ -68,6 +68,11 @@ public class TeamNoticeActivity extends AppCompatActivity implements TeamNoticeC
                 Intent intent = new Intent(TeamNoticeActivity.this, TeamNoticePage.class);
                 startActivity(intent);
             }
+
+            @Override
+            public void deleteItem(int position) {
+                mTeamNoticeController.deleteTeamNotice(mTeamNoticeList.get(position), position);
+            }
         });
 
         ItemDecoration itemDecoration = new ItemDecoration(20);
@@ -92,6 +97,22 @@ public class TeamNoticeActivity extends AppCompatActivity implements TeamNoticeC
         mTeamNoticeController.getTeamNotice(teamNotice);
     }
 
+    @Override
+    public void deleteTeamNoticeBack(boolean res, TeamNotice teamNotice, int position) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(TeamNoticeActivity.this, res ?  "已删除" : "删除失败，请重试", Toast.LENGTH_SHORT).show();
+                if (res) {
+                    mTeamNoticeList.remove(teamNotice);
+                    mTeamNoticeAdapter.notifyItemRemoved(position);
+                    if (position != mTeamNoticeList.size()) {
+                        mTeamNoticeAdapter.notifyItemRangeChanged(position, mTeamNoticeList.size() - position);
+                    }
+                }
+            }
+        });
+    }
 
     @Override
     public void getTeamNoticeBack(List<TeamNotice> teamNoticeList) {

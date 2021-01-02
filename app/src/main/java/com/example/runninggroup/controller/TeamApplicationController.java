@@ -49,7 +49,7 @@ public class TeamApplicationController {
 
     }
     //处理跑团申请
-    public void updateTeamApplication (int id, int state, int user_id, TeamApplicationAdapter.ViewHolder viewHolder) {
+    public void updateTeamApplication (int id, int state, int user_id, TeamApplicationAdapter.InnerHolder viewHolder) {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -70,27 +70,37 @@ public class TeamApplicationController {
     }
 
     //删除跑团申请
-    public void deleteTeamApplication (TeamApplication teamApplication) {
+    public void deleteTeamApplication (TeamApplication teamApplication, int position) {
         new Thread(new Runnable() {
             @Override
             public void run() {
                 boolean res = TeamApplicationDao.deleteTeamApplication(teamApplication);
-                mTeamApplicationControllerInterface.deleteTeamApplicationBack(res);
+                mTeamApplicationControllerInterface.deleteTeamApplicationBack(res, position);
+            }
+        }).start();
+    }
+
+    public void deleteAllTeamApplication() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                TeamApplication teamApplication = new TeamApplication();
+                Team team = new Team();
+                team.setId(Cache.user.getTeam().getId());
+                teamApplication.setTeam(team);
+                boolean res = TeamApplicationDao.deleteTeamApplication(teamApplication);
+                mTeamApplicationControllerInterface.deleteAllTeamApplicationBack(res);
             }
         }).start();
     }
 
 
-
-
-
-
-
-
     public interface TeamApplicationControllerInterface {
       default void addTeamApplicationBack (boolean res){};
       default void getTeamApplicationBack (List<TeamApplication> teamApplications){};
-      default void updateTeamApplicationBack (boolean res, int state, TeamApplicationAdapter.ViewHolder viewHolder){};
-      default void deleteTeamApplicationBack (boolean res){};
+      default void updateTeamApplicationBack (boolean res, int state, TeamApplicationAdapter.InnerHolder viewHolder){};
+      default void deleteTeamApplicationBack (boolean res, int position){};
+
+      default void deleteAllTeamApplicationBack(boolean res){};
     }
 }

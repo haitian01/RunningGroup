@@ -5,12 +5,14 @@ import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.daimajia.swipe.SwipeLayout;
 import com.example.runninggroup.R;
 import com.example.runninggroup.controller.FileController;
 import com.example.runninggroup.pojo.TeamNotice;
@@ -39,6 +41,8 @@ public class TeamNoticeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     public interface OnItemClickListener {
         //管理员发布公告被点击
         void zeroClick(int position);
+        //点击侧滑删除
+        void deleteItem(int position);
     }
     public void setOnItemClickListener (OnItemClickListener onItemClickListener) {
         mOnItemClickListener = onItemClickListener;
@@ -76,6 +80,14 @@ public class TeamNoticeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             else {
                 ((ZeroHolder) holder).setImg();
             }
+            //设置删除事件
+            ((ZeroHolder) holder).delete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mOnItemClickListener != null) mOnItemClickListener.deleteItem(position);
+                }
+            });
+
         }
 
     }
@@ -101,10 +113,12 @@ public class TeamNoticeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
         private RelativeLayout noticeItem;
         private TextView noticeMsg, noticeUserName, noticeTime;
         private ImageView noticeImg;
+        private LinearLayout delete;
         private FileController mFileController = new FileController(this);
         public ZeroHolder(@NonNull View itemView) {
             super(itemView);
             initView();
+
         }
 
         private void initView() {
@@ -113,6 +127,7 @@ public class TeamNoticeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
             noticeTime = itemView.findViewById(R.id.notice_time);
             noticeImg = itemView.findViewById(R.id.notice_img);
             noticeItem = itemView.findViewById(R.id.notice_item);
+            delete = itemView.findViewById(R.id.delete);
         }
 
         /**

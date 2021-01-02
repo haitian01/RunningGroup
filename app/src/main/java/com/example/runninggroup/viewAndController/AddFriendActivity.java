@@ -26,6 +26,7 @@ import com.example.runninggroup.util.ImgNameUtil;
 import com.example.runninggroup.util.StatusBarUtils;
 import com.example.runninggroup.util.StringUtil;
 import com.example.runninggroup.util.WindowsEventUtil;
+import com.example.runninggroup.view.KyLoadingBuilder;
 import com.example.runninggroup.viewAndController.adapter.FriendMessageAdapter;
 
 import java.util.List;
@@ -36,6 +37,9 @@ public class AddFriendActivity extends AppCompatActivity implements UserControll
     private EditText msgEdt;
     private UserController mUserController = new UserController(this);
     private FriendApplicationController mFriendApplicationController = new FriendApplicationController(this);
+    private KyLoadingBuilder mKyLoadingBuilder;
+    private long startTime;
+    private long endTime;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,6 +59,7 @@ public class AddFriendActivity extends AppCompatActivity implements UserControll
         mUserController.getHeadImg(ImgNameUtil.getUserHeadImgName(Cache.friend.getId()));
         usernameText.setText(Cache.friend.getUsername());
         otherText.setText(Cache.friend.getSex() == 1 ? "男" : "女");
+
 
 
 
@@ -91,6 +96,10 @@ public class AddFriendActivity extends AppCompatActivity implements UserControll
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.send:
+                mKyLoadingBuilder = new KyLoadingBuilder(this);
+                mKyLoadingBuilder.setText("正在发送中...");
+                mKyLoadingBuilder.show();
+                startTime = System.currentTimeMillis();
                 mFriendApplicationController.sendFriendApplication(StringUtil.isStringNull(msgEdt.getText().toString()) ? "请求添加好友" : msgEdt.getText().toString());
                 break;
 
@@ -107,12 +116,24 @@ public class AddFriendActivity extends AppCompatActivity implements UserControll
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                try {
+                    endTime = System.currentTimeMillis();
+                    if (endTime - startTime < ConstantUtil.MAX_KYLOADING_WAIT_TIME) Thread.sleep(ConstantUtil.MAX_KYLOADING_WAIT_TIME - (endTime - startTime));
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                mKyLoadingBuilder.setText(res ? "发送成功" : "发送失败");
+                try {
+                    Thread.sleep(ConstantUtil.MAX_KYLOADING_SHOW_TIME);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                mKyLoadingBuilder.dismiss();
                 if (res) {
                     Intent intent = new Intent(AddFriendActivity.this, FriendMessage.class);
                     startActivity(intent);
-                }else {
-                    Toast.makeText(AddFriendActivity.this, "请求失败", Toast.LENGTH_SHORT).show();
                 }
+
             }
         });
     }

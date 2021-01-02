@@ -42,4 +42,9 @@ public class TeamNoticeDao {
         return JSONArray.parseArray(json, TeamNotice.class);
     }
 
+    public static boolean deleteTeamNotice (TeamNotice teamNotice) {
+        String json = JsonPostRequest.postRequest(ConstantUtil.URL + ConstantUtil.DELETE_TEAM_NOTICE, JSON.toJSONString(teamNotice));
+        return "succeed".equals(json);
+    }
+
 }

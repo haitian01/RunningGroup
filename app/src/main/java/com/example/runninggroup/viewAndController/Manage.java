@@ -26,6 +26,10 @@ import com.example.runninggroup.pojo.Team;
 import com.example.runninggroup.util.ImgNameUtil;
 import com.example.runninggroup.util.StringUtil;
 import com.example.runninggroup.util.WindowsEventUtil;
+import com.example.runninggroup.view.MyDialog;
+import com.example.runninggroup.view.WaringDialog;
+import com.example.runninggroup.view.WaringDialogWithTwoButton;
+import com.example.runninggroup.view.WaringDialogWithoutTitle;
 
 import java.io.File;
 
@@ -39,6 +43,7 @@ public class Manage extends AppCompatActivity implements View.OnClickListener , 
     private final int REQUESTCODE_CUTTING = 3;
     private FileController mFileController = new FileController(this);
     private TeamController mTeamController = new TeamController(this);
+    private MyDialog mMyDialog;
     File file;
     Uri mImageUri;
     @Override
@@ -78,9 +83,29 @@ public class Manage extends AppCompatActivity implements View.OnClickListener , 
     private void initView() {
         groupManageList = findViewById(R.id.groupmanage_list);
         backImg = findViewById(R.id.back);
+        mMyDialog = new MyDialog(this);
         mIntent = getIntent();
     }
     private void initEvent() {
+        mMyDialog.setOnButtonClickListener(new MyDialog.OnButtonClickListener() {
+            @Override
+            public void camera() {
+                mMyDialog.dismiss();
+            }
+
+            @Override
+            public void gallery() {
+                mMyDialog.dismiss();
+                Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
+                startActivityForResult(intent, SELECT_PHOTO);
+            }
+
+            @Override
+            public void cancel() {
+                mMyDialog.dismiss();
+            }
+        });
        groupManageList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
            @Override
            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -98,19 +123,7 @@ public class Manage extends AppCompatActivity implements View.OnClickListener , 
                        break;
                    case 2:
                        //更换头像
-                       AlertDialog.Builder builder = new AlertDialog.Builder(Manage.this);
-                       builder.setTitle("请选择头像：");
-                       builder.setMessage("可以通过相机或者相册选取头像。");
-                       builder.setPositiveButton("相册选取", new DialogInterface.OnClickListener() {
-                           @Override
-                           public void onClick(DialogInterface dialog, int which) {
-                               Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                               intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
-                               startActivityForResult(intent, SELECT_PHOTO);
-                           }
-                       });
-                       builder.create();
-                       builder.show();
+                       mMyDialog.show();
                        break;
                    case 3:
                        //编辑口号
@@ -152,22 +165,29 @@ public class Manage extends AppCompatActivity implements View.OnClickListener , 
                    case 5:
                        //解散跑团
                        if(Cache.user.getId() == Cache.user.getTeam().getUser().getId()){
-                           AlertDialog.Builder builder2 = new AlertDialog.Builder(Manage.this);
-                           builder2.setTitle("解散跑团")
-                                   .setMessage("你确定解散跑团？")
-                                   .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                                       @Override
-                                       public void onClick(DialogInterface dialog, int which) {
-                                           //解散跑团
-                                           mTeamController.deleteTeam();
+                           WaringDialogWithTwoButton waringDialog = new WaringDialogWithTwoButton(Manage.this, "解散跑团将会清空所有相关数据，你确定解散跑团吗？", "取消","确定");
+                           waringDialog.show();
+                           waringDialog.setOnButtonClickListener(new WaringDialogWithTwoButton.OnButtonClickListener() {
+                               @Override
+                               public void right() {
+                                   mTeamController.deleteTeam();
+                               }
 
-                                       }
-                                   }).create();
-                           builder2.show();
+                               @Override
+                               public void left() {
+                                    waringDialog.dismiss();
+                               }
+                           });
                        }else {
-                           androidx.appcompat.app.AlertDialog.Builder builder2 = new AlertDialog.Builder(Manage.this);
-                           builder2.setMessage("没有管理权限！").create();
-                           builder2.show();
+                           WaringDialogWithoutTitle waringDialogWithoutTitle = new WaringDialogWithoutTitle(Manage.this, "没有权限", "我知道了");
+                           waringDialogWithoutTitle.show();
+                           waringDialogWithoutTitle.setOnButtonClickListener(new WaringDialogWithoutTitle.OnButtonClickListener() {
+                               @Override
+                               public void define() {
+                                   waringDialogWithoutTitle
+                                           .dismiss();
+                               }
+                           });
                        }
                        break;
 

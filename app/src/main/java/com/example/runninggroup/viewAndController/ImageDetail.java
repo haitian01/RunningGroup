@@ -78,12 +78,6 @@ public class ImageDetail extends AppCompatActivity {
         }
 
 
-        public ImagePagerAdapter(@NonNull FragmentManager fm, int behavior , ConcurrentHashMap<Integer ,Drawable> mDrawables) {
-            super(fm, behavior);
-            this.mDrawables = mDrawables;
-
-        }
-
         @NonNull
         @Override
         public Fragment getItem(int position) {

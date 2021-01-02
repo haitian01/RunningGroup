@@ -1,7 +1,5 @@
 package com.example.runninggroup.viewAndController.TimeAndData;
 
-import com.example.runninggroup.model.DaoAct;
-import com.example.runninggroup.model.DaoUser;
 
 public class GetData {
     public String username = null;
@@ -32,32 +30,28 @@ public class GetData {
 
         if (today == "星期一"){
             runData = new Object[]{
-                    DaoAct.getLength(username,todayBegin,todayEnd),0,0,0,0,0,0
+                    0,0,0,0,0,0,0
             };
         }else if (today == "星期二"){
             runData = new Object[]{
-                    DaoAct.getLength(username,data_1_1,data_1_2), DaoAct.getLength(username,todayBegin,todayEnd),0,0,0,0,0
+                    0,0,0,0,0,0,0
             };
         }else if (today == "星期三"){
             runData = new Object[]{
-                    DaoAct.getLength(username,data_2_1,data_2_2),DaoAct.getLength(username,data_1_1,data_1_2), DaoAct.getLength(username,todayBegin,todayEnd),0,0,0,0
+                    0,0,0,0,0,0,0
             };
         }else if (today == "星期四"){
             runData = new Object[]{
-                    DaoAct.getLength(username,data_3_1,data_3_2),DaoAct.getLength(username,data_2_1,data_2_2),DaoAct.getLength(username,data_1_1,data_1_2), DaoAct.getLength(username,todayBegin,todayEnd),0,0,0
-            };
+                    0,0,0,0,0,0,0};
         }else if (today == "星期五"){
             runData = new Object[]{
-                    DaoAct.getLength(username,data_4_1,data_4_2),DaoAct.getLength(username,data_3_1,data_3_2),DaoAct.getLength(username,data_2_1,data_2_2),DaoAct.getLength(username,data_1_1,data_1_2), DaoAct.getLength(username,todayBegin,todayEnd),0,0
-            };
+                    0,0,0,0,0,0,0};
         }else if (today == "星期六"){
             runData = new Object[]{
-                    DaoAct.getLength(username,data_5_1,data_5_2),DaoAct.getLength(username,data_4_1,data_4_2),DaoAct.getLength(username,data_3_1,data_3_2),DaoAct.getLength(username,data_2_1,data_2_2),DaoAct.getLength(username,data_1_1,data_1_2), DaoAct.getLength(username,todayBegin,todayEnd),0
-            };
+                    0,0,0,0,0,0,0};
         }else if (today == "星期日"){
             runData = new Object[]{
-                    DaoAct.getLength(username,data_6_1,data_6_2),DaoAct.getLength(username,data_5_1,data_5_2),DaoAct.getLength(username,data_4_1,data_4_2),DaoAct.getLength(username,data_3_1,data_3_2),DaoAct.getLength(username,data_2_1,data_2_2),DaoAct.getLength(username,data_1_1,data_1_2), DaoAct.getLength(username,todayBegin,todayEnd)
-            };
+                    0,0,0,0,0,0,0 };
         }
         return runData;
     }
@@ -83,8 +77,7 @@ public class GetData {
         long monthEnd_4 = GetTime.monthTimeInMillis_3() - 1000;
 
             groudData = new Object[]{
-                    DaoAct.getScore(username, monthBegin_4, monthEnd_4), DaoAct.getScore(username, monthBegin_3, monthEnd_3), DaoAct.getScore(username, monthBegin_2, monthEnd_2), DaoAct.getScore(username, monthBegin_1, monthEnd_1), DaoAct.getScore(username, monthBegin, monthEnd)
-            };
+                    0,0,0,0,0,0,0 };
         return groudData;
     }
 

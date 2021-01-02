@@ -80,6 +80,19 @@ public class FileController {
                 mFileControllerInterface.getImgBack(drawable);
             }
         }).start();
+    }    //获取图片
+    public void getImgWithType (String imgName, int type) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Drawable drawable = null;
+                for (int i = 0; i < 10; i++) {
+                    if (drawable != null) break;
+                    else drawable = FileDao.getImg(imgName);
+                }
+                mFileControllerInterface.getImgWithTypeBack(drawable, type);
+            }
+        }).start();
     }
     //获取图片（带有标识的）
     public void getImg (String imgName, int mark) {
@@ -104,6 +117,8 @@ public class FileController {
        default void getImgBack(Drawable drawable){};
        default void getImgBack(Drawable drawable, int mark){};
 
-        default void uploadMoreNoticeBack(boolean res){};
+       default void uploadMoreNoticeBack(boolean res){};
+
+       default void getImgWithTypeBack(Drawable drawable, int type){};
     }
 }

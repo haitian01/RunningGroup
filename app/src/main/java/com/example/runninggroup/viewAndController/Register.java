@@ -18,13 +18,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.runninggroup.R;
 import com.example.runninggroup.controller.UserController;
-import com.example.runninggroup.model.DaoUser;
-import com.example.runninggroup.pojo.User;
 import com.example.runninggroup.util.MailSend;
 import com.example.runninggroup.util.PermisionUtil;
 
 import java.util.Random;
-import java.util.UUID;
+
 
 public class Register extends AppCompatActivity implements View.OnClickListener, UserController.UserControllerInterface {
     private EditText mEditText1,mEditText2,mEditText3,registerNumText,testText;

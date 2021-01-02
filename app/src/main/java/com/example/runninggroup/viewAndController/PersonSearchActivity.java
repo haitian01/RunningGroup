@@ -1,5 +1,6 @@
 package com.example.runninggroup.viewAndController;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -14,6 +15,8 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.runninggroup.R;
 import com.example.runninggroup.cache.Cache;
@@ -33,7 +36,8 @@ import com.example.runninggroup.viewAndController.adapter.UserAdapter;
 import java.util.List;
 
 public class PersonSearchActivity extends AppCompatActivity implements UserController.UserControllerInterface, TeamController.TeamControllerInterface {
-    ListView searchListView,resListView;
+    ListView searchListView;
+    RecyclerView resListView;
     ImageView deleteImg;
     TextView cancelText;
     EditText msgEdt;
@@ -41,6 +45,9 @@ public class PersonSearchActivity extends AppCompatActivity implements UserContr
     TeamController mTeamController = new TeamController(this);
     List<User> mUserList;
     List<Team> mTeamList;
+    private Activity mActivity;
+    private static final int TEAM_ITEM = 0;
+    private static final int ADD_BUTTON = 1;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -96,25 +103,11 @@ public class PersonSearchActivity extends AppCompatActivity implements UserContr
                 else if (position == 1) mTeamController.getTeamByMsg(msg);
             }
         });
-        resListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (mUserList != null && mUserList.size() > 0) {
-                    Cache.friend = mUserList.get(position);
-                    Intent intent = new Intent(PersonSearchActivity.this, FriendMessage.class);
-                    startActivity(intent);
-                }
-                else if (mTeamList != null && mTeamList.size() > 0) {
-                    Cache.team = mTeamList.get(position);
-                    Intent intent = new Intent(PersonSearchActivity.this, TeamIntroduction.class);
-                    startActivity(intent);
-                }
-            }
-        });
 
     }
 
     private void initView() {
+        mActivity = this;
         searchListView = findViewById(R.id.search_list);
         deleteImg = findViewById(R.id.delete);
         cancelText = findViewById(R.id.cancel);
@@ -140,14 +133,25 @@ public class PersonSearchActivity extends AppCompatActivity implements UserContr
                     Toast.makeText(PersonSearchActivity.this, "找到" + users.size() + "人", Toast.LENGTH_SHORT).show();
                     mUserList = users;
                     resListView.setVisibility(View.VISIBLE);
-                    resListView.setAdapter(new UserAdapter(mUserList, PersonSearchActivity.this));
+                    UserAdapter userAdapter = new UserAdapter(mUserList, PersonSearchActivity.this);
+                    userAdapter.setOnItemClickListener(new UserAdapter.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(int position) {
+                            Cache.friend = mUserList.get(position);
+                            Intent intent = new Intent(PersonSearchActivity.this, FriendMessage.class);
+                            startActivity(intent);
+                        }
+                    });
+                    RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(PersonSearchActivity.this);
+                    resListView.setAdapter(userAdapter);
+                    resListView.setLayoutManager(layoutManager);
                 }
             }
         });
     }
 
     @Override
-    public void getTeamByMagBack(List<Team> teams) {
+    public void getTeamByMsgBack(List<Team> teams) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -164,8 +168,53 @@ public class PersonSearchActivity extends AppCompatActivity implements UserContr
                     Toast.makeText(PersonSearchActivity.this, "找到" + teams.size() + "个", Toast.LENGTH_SHORT).show();
                     mTeamList = teams;
                     resListView.setVisibility(View.VISIBLE);
-                    resListView.setAdapter(new TeamAdapter(getLayoutInflater(), mTeamList, PersonSearchActivity.this));
+                    TeamAdapter teamAdapter = new TeamAdapter(getLayoutInflater(), mTeamList, PersonSearchActivity.this);
+                    teamAdapter.setOnItemClickListener(new TeamAdapter.OnItemClickListener() {
+                        @Override
+                        public void itemOnClick(int position) {
+                            Cache.team = mTeamList.get(position);
+                            User user = new User();
+                            user.setId(Cache.user.getId());
+                            mUserController.selectUserByUserWithType(user, TEAM_ITEM);
+                        }
+
+                        @Override
+                        public void addOnClick(int position) {
+                            Cache.team = mTeamList.get(position);
+                            User user = new User();
+                            user.setId(Cache.user.getId());
+                            mUserController.selectUserByUserWithType(user, ADD_BUTTON);
+                        }
+                    });
+                    RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(PersonSearchActivity.this);
+                    resListView.setLayoutManager(layoutManager);
+                    resListView.setAdapter(teamAdapter);
                 }
+            }
+        });
+    }
+    @Override
+    public void selectUserByUserWithTypeBack(List<User> users, int type) {
+        mActivity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (users == null) Toast.makeText(mActivity, "网络故障", Toast.LENGTH_SHORT).show();
+                else if (users.size() == 0) Toast.makeText(mActivity, "程序错误", Toast.LENGTH_SHORT).show();
+                else {
+                    Cache.user = users.get(0);
+                    if (type == TEAM_ITEM) {
+                        Intent intent = new Intent(mActivity, TeamIntroduction.class);
+                        mActivity.startActivity(intent);
+                    }else if (type == ADD_BUTTON) {
+                        if (Cache.user.getTeam() == null) {
+                            Intent intent = new Intent(mActivity, AddTeamActivity.class);
+                            mActivity.startActivity(intent);
+                        }else {
+                            Toast.makeText(mActivity, "已经加入过跑团！", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }
+
             }
         });
     }
