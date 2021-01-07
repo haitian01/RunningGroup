@@ -1,34 +1,33 @@
 package com.example.runninggroup.viewAndController.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.util.Log;
-import android.widget.Toast;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
+import android.widget.Button;
+import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.RecyclerView;
-
-import com.example.runninggroup.R;
 import com.daimajia.slider.library.Animations.DescriptionAnimation;
 import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.daimajia.slider.library.Tricks.ViewPagerEx;
+import com.example.runninggroup.R;
+import com.example.runninggroup.viewAndController.RunData;
 
 import java.util.HashMap;
-import com.example.runninggroup.viewAndController.TimeAndData.GetData;
-import com.example.runninggroup.viewAndController.adapter.CardAdapter;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 
 public class FragmentData extends Fragment implements BaseSliderView.OnSliderClickListener,ViewPagerEx.OnPageChangeListener {
     private SliderLayout mSlider;
+    private Button mBtnRundata;
     View view;
 
     @Override
@@ -51,7 +50,14 @@ public class FragmentData extends Fragment implements BaseSliderView.OnSliderCli
     private void initView() {
         Context context = getActivity();
         mSlider = view.findViewById(R.id.slider);
-
+        mBtnRundata = view.findViewById(R.id.picture_right01);
+        mBtnRundata.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), RunData.class);
+                startActivity(intent);
+            }
+        });
         HashMap<String,Integer> fils_map = new HashMap<String,Integer>();
 
         fils_map.put("Fighting",R.mipmap.first);

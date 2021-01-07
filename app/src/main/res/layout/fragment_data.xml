@@ -95,7 +95,7 @@
                 android:layout_marginLeft="05dp"
                 android:layout_marginTop="110dp"
                 />
-            <ImageView
+            <Button
                 android:id="@+id/picture_right01"
                 android:background="@mipmap/right_line"
                 android:layout_width="30dp"
