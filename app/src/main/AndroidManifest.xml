@@ -3,76 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.runninggroup">
 
-    <uses-permission android:name="android.permission.INTERNET" />
-
-    <uses-feature
-
-        android:name="android.hardware.camera"
-        android:required="true" />
-
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission
-        android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"
-        tools:ignore="ProtectedPermissions" />
-    <uses-permission android:name="com.miui.whetstone.permission.ACCESS_PROVIDER" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-
-    <uses-feature android:name="android.hardware.camera.autofocus" />
-
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> <!-- 定位 -->
-    <!-- 这个权限用于进行网络定位 -->
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> <!-- 这个权限用于访问GPS定位 -->
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> <!-- 用于访问wifi网络信息，wifi信息会用于进行网络定位 -->
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" /> <!-- 获取运营商信息，用于支持提供运营商信息相关的接口 -->
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> <!-- 这个权限用于获取wifi的获取权限，wifi信息会用来进行网络定位 -->
-    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" /> <!-- 用于读取手机当前的状态 -->
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" /> <!-- 写入扩展存储，向扩展卡写入数据，用于写入离线定位数据 -->
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> <!-- 访问网络，网络定位需要上网 -->
-    <uses-permission android:name="android.permission.INTERNET" /> <!-- SD卡读取权限，用户写入离线定位数据 -->
-    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" /> <!-- 允许应用读取低级别的系统日志文件 -->
-    <uses-permission android:name="android.permission.READ_LOGS" />
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS" />
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_SETTINGS" /> <!-- 这个权限用于进行网络定位 -->
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> <!-- 这个权限用于访问GPS定位 -->
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> <!-- 用于访问wifi网络信息，wifi信息会用于进行网络定位 -->
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" /> <!-- 获取运营商信息，用于支持提供运营商信息相关的接口 -->
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> <!-- 这个权限用于获取wifi的获取权限，wifi信息会用来进行网络定位 -->
-    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" /> <!-- 用于读取手机当前的状态 -->
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" /> <!-- 写入扩展存储，向扩展卡写入数据，用于写入离线定位数据 -->
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> <!-- 访问网络，网络定位需要上网 -->
-    <uses-permission android:name="android.permission.INTERNET" /> <!-- SD卡读取权限，用户写入离线定位数据 -->
-    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" /> <!-- 允许应用读取低级别的系统日志文件 -->
-    <uses-permission android:name="android.permission.READ_LOGS" />
-
-
-
-
-
-
-    <!--计歩需要的权限-->
-    <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
-    <uses-feature android:name="android.hardware.sensor.accelerometer" />
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
-    <uses-feature
-        android:name="android.hardware.sensor.stepcounter"
-        android:required="true" />
-    <uses-feature
-        android:name="android.hardware.sensor.stepdetector"
-        android:required="true" />
-
-
-
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -82,15 +12,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".viewAndController.RunData">
+
+        </activity>
         <activity android:name=".viewAndController.Start">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-
-        <!-- 安卓读写问题 -->
+        </activity> <!-- 安卓读写问题 -->
         <activity
             android:name=".viewAndController.ChangePassword"
             android:launchMode="singleTask" />
@@ -99,16 +30,14 @@
             android:launchMode="singleTask" />
         <activity
             android:name=".viewAndController.Login"
-            android:launchMode="singleTask">
-
-        </activity>
+            android:launchMode="singleTask"></activity>
         <activity
             android:name=".viewAndController.Register"
             android:launchMode="singleTask" />
         <activity
             android:name=".viewAndController.MainInterface"
             android:launchMode="singleTask"
-            android:windowSoftInputMode="adjustPan|stateHidden"/>
+            android:windowSoftInputMode="adjustPan|stateHidden" />
         <activity
             android:name=".viewAndController.FriendMessage"
             android:launchMode="singleTask" />
@@ -119,15 +48,11 @@
             android:name=".viewAndController.Manage"
             android:launchMode="singleTask" />
         <activity
-        android:name=".viewAndController.Write"
-        android:launchMode="singleTask" >
-
-        </activity>
+            android:name=".viewAndController.Write"
+            android:launchMode="singleTask"></activity>
         <activity
             android:name=".viewAndController.WriteNotice"
-            android:launchMode="singleTask" >
-
-        </activity>
+            android:launchMode="singleTask"></activity>
         <activity
             android:name=".viewAndController.MemberManage"
             android:launchMode="singleTask" />
@@ -140,94 +65,139 @@
         <activity
             android:name=".viewAndController.TimerCard"
             android:launchMode="singleTask" />
-        <activity android:name=".viewAndController.PersonSearchActivity"
-            android:launchMode="singleTask"/>
-        <activity android:name=".viewAndController.SearchActivity"
-            android:launchMode="singleTask"/>
-        <activity android:name=".viewAndController.AddFriendActivity"
-            android:launchMode="singleTask"/>
-        <activity android:name=".viewAndController.FriendApplicationActivity"
-            android:launchMode="singleTask"/>
-        <activity android:name=".viewAndController.FriendSearchActivity"
-            android:launchMode="singleTask"/>
+        <activity
+            android:name=".viewAndController.PersonSearchActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".viewAndController.SearchActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".viewAndController.AddFriendActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".viewAndController.FriendApplicationActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".viewAndController.FriendSearchActivity"
+            android:launchMode="singleTask" /> <!-- <meta-data -->
+        <!-- android:name="com.baidu.lbsapi.API_KEY" -->
+        <!-- android:value="KUsPba6rysrCLDeOdsraGvswyH1xA9dN" /> -->
+        <!-- 高德开发者申请的key -->
+        <activity
+            android:name=".viewAndController.TeamIntroduction"
+            android:launchMode="singleTask" />
 
-        <!--<meta-data-->
-            <!--android:name="com.baidu.lbsapi.API_KEY"-->
-            <!--android:value="KUsPba6rysrCLDeOdsraGvswyH1xA9dN" />-->
-        <!--高德开发者申请的key-->
-        <meta-data
-            android:name="com.amap.api.v2.apikey"
-            android:value="	ecd2f980e0afbbb7df6b63c0c4dff353" />
-
-
-        <activity android:name=".viewAndController.TeamIntroduction"
-            android:launchMode="singleTask"/>
-        <activity android:name=".viewAndController.AddTeamActivity"
-            android:launchMode="singleTask"/>
-        <activity android:name=".viewAndController.TeamApplicationActivity"
-            android:launchMode="singleTask"/>
-        <activity android:name=".viewAndController.MemberSort"
-            android:launchMode="singleTask"/>
-        <activity android:name=".viewAndController.ImageDetail"
-            android:launchMode="singleTask"/>
-        <activity android:name=".viewAndController.TeamNoticeActivity"
-            android:launchMode="singleTask"/>
-        <activity android:name=".viewAndController.TeamNoticePage"
-            android:launchMode="singleTask"/>
-        <activity android:name=".viewAndController.TeamMessageChangeActivity"
-            android:launchMode="singleTask"/>
-        <activity android:name=".viewAndController.FriendSettingActivity"
-            android:launchMode="singleTask"/>
-        <activity android:name=".viewAndController.FriendAliasChangeActivity"
-            android:launchMode="singleTask"/>
-        <activity android:name=".viewAndController.PersonalMessageChangeActivity"
-            android:launchMode="singleTask"/>
-        <activity android:name=".viewAndController.ActivityCardRecord"
-            android:launchMode="singleTask"/>
-
-
-        <!--<activity android:name=".test.TestLy">-->
-
-        <!--</activity>-->
-
-
-
-
-
-
+        <activity
+            android:name=".viewAndController.AddTeamActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".viewAndController.TeamApplicationActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".viewAndController.MemberSort"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".viewAndController.ImageDetail"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".viewAndController.TeamNoticeActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".viewAndController.TeamNoticePage"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".viewAndController.TeamMessageChangeActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".viewAndController.FriendSettingActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".viewAndController.FriendAliasChangeActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".viewAndController.PersonalMessageChangeActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".viewAndController.ActivityCardRecord"
+            android:launchMode="singleTask" />
+        <activity
+            android:name="com.donkingliang.imageselector.ImageSelectorActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" /> <!-- <activity android:name=".test.TestLy"> -->
+        <!-- </activity> -->
         <!-- 图片选择Activity -->
-        <activity android:name="com.donkingliang.imageselector.ImageSelectorActivity"
-        android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-        android:configChanges="orientation|keyboardHidden|screenSize"/>
-
-        <!-- 图片预览Activity -->
-        <activity android:name="com.donkingliang.imageselector.PreviewActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-            android:configChanges="orientation|keyboardHidden|screenSize"/>
-
-        <!-- 图片剪切Activity -->
+        <activity
+            android:name="com.donkingliang.imageselector.PreviewActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" /> <!-- 图片预览Activity -->
         <activity
             android:name="com.donkingliang.imageselector.ClipImageActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-
-
-
-
-        <!-- Android 7.0 文件共享配置，必须配置 -->
-        <!--<provider-->
-            <!--android:name="android.support.v4.content.FileProvider"-->
-            <!--android:authorities="${applicationId}.fileprovider"-->
-            <!--android:exported="false"-->
-            <!--android:grantUriPermissions="true">-->
-            <!--<meta-data-->
-                <!--android:name="android.support.FILE_PROVIDER_PATHS"-->
-                <!--android:resource="@xml/file_paths" />-->
-        <!--</provider>-->
-
-
-
-
-
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" /> <!-- 图片剪切Activity -->
+        <meta-data
+            android:name="com.amap.api.v2.apikey"
+            android:value=" ecd2f980e0afbbb7df6b63c0c4dff353" />
     </application>
+
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="true" />
+
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+    <uses-feature android:name="android.hardware.sensor.accelerometer" />
+    <uses-feature
+        android:name="android.hardware.sensor.stepcounter"
+        android:required="true" />
+    <uses-feature
+        android:name="android.hardware.sensor.stepdetector"
+        android:required="true" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission
+        android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"
+        tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="com.miui.whetstone.permission.ACCESS_PROVIDER" /> <!-- 定位 -->
+    <!-- 这个权限用于进行网络定位 -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" /> <!-- 这个权限用于访问GPS定位 -->
+    <uses-permission android:name="android.permission.INTERNET" /> <!-- 用于访问wifi网络信息，wifi信息会用于进行网络定位 -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> <!-- 获取运营商信息，用于支持提供运营商信息相关的接口 -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> <!-- 这个权限用于获取wifi的获取权限，wifi信息会用来进行网络定位 -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> <!-- 用于读取手机当前的状态 -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> <!-- 写入扩展存储，向扩展卡写入数据，用于写入离线定位数据 -->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" /> <!-- 访问网络，网络定位需要上网 -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> <!-- SD卡读取权限，用户写入离线定位数据 -->
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" /> <!-- 允许应用读取低级别的系统日志文件 -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+    <uses-permission android:name="android.permission.READ_LOGS" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" /> <!-- 这个权限用于进行网络定位 -->
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" /> <!-- 这个权限用于访问GPS定位 -->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" /> <!-- 用于访问wifi网络信息，wifi信息会用于进行网络定位 -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> <!-- 获取运营商信息，用于支持提供运营商信息相关的接口 -->
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" /> <!-- 这个权限用于获取wifi的获取权限，wifi信息会用来进行网络定位 -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> <!-- 用于读取手机当前的状态 -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> <!-- 写入扩展存储，向扩展卡写入数据，用于写入离线定位数据 -->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" /> <!-- 访问网络，网络定位需要上网 -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> <!-- SD卡读取权限，用户写入离线定位数据 -->
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" /> <!-- 允许应用读取低级别的系统日志文件 -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" /> <!-- 计歩需要的权限 -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+
+    <uses-permission android:name="android.permission.READ_LOGS" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
 
 </manifest>

@@ -1,116 +1,116 @@
 package com.example.runninggroup.viewAndController.fragment;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
+import android.widget.Button;
+import android.widget.Toast;
+
+import com.daimajia.slider.library.Animations.DescriptionAnimation;
+import com.daimajia.slider.library.SliderLayout;
+import com.daimajia.slider.library.SliderTypes.BaseSliderView;
+import com.daimajia.slider.library.SliderTypes.TextSliderView;
+import com.daimajia.slider.library.Tricks.ViewPagerEx;
+import com.example.runninggroup.R;
+import com.example.runninggroup.viewAndController.RunData;
+
+import java.util.HashMap;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.example.runninggroup.R;
-import com.example.runninggroup.viewAndController.Echart.EchartOptionUtil;
-import com.example.runninggroup.viewAndController.Echart.EchartView;
-import com.example.runninggroup.viewAndController.Echart.EchartView2;
-import com.example.runninggroup.viewAndController.TimeAndData.GetData;
 
-public class FragmentData extends Fragment {
+public class FragmentData extends Fragment implements BaseSliderView.OnSliderClickListener,ViewPagerEx.OnPageChangeListener {
+    private SliderLayout mSlider;
+    private Button mBtnRundata;
     View view;
-    private EchartView barChart;
-    private EchartView2 lineChart;
-    Object[] scoreData;
-    Object[] months;
-    Object[] runData;
-    String username;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_data,container,false);
+        view =inflater.inflate(R.layout.fragment_data,container,false);
         initView();
-
-        barChart.setWebViewClient(new WebViewClient(){
-            @Override
-            public void onPageFinished(WebView view, String url) {
-                super.onPageFinished(view, url);
-                //最好在h5页面加载完毕后再加载数据，防止html的标签还未加载完成，不能正常显示
-
-                Thread t = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        GetData getData = new GetData();
-                        getData.username = username;
-                        runData = getData.getRunData();
-                    }
-                });
-                t.start();
-                try {
-                    t.join();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                refreshBarChart(runData);
-            }
-        });
-
-        lineChart.setWebViewClient(new WebViewClient(){
-            @Override
-            public void onPageFinished(WebView view, String url) {
-                super.onPageFinished(view, url);
-                //最好在h5页面加载完毕后再加载数据，防止html的标签还未加载完成，不能正常显示
-                Thread t = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        GetData getData = new GetData();
-                        getData.username = username;
-                        months = getData.getGroudMonth();
-                        scoreData = getData.getGroudScore();
-                    }
-                });
-                t.start();
-                try {
-                    t.join();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                refreshLinkChart(months, scoreData);
-            }
-        });
+        initEvent();
         return view;
     }
 
-    public void initView(){
-        username = getActivity().getIntent().getStringExtra("username");
-        barChart = view.findViewById(R.id.chart01);
-        barChart.getSettings().setUseWideViewPort(true);
-        barChart.getSettings().setLoadWithOverviewMode(true);
-        lineChart = view.findViewById(R.id.chart02);
-        lineChart.getSettings().setUseWideViewPort(true);
-        lineChart.getSettings().setLoadWithOverviewMode(true);
+    private void initEvent() {
+    }
 
+    private void initView() {
+        Context context = getActivity();
+        mSlider = view.findViewById(R.id.slider);
+        mBtnRundata = view.findViewById(R.id.picture_right01);
+        mBtnRundata.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), RunData.class);
+                startActivity(intent);
+            }
+        });
+        HashMap<String,Integer> fils_map = new HashMap<String,Integer>();
+
+        fils_map.put("Fighting",R.mipmap.first);
+        fils_map.put("Running",R.mipmap.second);
+        fils_map.put("Exciting",R.mipmap.third);
+        fils_map.put("Relaxing",R.mipmap.fourth);
+
+        for (String name : fils_map.keySet()) {
+            TextSliderView textSliderView = new TextSliderView(context);
+            textSliderView
+                    .description(name)
+                    .image(fils_map.get(name))
+                    .setScaleType(BaseSliderView.ScaleType.Fit)
+                    .setOnSliderClickListener(this);
+
+            textSliderView.bundle(new Bundle());
+            textSliderView.getBundle().putString("extra",name);
+
+            mSlider.addSlider(textSliderView);
+        }
+        mSlider.setPresetTransformer(SliderLayout.Transformer.Accordion);
+        mSlider.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
+        mSlider.setCustomAnimation(new DescriptionAnimation());
+        mSlider.setDuration(4000);
+        mSlider.addOnPageChangeListener(this);
     }
 
 
+    @Override
+    public void onStop() {
+        mSlider.stopAutoCycle();
+        super.onStop();
+    }
 
-    //先写在这
-    private void refreshBarChart(Object[] runData){
-        Object[] x = new Object[]{
-                "Mon", "Tue", "Wed", "Thu", "Fri", "Sta", "Sun"
-        };
-        Object[] y =  runData;
-        barChart.refreshEchartsWithOption(EchartOptionUtil.getBarChartOptions(x, y));
+    @Override
+    public void onSliderClick(BaseSliderView slider) {
+        Context context = getActivity();
+        Toast.makeText(context,slider.getBundle().get("extra") + "" , Toast.LENGTH_SHORT).show();
     }
-    private void refreshLinkChart(Object[] Month, Object[] groudData){
-        Object[] x = Month;
-        Object[] y =  groudData;
-        lineChart.refreshEchartsWithOption(EchartOptionUtil.getLineChartOptions(x, y));
+
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
     }
+
+    @Override
+    public void onPageSelected(int position) {
+        Log.d("Slider demo :","Page Change : " + position);
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+
+    }
+
 }
