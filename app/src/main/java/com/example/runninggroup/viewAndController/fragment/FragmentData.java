@@ -1,5 +1,6 @@
 package com.example.runninggroup.viewAndController.fragment;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.daimajia.slider.library.Animations.DescriptionAnimation;
@@ -16,18 +18,25 @@ import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.daimajia.slider.library.Tricks.ViewPagerEx;
 import com.example.runninggroup.R;
+import com.example.runninggroup.cache.Cache;
+import com.example.runninggroup.controller.UserController;
+import com.example.runninggroup.pojo.User;
 import com.example.runninggroup.viewAndController.RunData;
 
 import java.util.HashMap;
+import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 
-public class FragmentData extends Fragment implements BaseSliderView.OnSliderClickListener,ViewPagerEx.OnPageChangeListener {
+public class FragmentData extends Fragment implements BaseSliderView.OnSliderClickListener,ViewPagerEx.OnPageChangeListener, UserController.UserControllerInterface {
     private SliderLayout mSlider;
     private Button mBtnRundata;
+    private TextView sportDataTxt, scoreDataTxt;
+    private UserController mUserController = new UserController(this);
+    private Activity mActivity;
     View view;
 
     @Override
@@ -45,6 +54,9 @@ public class FragmentData extends Fragment implements BaseSliderView.OnSliderCli
     }
 
     private void initEvent() {
+        mActivity = getActivity();
+        sportDataTxt = view.findViewById(R.id.SportData);
+        scoreDataTxt = view.findViewById(R.id.Score);
     }
 
     private void initView() {
@@ -85,6 +97,30 @@ public class FragmentData extends Fragment implements BaseSliderView.OnSliderCli
         mSlider.addOnPageChangeListener(this);
     }
 
+
+    @Override
+    public void selectUserByUserBack(List<User> users) {
+        mActivity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (users != null && users.size() > 0) {
+                    Cache.user = users.get(0);
+                    sportDataTxt.setText(Cache.user.getLength() + "");
+                    scoreDataTxt.setText(Cache.user.getScore() + "");
+                }
+            }
+        });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (Cache.user.getId() != null) {
+            User user = new User();
+            user.setId(Cache.user.getId());
+            mUserController.selectUserByUser(user);
+        }
+    }
 
     @Override
     public void onStop() {

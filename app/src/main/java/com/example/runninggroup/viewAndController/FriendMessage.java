@@ -87,6 +87,8 @@ public class FriendMessage extends AppCompatActivity implements UserController.U
                 if (friendRelationList != null && friendRelationList.size() > 0 && Cache.friend != null) {
                     String  alias = friendRelationList.get(0).getAlias();
                     aliasText.setText(alias == null ? Cache.friend.getUsername() : alias);
+                }else if (Cache.friend != null){
+                    aliasText.setText(Cache.friend.getUsername());
                 }
             }
         });

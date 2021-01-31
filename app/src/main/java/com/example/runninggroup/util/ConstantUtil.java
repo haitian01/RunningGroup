@@ -4,7 +4,6 @@ public class ConstantUtil {
 
 
 
-
     private ConstantUtil () {}
     //app后端版本（对应不同的后端）
     public final static int VERSION = 1;
@@ -25,6 +24,7 @@ public class ConstantUtil {
     public final static String UPDATE_ACT = "/act/updateAct";
     public final static String GET_ACT = "/act/getAct";
     public static final String DELETE_ACT = "/act/deleteAct";
+    public static final String SELECT_LEN_BY_TIME = "/act/selectLenByTime";
 
     //好友表controller
     public final static String ADD_FRIENDR_RELATION = "/friendRelation/addFriendRelation";

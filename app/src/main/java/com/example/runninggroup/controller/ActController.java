@@ -67,10 +67,25 @@ public class ActController {
         }).start();
     }
 
+    /**
+     * 通过timestamp 区间得到跑步总里程
+     * yyyy-MM-dd HH:mm:ss
+     */
+    public void selectLenByTime (int user_id, String start, String end, int position) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                String res = ActDao.selectLenByTime(user_id, start, end);
+                mActControllerInterface.selectLenByTimeBack(res, position);
+            }
+        }).start();
+    }
+
     public interface ActControllerInterface {
         default void selectActBack (List<Act> acts){};
         default void addActBack (boolean res){};
         default void updateActBack (boolean res){};
         default void deleteActBack (boolean res, int position){};
+        default void selectLenByTimeBack (String res, int position){};
     }
 }
